@@ -18,6 +18,8 @@ import de.jose.comm.Command;
 import de.jose.comm.CommandAction;
 import de.jose.comm.CommandDispatcher;
 import de.jose.comm.CommandListener;
+import de.jose.db.DBAdapter;
+import de.jose.db.JoConnection;
 import de.jose.pgn.Game;
 import de.jose.plugin.EnginePlugin;
 import de.jose.profile.UserProfile;
@@ -254,7 +256,7 @@ abstract public class AbstractApplication
 		dialog.getElementPane().add(new JoStyledLabel(message), JoDialog.ELEMENT_REMAINDER);
 
 		dialog.addButton("menu.web.report");
-		if (thrw instanceof SQLException)
+		if (thrw instanceof SQLException && JoConnection.getAdapter().getServerMode() != DBAdapter.MODE_EXTERNAL)
 			dialog.addButton("menu.help.repair");
 		dialog.addButton(JoDialog.CANCEL);
 
