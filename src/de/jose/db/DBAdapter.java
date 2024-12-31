@@ -90,15 +90,20 @@ abstract public class DBAdapter
 	{
 		Class clazz=null;
 		try {
+			File file = new File("lib/jdbc", jarFile);
+			URL[] cp = {file.toURI().toURL()};
+			urlClassLoader = new URLClassLoader(cp);
+		} catch(Exception e) {
+			throw new RuntimeException(e);
+		}
+
+		try {
 			clazz = Class.forName(className);
 		} catch (ClassNotFoundException e) {}
 
 		if (clazz==null)
 		try {
 			//	try to load explicitly from custom jar
-			File file = new File("lib/jdbc",jarFile);
-			URL[] cp = { file.toURI().toURL() };
-			urlClassLoader = new URLClassLoader(cp);
 			clazz = urlClassLoader.loadClass(className);
 		} catch (Exception e) {
             throw new RuntimeException(e);

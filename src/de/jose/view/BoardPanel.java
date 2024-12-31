@@ -638,6 +638,7 @@ public class BoardPanel
 					break;
 			}
 
+			if (data.moves.isEmpty()) continue;// todo seems to indicate a race condition !?
 			Move mv = data.moves.get(0);
 			if (mv==null) continue;
 

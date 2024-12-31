@@ -66,24 +66,11 @@ java.util.EmptyStackException
 [ ] Cut / Paste ?
     [ ] Drag & Drop text snippets
 
-[ ] mysql external
+[x] mysql external
     [ ] in Lan
-    [x] upgrade to mysql-connector 8, optional. v5 still needed for standalone mode
-        [x] use custom classloader
-        [x] mariadb v10 works too :)
-    [x] automate Setup
-        [x] test with empty cloud db
-        [x] test with empty directory
-    [x] in Cloud
-        [x] aws
-        [x] heliohost
-    [x] with authentication
 
 
 [x] fix: offer draw, resign
-    [x] askedAdjudicated == true can not be reset
-        - user declined draw offer
-        - can not offer theirselves
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling
