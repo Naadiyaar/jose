@@ -50,7 +50,6 @@ import de.jose.util.*;
 import de.jose.util.file.FileUtil;
 import de.jose.util.file.ResourceClassLoader;
 import de.jose.util.print.PrintableDocument;
-import de.jose.util.style.StyleUtil;
 import de.jose.view.*;
 import de.jose.view.input.LookAndFeelList;
 import de.jose.view.input.WriteModeDialog;
@@ -60,7 +59,6 @@ import de.jose.window.*;
 import de.jose.book.OpeningLibrary;
 import de.jose.book.BookEntry;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
@@ -1128,6 +1126,11 @@ public class Application
         map.put("menu.help.manual", action);
 
 		action = new CommandAction() {
+			@Override
+			public boolean isEnabled(String cmd) {
+				//	not available for external databases
+				return JoConnection.getAdapter().getServerMode() != DBAdapter.MODE_EXTERNAL;
+			}
 			public void Do(Command cmd) throws Exception {
 				DBRepairTool.open();
 			}
@@ -4289,6 +4292,8 @@ public class Application
 	 */
 	protected void openFile()
 	{
+		boolean externalDB = JoConnection.getAdapter().getServerMode() == DBAdapter.MODE_EXTERNAL;
+
         File[] preferredDirs = new File[] {
             (File)theUserProfile.get("filechooser.open.dir"),
             new File(Application.theWorkingDirectory, "pgn"),
@@ -4327,6 +4332,11 @@ public class Application
 					break;
 
 			case JoFileChooser.ARCH:
+					if (externalDB) {
+						JoDialog.showErrorDialog("Archive Import is not available for an external database.\nUse *.pgn or *.zip instead.");
+						break;
+					}
+
                     showPanelFrame("window.collectionlist");
                     showPanelFrame("window.gamelist");
 

@@ -603,186 +603,6 @@
 		<delete dir="${appldir}"/>
 	</target>
 
-	<!-- source code - - >
-	<target name="source">
-		<description>Java Sources</description>
-
-		<zip destfile="${target-dir}/jose-${version}-source.zip" update="false">
-			<zipfileset dir="src" prefix="java">
-				<exclude name="**/devtools/**"/>
-				<exclude name="**/de/jose/book/shredder/**"/>
-				<include name="**/*.java"/>
-			</zipfileset>
-			<zipfileset dir="c" prefix="c">
-				<include name="**/*.c"/>
-				<include name="**/*.cpp"/>
-				<include name="**/*.h"/>
-			</zipfileset>
-		</zip>
-	</target>
-	-->
-<!--
-	<! - - upgrade diffs - - >
-	<target name="diff-windows" depends="init">
-        <property name="clean-dir" location="F:/Programme/jose-10-clean"/>
-        <property name="os" value="windows"/>
-
-		<! - - unzip the deployment package - - >
-		<delete dir="${target-dir}/jose"/>
-		<unzip src="${target-dir}/jose-${version}-${os}.zip" dest="${target-dir}">
-			<patternset>
-            <exclude name="jose/config/crafty.xml"/>
-			<exclude name="jose/engines/**"/>
-            <exclude name="jose/database/**"/>
-<! - -            font modificatios are not relevant for Windows    - - >
-            <exclude name="jose/fonts/**"/>
-				<! - -don't include 3D stuff in update package- - >
-			<exclude name="jose/3d/**"/>
-			<exclude name="jose/lib/Windows/j3d*.jar"/>
-			<exclude name="jose/lib/Windows/J3DUtils.jar"/>
-			<exclude name="jose/lib/Windows/vecmath.jar"/>
-			<exclude name="jose/lib/Windows/j3d*.dll"/>
-			</patternset>
-		</unzip>
-- - >
-		<! - - compare to 1.0 - - >
-		<java classpath="classes" classname="de.jose.devtools.Diff">
-			<arg path="${clean-dir}"/>
-			<arg path="${target-dir}/jose"/>
-			<arg value="-zip"/>
-			<arg path="${target-dir}/jose-${version}-${os}-update.zip"/>
-		</java>
-
-		<! - - clean up - - >
-		<delete dir="${target-dir}/jose"/>
-	</target>
--->
-
-<!--
-    <target name="diff-linux" depends="init">
-        <property name="clean-dir" location="F:/Programme/jose-10-clean"/>
-        <property name="os" value="linux"/>
-
-	    <! - - unzip the deployment package - - >
-	    <delete dir="${target-dir}/jose"/>
-	    <unzip src="${target-dir}/jose-${version}-${os}.zip" dest="${target-dir}">
-		    <patternset>
-            <exclude name="jose/jose.sh"/>
-            <exclude name="jose/config/crafty.xml"/>
-		    <exclude name="jose/engines/**"/>
-            <exclude name="jose/database/**"/>
-	<! - -            font modificatios are not relevant for Windows    - - >
-			<exclude name="jose/fonts/**"/>
-			    <! - - don't include 3D stuff in update package - - >
-			<exclude name="jose/3d/**"/>
-			<exclude name="jose/lib/Linux_i386/j3d*.jar"/>
-			<exclude name="jose/lib/Linux_i386/vecmath.jar"/>
-		    <exclude name="jose/lib/Linux_i386/libj3d*.so"/>
-		    </patternset>
-	    </unzip>
-
-	    <! - - compare to 1.0 - - >
-	    <java classpath="classes" classname="de.jose.devtools.Diff">
-		    <arg path="${clean-dir}"/>
-		    <arg path="${target-dir}/jose"/>
-		    <arg value="-zip"/>
-		    <arg path="${target-dir}/jose-${version}-${os}-update.zip"/>
-	    </java>
-
-	    <! - - clean up - - >
-		<delete dir="${target-dir}/jose"/>
-    </target>
--->
-	<!--
-    <target name="diff-macosx" depends="init">
-        <property name="clean-dir" location="F:/Programme/jose-10-clean"/>
-        <property name="os" value="macosx"/>
-
-	    <! - - unzip the deployment package - - >
-	    <delete dir="${target-dir}/jose.app"/>
-	    <unzip src="${target-dir}/jose-${version}-${os}.zip" dest="${target-dir}">
-		    <patternset>
-            <exclude name="jose.app/config/crafty.xml"/>
-		    <exclude name="jose.app/engines/**"/>
-            <exclude name="jose.app/database/**"/>
-            <exclude name="jose.app/Contents/MacOS/**"/>
-			    <! - -don't include 3D stuff in update package- - >
-			<exclude name="jose/3d/**"/>
-		    </patternset>
-	    </unzip>
-
-	    <! - - compare to 1.0 - - >
-	    <java classpath="classes" classname="de.jose.devtools.Diff">
-		    <arg path="${clean-dir}"/>
-		    <arg path="${target-dir}/jose.app"/>
-		    <arg value="-zip"/>
-		    <arg path="${target-dir}/jose-${version}-${os}-update.zip"/>
-	    </java>
-
-	    <! - - clean up - - >
-		<delete dir="${target-dir}/jose.app"/>
-    </target>
--->
-	<!-- windows installer (ghost installer) w/out JRE
-	<target name="windows-install">
-		<antcall target="ghost-installer">
-			<param name="zip-file" value="jose-${version}-windows.zip"/>
-			<param name="exe-file" value="jose-${version}-windows.exe"/>
-        </antcall>
-	</target>
--->
-	<!-- windows installer (ghost installer) plus JRE
-	<target name="windows-jre-install">
-		<antcall target="ghost-installer">
-			<param name="zip-file" value="jose-${version}-windows-jre.zip"/>
-			<param name="exe-file" value="jose-${version}-windows-jre.exe"/>
-        </antcall>
-	</target>
--->
-	<!--
-	<target name="ghost-installer">
-		<description> create Ghost Install installer for windows (w/out JRE) </description>
-
-		<delete file="${target-dir}/${exe-file}"/>
-
-		<! - - unzip - - >
-		<delete dir="${target-dir}/jose"/>
-		<! - -delete dir="${target-dir}/fonts"/- - >
-		<unzip src="${target-dir}/${zip-file}" dest="${target-dir}">
-			<! - -patternset>
-			<exclude name="jose/fonts/*.ttf"/>
-			<exclude name="jose/fonts/*.TTF"/>
-			</patternset- - >
-		</unzip>
-<! - -
-		<mkdir dir="${target-dir}/fonts"/>
-		<copy  todir="${target-dir}/fonts">
-			<fileset dir="fonts">
-			<include name="*.ttf"/>
-			<include name="*.TTF"/>
-			</fileset>
-		</copy>
-- - >
-
-		<! - - copy installer config file - - >
-		<copy file="ghost-install.xml" todir="${target-dir}"/>
-		<! - - call ghost installer - - >
-		<! - - GhostInstaller version 4.0 - - >
-<! - -		<exec executable="C:\Programme\Ethalone\Ghost Installer\Bin\GIBuild.exe"- - >
-		<! - - GhostInstaller version 3.7 - - PREFERRED - - >
-		<exec executable="C:\Programme\gInstall\Ghost Installer\Bin\GIBuild.exe"
-			dir="${target-dir}">
-			<arg path="${target-dir}/ghost-install.xml"/>
-		</exec>
-		<! - - rename - - >
-		<move file="${target-dir}/jose-windows.exe" tofile="${target-dir}/${exe-file}"/>
-
-		<! - - clean up - - >
-		<delete dir="${target-dir}/jose"/>
-		<! - -delete dir="${target-dir}/fonts"/- - >
-		<delete file="${target-dir}/ghost-install.xml"/>
-	</target>
--->
 	<target name="release">
 		<description>create packages for all platforms</description>
 
@@ -832,13 +652,20 @@
 		</ftp>
 	</target-->
 	<target name="upload-1-gitlab">
+		<property name="endpoint" value="https://gitlab.com/api/v4"/>
+		<property name="token" value="%access token%"/>
+		<property name="dir" value="/home/schaefer/Downloads/jose"/>
+		<property name="file" value="jose-155-patch.zip"/>
+
 		<exec executable="curl" dir="${target-dir}">
 			<arg value="-s" />
 			<arg value="--progress-bar" />
-			<arg line="--header PRIVATE-TOKEN: %project access token%"/>
+			<arg value="--location"/>
+			<arg line="--upload-file ${dir}/${file}" />
+			<arg line="--user 'hrimfaxi:${token}'"/>
+			<arg line="--header 'PRIVATE-TOKEN: ${token}'"/>
 			<arg line="-X PUT" />
-			<arg line="-F files=@${file}" />
-			<arg value="https://gitlab.com/api/v4//projects/68843828/packages/generic/release/${version}/${file}" />
+			<arg value="${endpoint}/projects/68843828/packages/generic/patch/155/${file}" />
 		</exec>
 	</target>
 
