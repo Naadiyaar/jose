@@ -12,6 +12,8 @@
 
 package de.jose.export;
 
+import de.jose.db.DBAdapter;
+import de.jose.db.JoConnection;
 import de.jose.view.input.ValueHolder;
 import de.jose.Config;
 import de.jose.Application;
@@ -66,6 +68,7 @@ public class ExportList
 
 		boolean isCustom = false;
 		listElements = new Vector(elems.getLength());
+		boolean externalDB = JoConnection.getAdapter().getServerMode() == DBAdapter.MODE_EXTERNAL;
 		for (int i=0; i < elems.getLength(); i++)
 		{
 			Element elm = (Element)elems.item(i);
@@ -73,7 +76,10 @@ public class ExportList
 				//listElements.add(null); // add separator (how ?)
 				isCustom = true;
 			}
-
+			if ("archive".equals(XMLUtil.getChildValue(elm,"jose:output")) && externalDB) {
+				//	can't export archive for external DBs
+				continue;
+			}
 			listElements.add(new ExportListElement(elm));
 		}
 
