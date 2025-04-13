@@ -255,6 +255,7 @@ abstract public class DBAdapter
             return TraceDriverManager.getConnection(getURL(),props);
         }
         else
+			props.put("characterEncoding","utf8");
             return DriverManager.getConnection(getURL(), props);
 	}
 

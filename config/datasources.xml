@@ -87,25 +87,25 @@
 
 	-->
 	<data-source default="false">
-		<display-name> MySQL-external </display-name>
-		<jndi-name> jdbc/mysql-external </jndi-name>
+		<display-name> MySQL-aws </display-name>
+		<jndi-name> jdbc/mysql-aws </jndi-name>
         <adapter-class mode="external"> de.jose.db.MySQLAdapter </adapter-class>
 		<driver-class> com.mysql.jdbc.Driver </driver-class>
-		<class-path>mysql.jar</class-path>
-		<jdbc-url> jdbc:mysql://[host]:[port]/jose </jdbc-url>
+		<class-path>mysql-connector-java-8.0.27.jar</class-path>
+		<jdbc-url> jdbc:mysql://database-1.c5aiy8siq0e5.eu-central-1.rds.amazonaws.com:3306/jose </jdbc-url>
 		<!-- insert actual host name or IP address	-->
 		<!-- insert port number, unless default -->
 
 		<!-- insert user name -->
 		<connection-param>
 			<param-name> user </param-name>
-			<param-value> [user-name] </param-value>
+			<param-value> jose </param-value>
 		</connection-param>
 
 		<!-- insert password (if required) -->
 		<connection-param>
 			<param-name> password </param-name>
-			<param-value> [password] </param-value>
+			<param-value> capablanca </param-value>
 		</connection-param>
 
 		<!-- transactions are supported but not required	-->

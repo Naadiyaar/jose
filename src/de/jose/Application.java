@@ -13,7 +13,6 @@
 package de.jose;
 
 import com.formdev.flatlaf.FlatLaf;
-import com.mysql.jdbc.CommunicationsException;
 import de.jose.book.BookQuery;
 import de.jose.chess.*;
 import de.jose.comm.Command;
@@ -75,6 +74,7 @@ import java.awt.event.FocusEvent;
 import java.io.*;
 import java.net.*;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -4463,7 +4463,7 @@ public class Application
 			try {
 				JoConnection conn = JoConnection.get();
 				ad.shutDown(conn);
-			} catch (CommunicationsException ioex) {
+			} catch (SQLException ioex) {
 				//	can't connect. so be it
 			}
 
