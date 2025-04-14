@@ -12,7 +12,7 @@
 
 package de.jose.db;
 
-import com.mysql.embedded.jdbc.MyConnection;
+//import com.mysql.embedded.jdbc.MyConnection;
 import com.mysql.jdbc.MiniAdmin;
 import de.jose.*;
 import de.jose.comm.Command;
@@ -51,6 +51,8 @@ public class MySQLAdapter
 	protected static boolean bootstrap = false;
 	protected static boolean init_server = false;
 	protected FileWatch watch;
+
+	public static final int ER_QUERY_INTERRUPTED = 1317;
 
 	/**	default ctor	*/
 	protected MySQLAdapter()
@@ -867,14 +869,15 @@ public class MySQLAdapter
 
 	public boolean cancelQuery(JoConnection conn) throws SQLException
 	{
-		if (init_server && getServerMode()==MySQLAdapter.MODE_EMBEDDED)
+		/*	embedded library not in use anymore
+			if (init_server && getServerMode()==MySQLAdapter.MODE_EMBEDDED)
 			try {
 			((MyConnection)conn.jdbcConnection).killQuery();
 			return true;
 			} catch (Exception e) {
 				return false;
 		}
-		else {
+		else*/ {
 			JoConnection adminConn = null;
 			int connId = conn.connectionId;
 			if (connId >= 0) try {

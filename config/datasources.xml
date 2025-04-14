@@ -89,8 +89,10 @@
 	<data-source default="false">
 		<display-name> MySQL-aws </display-name>
 		<jndi-name> jdbc/mysql-aws </jndi-name>
+		<!-- runs MySQL >= 8 -->
+		<!-- requires appropriate driver >= 8 -->
         <adapter-class mode="external"> de.jose.db.MySQLAdapter </adapter-class>
-		<driver-class> com.mysql.jdbc.Driver </driver-class>
+		<driver-class> com.mysql.cj.jdbc.Driver </driver-class>
 		<class-path>mysql-connector-java-8.0.27.jar</class-path>
 		<jdbc-url> jdbc:mysql://database-1.c5aiy8siq0e5.eu-central-1.rds.amazonaws.com:3306/jose </jdbc-url>
 		<!-- insert actual host name or IP address	-->

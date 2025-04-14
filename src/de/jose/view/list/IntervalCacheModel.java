@@ -34,7 +34,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.BitSet;
 
-import com.mysql.embedded.jdbc.MySqlError;
+//import com.mysql.embedded.jdbc.MySqlError;
 
 
 abstract public class IntervalCacheModel
@@ -128,7 +128,7 @@ abstract public class IntervalCacheModel
 	                }
 	                catch (SQLException e)
 	                {
-		                if (e.getErrorCode()==MySqlError.ER_QUERY_INTERRUPTED) {
+		                if (e.getErrorCode()==MySQLAdapter.ER_QUERY_INTERRUPTED) {
 			                //  execution was deliberately interrupted
 //			                System.out.println("query interrupted (1)");
 		                }
@@ -286,7 +286,7 @@ abstract public class IntervalCacheModel
                             res.close();
                         } catch (SQLException e) {
 							//	happens, if query was killed. ok.
-							if (e.getErrorCode()!=MySqlError.ER_QUERY_INTERRUPTED)
+							if (e.getErrorCode()!=MySQLAdapter.ER_QUERY_INTERRUPTED)
                             	throw e;
                         }
                         //  fall-through intended
@@ -330,7 +330,7 @@ abstract public class IntervalCacheModel
 			                    pstm.execute();
 //		                    Util.printTime("synch. execute",startTime);
 		                    } catch (SQLException e) {
-			                    if (e.getErrorCode()==MySqlError.ER_QUERY_INTERRUPTED)
+			                    if (e.getErrorCode()==MySQLAdapter.ER_QUERY_INTERRUPTED)
 			                    {
 				                    //  was deliberately interrupted
 //				                    System.out.println("query interrupted (2)");

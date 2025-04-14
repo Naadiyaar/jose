@@ -80,8 +80,8 @@ public class Crossover1008
         Properties connectionProps = new Properties();
         initDatabaseProps(connectionProps);
 
-        DriverManager.registerDriver(new com.mysql.embedded.jdbc.MySqlEmbeddedDriver());
-        Connection connection = DriverManager.getConnection("jdbc:mysql-embedded",connectionProps);
+        //DriverManager.registerDriver(new com.mysql.embedded.jdbc.MySqlEmbeddedDriver());
+        Connection connection = DriverManager.getConnection("jdbc:mysql",connectionProps);
 
         Statement statement = connection.createStatement();
         statement.executeUpdate(

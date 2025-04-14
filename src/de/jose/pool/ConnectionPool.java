@@ -129,6 +129,7 @@ public class ConnectionPool
         throws SQLException
     {
         Connection jdbcConnection = DriverManager.getConnection(connectionUrl, connectionProperties);
+    // todo use DBAdapter.createConnection instead
         PooledConnection pooledConnection = new PooledConnection(this,key,jdbcConnection);
         return pooledConnection;
     }

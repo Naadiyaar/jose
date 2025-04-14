@@ -30,10 +30,9 @@ import org.w3c.dom.NodeList;
 
 import javax.swing.*;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -188,7 +187,7 @@ abstract public class DBAdapter
 		try {
 
 			if (!ClassPathUtil.existsClass(driverClassName) && (classPath!=null))
-			{	//	driver not in classpath; don't mind...
+			{	//	does not work with newer JDKs
 				File libDir = new File(Application.theWorkingDirectory,"lib/jdbc");
 				ClassPathUtil.addAllToClassPath(libDir, classPath);
 			}
@@ -209,7 +208,23 @@ abstract public class DBAdapter
 
 			/**	embedded instances are shut down when the appplication exits	*/
 
-			Class clazz = Class.forName(driverClassName);
+			Class clazz=null;
+			try {
+				clazz = Class.forName(driverClassName);
+			} catch (ClassNotFoundException e) {}
+
+			if (clazz==null) {
+				//	try to load explicitly from custom jar
+				File file = new File("lib/jdbc",classPath);
+				URL[] cp = { file.toURL() };
+				URLClassLoader urlClassLoader = new URLClassLoader(cp);
+				clazz = urlClassLoader.loadClass(driverClassName);
+				Driver driver = (Driver) clazz.newInstance();
+				DriverManager.registerDriver(driver);
+				//	does not work as expected, because DriverManager.createConnection
+				//	still uses the system class loader
+				//	todo store Driver, use Driver.connect()
+			}
 
 		} catch (Exception e) {
 			throw new SQLException(e.getClass().getName()+": "+e.getMessage());
@@ -255,6 +270,8 @@ abstract public class DBAdapter
             return TraceDriverManager.getConnection(getURL(),props);
         }
         else
+			//	todo DriverManager.getConnection() does not work with loaded drivers
+			//	use Driver.connect() instead
 			props.put("characterEncoding","utf8");
             return DriverManager.getConnection(getURL(), props);
 	}
