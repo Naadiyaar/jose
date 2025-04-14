@@ -69,6 +69,15 @@ abstract public class DBAdapter
 	/**	connection properties	 */
 	protected Properties props;
 
+	/** Driver object
+	 * 	don't rely on DriverManager; load or own
+	 */
+	protected Driver driver;
+	/**
+	 * Classloader that cna load from lib/jdbc/driver.jar
+	 */
+	protected URLClassLoader urlClassLoader;
+
 	/**	abilities	 */
 	protected Properties abilities;
 
@@ -77,6 +86,34 @@ abstract public class DBAdapter
 	//-------------------------------------------------------------------------------
 	//	Constructor
 	//-------------------------------------------------------------------------------
+
+	public void createDriver(String jarFile, String className)
+	{
+		Class clazz=null;
+		try {
+			clazz = Class.forName(className);
+		} catch (ClassNotFoundException e) {}
+
+		if (clazz==null)
+		try {
+			//	try to load explicitly from custom jar
+			File file = new File("lib/jdbc",jarFile);
+			URL[] cp = { file.toURI().toURL() };
+			urlClassLoader = new URLClassLoader(cp);
+			clazz = urlClassLoader.loadClass(className);
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            driver = (Driver) clazz.newInstance();
+			DriverManager.registerDriver(driver);
+			//	does not work as expected, because DriverManager.createConnection
+			//	still uses the system class loader
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	protected void init(Properties properties, int serverMode)
 		throws Exception
@@ -186,11 +223,11 @@ abstract public class DBAdapter
 		DBAdapter adapter = null;
 		try {
 
-			if (!ClassPathUtil.existsClass(driverClassName) && (classPath!=null))
+			/*if (!ClassPathUtil.existsClass(driverClassName) && (classPath!=null))
 			{	//	does not work with newer JDKs
 				File libDir = new File(Application.theWorkingDirectory,"lib/jdbc");
 				ClassPathUtil.addAllToClassPath(libDir, classPath);
-			}
+			}*/
 
 			Class adapterClass = Class.forName(adapterClassName);
 			adapter = (DBAdapter)adapterClass.newInstance();
@@ -208,23 +245,7 @@ abstract public class DBAdapter
 
 			/**	embedded instances are shut down when the appplication exits	*/
 
-			Class clazz=null;
-			try {
-				clazz = Class.forName(driverClassName);
-			} catch (ClassNotFoundException e) {}
-
-			if (clazz==null) {
-				//	try to load explicitly from custom jar
-				File file = new File("lib/jdbc",classPath);
-				URL[] cp = { file.toURL() };
-				URLClassLoader urlClassLoader = new URLClassLoader(cp);
-				clazz = urlClassLoader.loadClass(driverClassName);
-				Driver driver = (Driver) clazz.newInstance();
-				DriverManager.registerDriver(driver);
-				//	does not work as expected, because DriverManager.createConnection
-				//	still uses the system class loader
-				//	todo store Driver, use Driver.connect()
-			}
+			adapter.createDriver(classPath,driverClassName);
 
 		} catch (Exception e) {
 			throw new SQLException(e.getClass().getName()+": "+e.getMessage());
@@ -269,11 +290,12 @@ abstract public class DBAdapter
             TraceDriverManager.enableTrace(true);
             return TraceDriverManager.getConnection(getURL(),props);
         }
-        else
-			//	todo DriverManager.getConnection() does not work with loaded drivers
-			//	use Driver.connect() instead
-			props.put("characterEncoding","utf8");
-            return DriverManager.getConnection(getURL(), props);
+        else if (driver!=null) {
+			return driver.connect(getURL(),props);
+		}
+		else {
+			return DriverManager.getConnection(getURL(), props);
+		}
 	}
 
 	public int getConnectionId(Connection conn) throws SQLException {
@@ -685,7 +707,7 @@ abstract public class DBAdapter
 	 */
 	protected java.util.List<Command> deferredActions = new ArrayList<>();
 
-	public Thread launchProcess(boolean boostrap) {
+	public Thread launchProcess() {
 		return null;
 	}
 

@@ -45,7 +45,7 @@ public class CrossOver1005
 
 				Setup setup = new Setup(config,"MAIN",conn);
 				setup.setCharset(Setup.DEFAULT_CHARSET,Setup.DEFAULT_COLLATE);
-				Setup.setSchemaVersion(conn,"MAIN",version=1005);
+				setup.setSchemaVersion(conn,"MAIN",version=1005);
 
 				setup = new Setup(config,"IO",conn);
 				setup.drop(true);   //  will be re-created on demand

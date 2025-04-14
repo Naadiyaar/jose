@@ -40,9 +40,8 @@ public class CrossOver1006
 	{
 		Dialog dlg = null;
 		try {
+			Setup setup = new Setup(config,"MAIN",conn);
 			if (version < 1006) {
-				Setup setup = new Setup(config,"MAIN",conn);
-
 				// ----------------------------------------------------
 				//  Drop GamePlayer
 				// ----------------------------------------------------
@@ -69,7 +68,7 @@ public class CrossOver1006
 				//  New Columns MoreGame.PosMain, MoreGame.PosVar
 				// ----------------------------------------------------
 
-				if (Setup.getTableVersion(conn,"MAIN","MoreTable") < 101) {
+				if (setup.getTableVersion(conn,"MAIN","MoreTable") < 101) {
 					try {
 						setup.dropColumn("MoreGame","PosMain");
 					} catch (SQLException e) { }
@@ -89,7 +88,7 @@ public class CrossOver1006
 							" CHARSET "+Setup.DEFAULT_CHARSET +
 							" COLLATE "+Setup.DEFAULT_COLLATE);
 
-				Setup.setTableVersion(conn,"MAIN","MoreGame",101);
+				setup.setTableVersion(conn,"MAIN","MoreGame",101);
 				}
 
 				//  drop IO_MoreGame
@@ -97,7 +96,7 @@ public class CrossOver1006
 				iosetup.dropTable("IO_MoreGame");
 			}
 
-			Setup.setSchemaVersion(conn,"MAIN",version=1006);
+			setup.setSchemaVersion(conn,"MAIN",version=1006);
 			return version;
 
 		} finally {

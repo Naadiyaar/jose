@@ -351,7 +351,7 @@ public class DBRepairTool
 
     protected boolean launchDB() throws IOException, InterruptedException {
         MySQLAdapter ad = (MySQLAdapter)JoConnection.getAdapter(true);
-        Thread launcher = ad.launchProcess(false);
+        Thread launcher = ad.launchProcess();
         waitFor(launcher);
         return false;
     }

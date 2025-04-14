@@ -816,7 +816,7 @@ public class PGNImport
             //  reset process priority
             try {
                 if (connection != null) {
-                    connection.setAutoCommit(true);
+                    connection.setAutoCommit(false);
                 }
                 in.close();
             } catch (Exception ex) {

@@ -22,6 +22,7 @@ public class Crossover1008
 {
     public static int crossOver(int version, JoConnection conn, Config config) throws Exception
     {
+        Setup setup = new Setup(config,"MAIN",conn);
         if (version < 1008)
         {
             if (Setup.getTableVersion(conn,"MAIN","MoreGame") < 102)
@@ -29,12 +30,12 @@ public class Crossover1008
                 conn.executeUpdate(
                         "ALTER TABLE MoreGame " +
                             " ADD COLUMN (Eval LONG VARBINARY)");
-                Setup.setTableVersion(conn,"MAIN","MoreGame",102);
+                setup.setTableVersion(conn,"MAIN","MoreGame",102);
             }
 
         }
 
-        Setup.setSchemaVersion(conn,"MAIN",version=1008);
+        setup.setSchemaVersion(conn,"MAIN",version=1008);
         return version;
     }
 

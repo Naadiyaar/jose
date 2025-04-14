@@ -88,8 +88,8 @@ public class CrossOver1002
 				JoConnection.getAdapter().enableConstraints("GamePlayer",conn);
 				System.err.println("]");
 				
-				Setup.setTableVersion(conn,"MAIN","GamePlayer",102);
-				Setup.setSchemaVersion(conn,"MAIN",version=1002);
+				setup.setTableVersion(conn,"MAIN","GamePlayer",102);
+				setup.setSchemaVersion(conn,"MAIN",version=1002);
 			}
 
 			return version;

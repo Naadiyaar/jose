@@ -129,5 +129,48 @@
 		</connection-param>
 	</data-source>
 
+	<data-source default="false">
+		<display-name> Maria-helio </display-name>
+		<jndi-name> jdbc/maria-helio </jndi-name>
+		<!-- runs MariaDB 10.5 -->
+		<adapter-class mode="external"> de.jose.db.MySQLAdapter </adapter-class>
+		<driver-class> org.mariadb.jdbc.Driver </driver-class>
+		<class-path>mariadb-java-client-3.3.4.jar</class-path>
+		<!-- heliohost is quite slow and unreliable, but -hey- free -->
+		<!-- goes to show that MariaDB works just as well -->
+		<jdbc-url> jdbc:mariadb://josechess.helioho.st:3306/josechess_1 </jdbc-url>
+		<!-- insert actual host name or IP address	-->
+		<!-- insert port number, unless default -->
+
+		<!-- insert user name -->
+		<connection-param>
+			<param-name> user </param-name>
+			<param-value> josechess_1 </param-value>
+		</connection-param>
+
+		<!-- insert password (if required) -->
+		<connection-param>
+			<param-name> password </param-name>
+			<param-value> TY0+2o*4=Ujm </param-value>
+		</connection-param>
+
+		<!-- transactions are supported but not required	-->
+		<connection-param>
+			<param-name> relaxAutocommit</param-name>
+			<param-value> true </param-value>
+		</connection-param>
+
+		<!-- use Unicode ? (not really efficient) -->
+		<connection-param>
+			<param-name> useUnicode </param-name>
+			<param-value> false </param-value>
+		</connection-param>
+
+		<!-- for debugging only: -->
+		<connection-param>
+			<param-name> profileSql </param-name>
+			<param-value> false </param-value>
+		</connection-param>
+	</data-source>
 
 </data-sources>

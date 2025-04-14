@@ -38,6 +38,7 @@ public class CrossOver1007
 	{
 		Dialog dlg = null;
 		try {
+			Setup setup = new Setup(config,"MAIN",conn);
 			if (version < 1007) {
 
 
@@ -58,7 +59,7 @@ public class CrossOver1007
 						" WHERE MoreGame.GId IS NULL");
 			}
 
-			Setup.setSchemaVersion(conn,"MAIN",version=1007);
+			setup.setSchemaVersion(conn,"MAIN",version=1007);
 			return version;
 
 		} finally {

@@ -26,6 +26,7 @@ import de.jose.window.JoDialog;
 
 import javax.swing.*;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.Properties;
 import java.util.Random;
@@ -48,7 +49,7 @@ public class MySQLAdapter
 		extends DBAdapter
 {
 	protected static String PRODUCT_VERSION = null;
-	protected static boolean bootstrap = false;
+	//protected static boolean bootstrap = false;
 	protected static boolean init_server = false;
 	protected FileWatch watch;
 
@@ -83,8 +84,7 @@ public class MySQLAdapter
     }
 
 	@Override
-	public Thread launchProcess(boolean bootstrap) {
-		this.bootstrap = bootstrap;
+	public Thread launchProcess() {
 		MySqlLauncher launcher = new MySqlLauncher();
 		launcher.start();
 		return launcher;
@@ -129,31 +129,44 @@ public class MySQLAdapter
             } catch (InterruptedException e) {
 			}
 
+			boolean bootstrap = false;
+			File mysqldir = new File(Application.theDatabaseDirectory, "mysql");
+
             switch(getServerMode()) {
 				case MODE_STANDALONE:
 					props.put("user","");
 					props.put("password","");
 					props.put("characterEncoding","UTF8");
 
-                    try {
+					try {
                         serverProcess = startStandaloneServer(true);
 						if (!waitForStandaloneServer())
 							throw new SQLException("Server failed to respond. giving up.");
                     } catch (Exception e) {
 						Application.error(e);
 					}
-                   break;
+					break;
 
 				case MODE_EMBEDDED:
+					//	deprecated but still workable
 					initEmbeddedServer();
 					break;
 			}
 
-			watchDirectory();
-
             try {
 				//	stock connection pool with at least one connection
 				JoConnection connection = JoConnection.get();
+
+				switch(getServerMode()) {
+					case MODE_STANDALONE:
+					case MODE_EMBEDDED:
+						bootstrap = askBootstrap(mysqldir);
+						watchDirectory();
+						break;
+					case MODE_EXTERNAL:
+						bootstrap = ! existsMetaInfo(connection);
+						break;
+				}
 
 				if (bootstrap)
 					bootstrap(connection.getJdbcConnection());
@@ -724,7 +737,17 @@ public class MySQLAdapter
         }
     }
 
-	public static boolean askBootstrap(File mysqldir)
+	public boolean existsMetaInfo(JoConnection connection)
+	{
+        try {
+            int rowCount = connection.selectInt("SELECT count(*) FROM MetaInfo");
+			return (rowCount > 0);
+        } catch (SQLException e) {
+            return false;
+        }
+	}
+
+	public boolean askBootstrap(File mysqldir)
 	{
 		File dbdir = new File(mysqldir, "jose");
 
@@ -741,13 +764,25 @@ public class MySQLAdapter
 
 		if (!dbdir.exists()) {
 			dbdir.mkdirs();
-			bootstrap = true;
+			return true;
 		}
 		else if (FileUtil.isEmptyDir(dbdir)) {
 			//	setup database (without asking)
-			bootstrap = true;
+			return true;
 		}
-		return bootstrap;
+		return false;
+	}
+
+	protected void shutdown(Connection conn) throws Exception {
+		//	(1) com.mysql.jdbc.MiniAdmin.shutdown()
+		//	(2) com.mysql.jdbc.Connection.shutdownServer()
+
+		//	note however, that both classes are not in the system classpath
+		//	use urlClassloaded instead, with some reflection
+		Class myclass = urlClassLoader.loadClass("com.mysql.jdbc.Connection");
+		Object myconn = myclass.cast(conn);
+		Method shutdown = myclass.getMethod("shutdownServer");
+		shutdown.invoke(myconn);
 	}
 
 	class KillMySqlProcess extends KillProcess
@@ -769,8 +804,9 @@ public class MySQLAdapter
 				//mysqladmin("shutdown");
 				if (conn==null)	conn = JoConnection.get();
 				if (conn.jdbcConnection==null) conn = JoConnection.theConnections.create(MySQLAdapter.this);
-				MiniAdmin admin = new MiniAdmin(conn.jdbcConnection);
-				admin.shutdown();
+				shutdown(conn.jdbcConnection);
+				//	driver version 8 has a similar function.
+				//	but we stick with version 5 for the standalone case, don't we?
 				done = true;
 				//144serverProcess.waitFor();	// not necessary !?
 			} catch (Throwable thr) {

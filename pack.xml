@@ -288,6 +288,10 @@
 				<include name="flatlaf.jar"/>
 				<include name="flatlaf-theme-editor.jar"/>
 			</zipfileset>
+			<zipfileset dir="lib/jdbc" prefix="lib/jdbc">
+				<include name="mysql-connector-java-8.0.27.jar"/>
+				<include name="mariadb-java-client-3.3.4.jar"/>
+			</zipfileset>
 			<zipfileset dir="lib/Windows" prefix="lib/Windows">
 				<include name="winUtils.dll"/>
 			</zipfileset>
