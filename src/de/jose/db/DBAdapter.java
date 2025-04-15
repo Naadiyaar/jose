@@ -21,7 +21,6 @@ import de.jose.pgn.Collection;
 import de.jose.task.io.PGNImport;
 import de.jose.task.db.CheckDBTask;
 import de.jose.task.Task;
-import de.jose.util.ClassPathUtil;
 import de.jose.util.StringUtil;
 import de.jose.util.xml.XMLUtil;
 import de.jose.util.file.FileUtil;
@@ -615,7 +614,7 @@ abstract public class DBAdapter
 
 			File starter = new File(Application.theDatabaseDirectory,"starter.pgn");
 			if (starter.exists()) {
-				PGNImport importer = PGNImport.openFile(starter,Integer.MAX_VALUE); 
+				PGNImport importer = PGNImport.openFile(starter, 0, Integer.MAX_VALUE);
 				String starterName = Language.get("collection.starter");
 
 				Collection coll = Collection.readCollection(jconn,importer.getCollectionId());

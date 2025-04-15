@@ -155,15 +155,17 @@ public class MySQLAdapter
 
             try {
 				//	stock connection pool with at least one connection
-				JoConnection connection = JoConnection.get();
+				JoConnection connection=null;
 
 				switch(getServerMode()) {
 					case MODE_STANDALONE:
 					case MODE_EMBEDDED:
 						bootstrap = askBootstrap(mysqldir);
 						watchDirectory();
+						connection = JoConnection.get();	// call AFTER askBootstrap, s.t. directory exists
 						break;
 					case MODE_EXTERNAL:
+						connection = JoConnection.get();	// call BEFORE bootsctrap, /bc we need to look for
 						bootstrap = ! existsMetaInfo(connection);
 						break;
 				}

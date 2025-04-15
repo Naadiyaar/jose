@@ -68,10 +68,12 @@ java.util.EmptyStackException
 
 [ ] mysql external
     [ ] in Lan
-    [x] upgrade to mysql-connector 8, optional. v5 still needed for MiniAdmin
+    [x] upgrade to mysql-connector 8, optional. v5 still needed for standalone mode
         [x] use custom classloader
-    [ ] automate Setup
-        [ ] test with empty cloud db
+        [x] mariadb v10 works too :)
+    [x] automate Setup
+        [x] test with empty cloud db
+        [x] test with empty directory
     [x] in Cloud
         [x] aws
         [x] heliohost
