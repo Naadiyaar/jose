@@ -21,7 +21,6 @@ import de.jose.pgn.Collection;
 import de.jose.task.io.PGNImport;
 import de.jose.task.db.CheckDBTask;
 import de.jose.task.Task;
-import de.jose.util.ClassPathUtil;
 import de.jose.util.StringUtil;
 import de.jose.util.xml.XMLUtil;
 import de.jose.util.file.FileUtil;
@@ -30,10 +29,9 @@ import org.w3c.dom.NodeList;
 
 import javax.swing.*;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.sql.*;
 import java.util.*;
 
 /**
@@ -70,6 +68,15 @@ abstract public class DBAdapter
 	/**	connection properties	 */
 	protected Properties props;
 
+	/** Driver object
+	 * 	don't rely on DriverManager; load or own
+	 */
+	protected Driver driver;
+	/**
+	 * Classloader that cna load from lib/jdbc/driver.jar
+	 */
+	protected URLClassLoader urlClassLoader;
+
 	/**	abilities	 */
 	protected Properties abilities;
 
@@ -78,6 +85,34 @@ abstract public class DBAdapter
 	//-------------------------------------------------------------------------------
 	//	Constructor
 	//-------------------------------------------------------------------------------
+
+	public void createDriver(String jarFile, String className)
+	{
+		Class clazz=null;
+		try {
+			clazz = Class.forName(className);
+		} catch (ClassNotFoundException e) {}
+
+		if (clazz==null)
+		try {
+			//	try to load explicitly from custom jar
+			File file = new File("lib/jdbc",jarFile);
+			URL[] cp = { file.toURI().toURL() };
+			urlClassLoader = new URLClassLoader(cp);
+			clazz = urlClassLoader.loadClass(className);
+		} catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try {
+            driver = (Driver) clazz.newInstance();
+			DriverManager.registerDriver(driver);
+			//	does not work as expected, because DriverManager.createConnection
+			//	still uses the system class loader
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	protected void init(Properties properties, int serverMode)
 		throws Exception
@@ -187,11 +222,11 @@ abstract public class DBAdapter
 		DBAdapter adapter = null;
 		try {
 
-			if (!ClassPathUtil.existsClass(driverClassName) && (classPath!=null))
-			{	//	driver not in classpath; don't mind...
+			/*if (!ClassPathUtil.existsClass(driverClassName) && (classPath!=null))
+			{	//	does not work with newer JDKs
 				File libDir = new File(Application.theWorkingDirectory,"lib/jdbc");
 				ClassPathUtil.addAllToClassPath(libDir, classPath);
-			}
+			}*/
 
 			Class adapterClass = Class.forName(adapterClassName);
 			adapter = (DBAdapter)adapterClass.newInstance();
@@ -209,7 +244,7 @@ abstract public class DBAdapter
 
 			/**	embedded instances are shut down when the appplication exits	*/
 
-			Class clazz = Class.forName(driverClassName);
+			adapter.createDriver(classPath,driverClassName);
 
 		} catch (Exception e) {
 			throw new SQLException(e.getClass().getName()+": "+e.getMessage());
@@ -254,8 +289,12 @@ abstract public class DBAdapter
             TraceDriverManager.enableTrace(true);
             return TraceDriverManager.getConnection(getURL(),props);
         }
-        else
-            return DriverManager.getConnection(getURL(), props);
+        else if (driver!=null) {
+			return driver.connect(getURL(),props);
+		}
+		else {
+			return DriverManager.getConnection(getURL(), props);
+		}
 	}
 
 	public int getConnectionId(Connection conn) throws SQLException {
@@ -575,7 +614,7 @@ abstract public class DBAdapter
 
 			File starter = new File(Application.theDatabaseDirectory,"starter.pgn");
 			if (starter.exists()) {
-				PGNImport importer = PGNImport.openFile(starter,Integer.MAX_VALUE); 
+				PGNImport importer = PGNImport.openFile(starter, 0, Integer.MAX_VALUE);
 				String starterName = Language.get("collection.starter");
 
 				Collection coll = Collection.readCollection(jconn,importer.getCollectionId());
@@ -667,7 +706,7 @@ abstract public class DBAdapter
 	 */
 	protected java.util.List<Command> deferredActions = new ArrayList<>();
 
-	public Thread launchProcess(boolean boostrap) {
+	public Thread launchProcess() {
 		return null;
 	}
 

@@ -41,7 +41,7 @@ public class Setup
 	protected Properties props;
 	protected Element schema;
 	protected JoConnection connection;
-	protected PrintWriter out;
+	public PrintWriter out;
     protected Config config;
 
     /** indicates a full-text index */
@@ -99,7 +99,7 @@ public class Setup
     public void setup(String schemaName, boolean withConstraints) throws Exception
     {
         setSchema(schemaName);
-        createTables(null,null,withConstraints);
+        createTables(null,"MYISAM",withConstraints);
 
 	    //	store meta information
 	    NodeList tables = schema.getElementsByTagName("TABLE");
@@ -830,13 +830,14 @@ public class Setup
 	/**
 	 * insert version information
 	 */
-	protected static void insertVersion(JoConnection conn, String property, String schemaName, String tableName, int value)
+	protected void insertVersion(JoConnection conn, String property, String schemaName, String tableName, int value)
 		throws SQLException
 	{
 		try {
 			JoPreparedStatement stm = conn.getPreparedStatement(
 					"INSERT INTO MetaInfo (Property,SchemaName,TableName,Version) "+
 					" VALUES (BINARY ?, BINARY ?, BINARY ?,  ?)");
+			out.println(stm.getSQL());
 			stm.setString(1,property);
 			stm.setString(2,schemaName);
 			stm.setString(3,tableName);
@@ -966,7 +967,7 @@ public class Setup
 
 	/**
 	 */
-	  public static void setSchemaVersion(JoConnection conn, String schema, int newVersion) throws SQLException
+	  public void setSchemaVersion(JoConnection conn, String schema, int newVersion) throws SQLException
 	  {
 		if (schema==null) schema = "MAIN";
 		JoPreparedStatement pstm = conn.getPreparedStatement(
@@ -1012,7 +1013,7 @@ public class Setup
 
 	/**
 	 */
-	public static void setTableVersion(JoConnection conn, String schema, String table, int newVersion) throws SQLException
+	public void setTableVersion(JoConnection conn, String schema, String table, int newVersion) throws SQLException
 	{
 	    if (schema==null) schema = "MAIN";
 	    JoPreparedStatement pstm = conn.getPreparedStatement(
@@ -1165,7 +1166,7 @@ public class Setup
 			}
 
 			if (create)
-				s.createTables(null,null,true);
+				s.setup(schemaName,true);
 			else
 				s.drop(false);
 

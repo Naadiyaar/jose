@@ -38,7 +38,7 @@ public class CheckDBTask
 	public int work() throws Exception
 	{
 		//  update meta versions
-		connection.setAutoCommit(true);
+		connection.setAutoCommit(false);
 		checkMetaVersion(Application.theApplication.theConfig);
 
 		setProgress(0.33);

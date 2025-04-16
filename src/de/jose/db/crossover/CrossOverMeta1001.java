@@ -24,9 +24,10 @@ public class CrossOverMeta1001
 {
 	public static int crossOver(int version, JoConnection conn, Config config) throws Exception
 	{
+		Setup setup = new Setup(config,"MAIN",conn);
 		//  add new column META.Dirty
 		conn.executeUpdate("ALTER IGNORE TABLE MetaInfo ADD COLUMN Dirty TINYINT");
-		Setup.setSchemaVersion(conn,"META",version=1001);
+		setup.setSchemaVersion(conn,"META",version=1001);
 		return version;
 	}
 }

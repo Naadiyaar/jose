@@ -19,8 +19,6 @@ import de.jose.util.map.IntHashSet;
 import java.io.ByteArrayInputStream;
 import java.sql.*;
 
-import com.mysql.embedded.jdbc.MyPreparedStatement;
-
 public class JoPreparedStatement
 		extends JoStatement
 {
@@ -278,11 +276,12 @@ public class JoPreparedStatement
 	{
 		if (value==null || length<=0)
 			preparedStatement().setNull(i,Types.LONGVARBINARY);
-		else if (start==0 && getConnection().isEmbedded())
+		/* embeded library not in use anymore
+			else if (start==0 && getConnection().isEmbedded())
         {
 			//  optimized for mysql-je
 			((com.mysql.embedded.jdbc.MyPreparedStatement)preparedStatement()).setBytes(i,value,length);
-		}
+		}*/
 		else {
 			//	make a copy
 			byte[] copy = new byte[length];

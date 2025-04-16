@@ -62,6 +62,10 @@ public class ClassPathUtil
 			Object ucp = ReflectionUtil.getValue(cl,"ucp");
 			ReflectionUtil.invoke(ucp,"push", URL[].class, new URL[] { url });
 		}
+		if (scl.getParent() instanceof URLClassLoader)
+		{
+			URLClassLoader cl = (URLClassLoader)scl.getParent();
+		}
 	}
 
 	public static URL fileToURL(File file)

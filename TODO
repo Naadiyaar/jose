@@ -63,12 +63,27 @@ java.util.EmptyStackException
     - user moves have no value (and it shows)
 
 [ ] Engine Panel: smaller info labels
-[ ] fix: offer draw, resign
-    [ ] askedAdjudicated == true can not be reset
+[ ] Cut / Paste ?
+    [ ] Drag & Drop text snippets
+
+[ ] mysql external
+    [ ] in Lan
+    [x] upgrade to mysql-connector 8, optional. v5 still needed for standalone mode
+        [x] use custom classloader
+        [x] mariadb v10 works too :)
+    [x] automate Setup
+        [x] test with empty cloud db
+        [x] test with empty directory
+    [x] in Cloud
+        [x] aws
+        [x] heliohost
+    [x] with authentication
+
+
+[x] fix: offer draw, resign
+    [x] askedAdjudicated == true can not be reset
         - user declined draw offer
         - can not offer theirselves
-
-[ ] strange: 1 Result in empty Downloads folder
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling
@@ -106,27 +121,19 @@ java.util.EmptyStackException
 
 
 ==== Project
+[ ] 1.5.6
+
 [x] move git repo to github
 [x] copy wiki to github
 [x] create releases on github
 [x] copy static web page to github
 [x] set up ci pipeline
-[ ] link landing page to peteschaefer.github.io/jose
-    [ ] forward from sourceforge (ftp?)
-[ ] link issues to https://github.com/peteschaefer/jose/issues
+[x] link landing page to peteschaefer.github.io/jose
+    [x] forward from sourceforge (ftp?)
+[x] link issues to https://github.com/peteschaefer/jose/issues
 [x] link downloads to https://github.com/peteschaefer/jose/releases
 
-[x] move repo to gitlab
-    [ ] new ssh key
-[x] copy wiki to gitlab
-[x] create releases on gitlab
-[ ] upload artifacts to gitlab
-[ ] set up ci pipeline
-[ ] copy static website to gitlab
-[ ] link landing page to gitlab
-    [ ] forward from sourceforge (ftp?)
-[ ] link issues to gitlab
-[ ] link downloads to gitlab
+[-] move repo to gitlab
 
 
 [x] Java 3D

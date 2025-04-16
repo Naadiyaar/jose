@@ -34,6 +34,7 @@ public class CrossOver1004
 	{
 		Dialog dlg = null;
 		try {
+			Setup setup = new Setup(config,"MAIN",conn);
 			if (version < 1003) {
 				// ----------------------------------------------------
 				//  New Inde Game_16 on Game(CId,Idx,Id)
@@ -46,10 +47,7 @@ public class CrossOver1004
 				dlg.show();
 				dlg.paint(dlg.getGraphics());
 
-				Setup setup = new Setup(config,"MAIN",conn);
-
-
-				System.err.print("[create index Game_16");
+				setup.out.print("[create index Game_16");
 				try {
 					conn.executeUpdate("DROP INDEX Game_16 ON Game");
 				} catch (Exception e) {
@@ -59,15 +57,15 @@ public class CrossOver1004
 				} catch (Exception e) {
 					Application.error(e);   //
 				}
-				System.err.println("]");
+				setup.out.println("]");
 
-				Setup.setTableVersion(conn,"MAIN","Game",102);
-				Setup.setSchemaVersion(conn,"MAIN",version=1003);
+				setup.setTableVersion(conn,"MAIN","Game",102);
+				setup.setSchemaVersion(conn,"MAIN",version=1003);
 			}
 
             if (version < 1004) {
                 Collection.updatePath(conn,0,true);
-                Setup.setSchemaVersion(conn,"MAIN",version=1004);
+                setup.setSchemaVersion(conn,"MAIN",version=1004);
             }
 
 			return version;

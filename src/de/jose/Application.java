@@ -13,7 +13,6 @@
 package de.jose;
 
 import com.formdev.flatlaf.FlatLaf;
-import com.mysql.jdbc.CommunicationsException;
 import de.jose.book.BookQuery;
 import de.jose.chess.*;
 import de.jose.comm.Command;
@@ -73,6 +72,7 @@ import java.awt.event.FocusEvent;
 import java.io.*;
 import java.net.*;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -80,6 +80,7 @@ import java.util.concurrent.Executors;
 
 import static de.jose.book.OpeningLibrary.SELECT_GAME_COUNT;
 import static de.jose.chess.Board.XFEN;
+import static de.jose.db.DBAdapter.*;
 import static de.jose.plugin.Plugin.*;
 
 /**
@@ -3715,13 +3716,9 @@ public class Application
 			getContextMenu();
 
 			//	launch DB process
-
-			//	bootstrap directory?
-			File mysqldir = new File(Application.theDatabaseDirectory, "mysql");
-			boolean bootstrap = MySQLAdapter.askBootstrap(mysqldir);
 			//	launch background process
 			DBAdapter adapter = JoConnection.getAdapter(true);
-			adapter.launchProcess(bootstrap);
+			adapter.launchProcess();
 
 			//  deferred loading of ECO classificator & additional fonts
 			Thread deferredLoader = new DeferredStartup();
@@ -4469,11 +4466,11 @@ public class Application
 		//  close connection pool
 		try {
 			DBAdapter ad = JoConnection.getAdapter(false);
-			if (ad!=null && (ad.getServerMode()==DBAdapter.MODE_STANDALONE) && JoConnection.isConnected())
+			if (ad!=null && (ad.getServerMode()== MODE_STANDALONE) && JoConnection.isConnected())
 			try {
 				JoConnection conn = JoConnection.get();
 				ad.shutDown(conn);
-			} catch (CommunicationsException ioex) {
+			} catch (SQLException ioex) {
 				//	can't connect. so be it
 			}
 

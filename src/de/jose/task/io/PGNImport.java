@@ -304,17 +304,16 @@ public class PGNImport
 	public static PGNImport openFile(File file)
 		throws Exception
 	{
-		return openFile(file,0L);
+		int ParentCId = Collection.makeInTray(null);
+		return openFile(file, ParentCId, 0L);
 	}
 
-	public static PGNImport openFile(File file, long silentTime)
+	public static PGNImport openFile(File file, int ParentCId, long silentTime)
 		throws Exception
 	{
 		String name = file.getName();
 		String trimmedName = FileUtil.trimExtension(name);
 		PGNImport reader = null;
-
-		int ParentCId = Collection.makeInTray(null);
 
 		//  TODO streamline this !
 		if (pgnFilter.accept(null,name) || epdFilter.accept(null,name))
@@ -816,7 +815,7 @@ public class PGNImport
             //  reset process priority
             try {
                 if (connection != null) {
-                    connection.setAutoCommit(true);
+                    connection.setAutoCommit(false);
                 }
                 in.close();
             } catch (Exception ex) {
