@@ -87,27 +87,27 @@
 
 	-->
 	<data-source default="false">
-		<display-name> MySQL-aws </display-name>
-		<jndi-name> jdbc/mysql-aws </jndi-name>
+		<display-name> MySQL-external </display-name>
+		<jndi-name> jdbc/mysql-external </jndi-name>
 		<!-- runs MySQL >= 8 -->
 		<!-- requires appropriate driver >= 8 -->
         <adapter-class mode="external"> de.jose.db.MySQLAdapter </adapter-class>
 		<driver-class> com.mysql.cj.jdbc.Driver </driver-class>
 		<class-path>mysql-connector-java-8.0.27.jar</class-path>
-		<jdbc-url> jdbc:mysql://database-1.c5aiy8siq0e5.eu-central-1.rds.amazonaws.com:3306/jose </jdbc-url>
+		<jdbc-url> jdbc:mysql://[host]:3306/jose </jdbc-url>
 		<!-- insert actual host name or IP address	-->
 		<!-- insert port number, unless default -->
 
 		<!-- insert user name -->
 		<connection-param>
 			<param-name> user </param-name>
-			<param-value> jose </param-value>
+			<param-value> [user] </param-value>
 		</connection-param>
 
 		<!-- insert password (if required) -->
 		<connection-param>
 			<param-name> password </param-name>
-			<param-value> capablanca </param-value>
+			<param-value> [password] </param-value>
 		</connection-param>
 
 		<!-- transactions are supported but not required	-->
@@ -130,28 +130,28 @@
 	</data-source>
 
 	<data-source default="false">
-		<display-name> Maria-helio </display-name>
-		<jndi-name> jdbc/maria-helio </jndi-name>
+		<display-name> Maria-external </display-name>
+		<jndi-name> jdbc/mariadb </jndi-name>
 		<!-- runs MariaDB 10.5 -->
 		<adapter-class mode="external"> de.jose.db.MySQLAdapter </adapter-class>
 		<driver-class> org.mariadb.jdbc.Driver </driver-class>
 		<class-path>mariadb-java-client-3.3.4.jar</class-path>
 		<!-- heliohost is quite slow and unreliable, but -hey- free -->
 		<!-- goes to show that MariaDB works just as well -->
-		<jdbc-url> jdbc:mariadb://josechess.helioho.st:3306/josechess_1 </jdbc-url>
+		<jdbc-url> jdbc:mariadb://[host]:3306/[schema] </jdbc-url>
 		<!-- insert actual host name or IP address	-->
 		<!-- insert port number, unless default -->
 
 		<!-- insert user name -->
 		<connection-param>
 			<param-name> user </param-name>
-			<param-value> josechess_1 </param-value>
+			<param-value> [user] </param-value>
 		</connection-param>
 
 		<!-- insert password (if required) -->
 		<connection-param>
 			<param-name> password </param-name>
-			<param-value> TY0+2o*4=Ujm </param-value>
+			<param-value> [password] </param-value>
 		</connection-param>
 
 		<!-- transactions are supported but not required	-->

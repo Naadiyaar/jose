@@ -43,7 +43,7 @@
 			  value="lib/j3d/j3dcore.jar lib/j3d/j3dutils.jar lib/j3d/vecmath.jar lib/j3d/jogamp-fat.jar"/>
 
 	<property name="java.runtime.path"
-			  value="lib/jh.jar lib/json.jar lib/fop-plus.jar ${classpath.mysql} ${classpath.java3d} ${classpath.plaf}"/>
+			  value="lib/jh.jar lib/json.jar lib/fop-plus.jar ${classpath.java3d} ${classpath.plaf}"/>
 
 	<!-- class path for compilation -->
 	<path id="java.build.path">
