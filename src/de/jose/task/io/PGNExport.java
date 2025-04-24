@@ -199,6 +199,10 @@ public class PGNExport
 			throw new IllegalArgumentException();
 	}
 
+	public PGNExport(Writer target) throws Exception {
+		this(target,"Unicode");
+	}
+
 	public void prepare() throws Exception
 	{
         OutputStream fout = null;

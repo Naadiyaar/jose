@@ -95,7 +95,7 @@ public class MySQLAdapter
 		return init_server;
 	}
 
-	private boolean waitForStandaloneServer() throws IOException {
+	public boolean waitForStandaloneServer() throws IOException {
 		InputStream in1 = serverProcess.getInputStream();
 		InputStream in2 = serverProcess.getErrorStream();
 		BufferedReader bin = new BufferedReader(new InputStreamReader(in2));

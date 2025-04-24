@@ -90,9 +90,12 @@ abstract public class DBAdapter
 	{
 		Class clazz=null;
 		try {
-			File file = new File("lib/jdbc", jarFile);
-			URL[] cp = {file.toURI().toURL()};
-			urlClassLoader = new URLClassLoader(cp);
+			File dir = new File(Application.theWorkingDirectory,"lib/jdbc");
+			File file = new File(dir, jarFile);
+			if (file.exists()) {
+				URL[] cp = {file.toURI().toURL()};
+				urlClassLoader = new URLClassLoader(cp);
+			}
 		} catch(Exception e) {
 			throw new RuntimeException(e);
 		}

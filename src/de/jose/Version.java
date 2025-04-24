@@ -260,6 +260,11 @@ public class Version
     {
         try {
             String value = System.getProperty(key);
+			//	with bash, e.g., "." is not a valid character. use "_" instead
+			if (value==null)
+				value = System.getenv(key);
+			if (value==null)
+				value = System.getenv(key.replace('.','_'));
             if (value==null)
                 return def;
             else
