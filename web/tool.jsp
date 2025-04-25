@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
-<%@ page import="de.jose.web.WebApplication"%>
-<%@ page import="de.jose.web.SessionUtil"%>
+<%@ page import="de.jose.WebApplication"%>
+<%@ page import="de.jose.SessionUtil"%>
 <%
 	WebApplication.open(application,response);
 	SessionUtil su = new SessionUtil(request,session);
@@ -30,6 +30,10 @@
 				                                               name="search" border="0" width="36" height="32"
 				                                               onmouseover="hover('search',1)" onmouseout="hover('search',2)"
 				                                               onmousedown="hover('search',3)" onmouseup="hover('search',4)"></a>
+			</td></tr>
+			<tr><td align="center">
+				<a href="index.jsp" target="_parent"><img src="nav/folder_open.gif" align="baseline"
+															   name="index" border="0" width="24" height="24"></a>
 			</td></tr>
 			<tr><td align="center">
 				<a href="javascript:nextrow(+1)"><img src="nav/game.next.cold.png" align="baseline"

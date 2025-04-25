@@ -137,6 +137,9 @@ public class MySQLAdapter
 					props.put("user","");
 					props.put("password","");
 					props.put("characterEncoding","UTF8");
+					String portno = Version.getSystemProperty("jose.db.port");
+					if (portno!=null)
+						props.put("port-no",portno);
 
 					try {
                         serverProcess = startStandaloneServer(true);

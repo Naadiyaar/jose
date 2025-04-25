@@ -156,7 +156,7 @@ public class DBTask
 
     public static int broadcastOnUpdate(String taskName)
     {
-        sendBroadcast(COMMAND_BEFORE_UPDATE, taskName, new Integer(++runningUpdates));
+        sendBroadcast(COMMAND_BEFORE_UPDATE, taskName, ++runningUpdates);
         return runningUpdates;
     }
 
@@ -168,8 +168,8 @@ public class DBTask
     public static int broadcastAfterUpdate(int collectionId)
     {
         sendBroadcast(COMMAND_AFTER_UPDATE,
-                (collectionId <= 0) ? null : new Integer(collectionId),
-                new Integer(--runningUpdates));
+                (collectionId <= 0) ? null : collectionId,
+                --runningUpdates);
         return runningUpdates;
     }
 

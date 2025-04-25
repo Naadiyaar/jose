@@ -2,15 +2,11 @@
 <%@ page import="de.jose.web.SessionUtil"%>
 <%@ page import="de.jose.pgn.Collection"%>
 <%@ page import="de.jose.db.JoConnection"%>
-<%@ page import="java.util.List"%>
-<%@ page import="java.util.Iterator"%>
-<%@ page import="java.sql.SQLException"%>
-<%@ page import="java.io.IOException"%>
 <%@ page import="de.jose.db.JoPreparedStatement"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="de.jose.Language"%>
 <%@ page language="java" %>
-<%@ taglib prefix="jose" tagdir="." %>
+<!--%@ taglib prefix="jose" tagdir="." %-->
 <%!
 	public static int getDepth(String path)
 	{
@@ -33,10 +29,11 @@
 		td,th,input { font-family: Arial,Helvetica,Sans-Serif; font-size: 14px; }
 		TR.odd {  background-color: #e2e2ff;}
 		TR.even {  background-color: #eeeeff; }
-		TD { padding:2 4 2 4; white-space: nowrap; }
+		TD { padding:2px 4px 2px 4px; white-space: nowrap; }
 		TD.center { text-align: center; }
+		TD.center-pad { text-align: center; padding-left: 32px; }
 		TD.right { text-align: right; }
-		TR.header, TR.footer {  background-color: #e5e5e5; padding: 8 4 8 4; }
+		TR.header, TR.footer {  background-color: #e5e5e5; padding: 8px 4px 8px 4px; }
 		A { color:black; text-decoration: none; }
 	</style>
 
@@ -48,7 +45,7 @@
 	{
 		var image = document.images['x-'+CId];
 		if (!image.canExpand)
-			image.src = "nav/line_root.gif";
+			image.src = "nav/pixel.gif";
 		else if (image.isExpanded)
 			image.src = "nav/minus.gif";
 		else
@@ -117,6 +114,7 @@
 <table border=0 cellpadding=0 cellspacing=0>
 	<tr class="header">
 		<th colspan="2">&nbsp;</th>
+		<th colspan="2">&nbsp;Download </th>
 	</tr>
 
 <%
@@ -183,6 +181,12 @@
 						}
 					%>
 				</td>
+				<td class="center-pad">
+					<a href="download-servlet?CId=<%=CId%>&out=pgn">pgn</a>
+				</td>
+				<td class="center">
+					<a href="download-servlet?CId=<%=CId%>&out=archive">archive</a>
+				</td>
 			</tr>
 			<script language="JavaScript">
 				add_image(<%=CId%>,<%=depth%>,<%=hasChildren%>,<%=hasChildren%>);
@@ -191,9 +195,22 @@
 		}
 %>
 
-	<tr class="footer">
-		<th colspan="2">&nbsp;</th>
+	<tr>
+		<td colspan="4">
+			<form method="post" action="upload-servlet" enctype="multipart/form-data" target="_blank">
+				<input type="file" name="upload-file" />
+				<input type="submit" value="Upload" />
+			</form>
+		</td>
 	</tr>
+
+	<tr class="footer">
+		<th colspan="4" classs="center">
+			created with
+			<a href="https://peteschaefer.github.io/jose/">jose Chess</a>
+		</th>
+	</tr>
+
 </table>
 </body>
 </html>

@@ -5,7 +5,8 @@
 <%@ page import="de.jose.pgn.Collection"%>
 <%@ page import="de.jose.db.JoPreparedStatement"%>
 <%@ page import="java.sql.ResultSet"%>
-<%@ page import="de.jose.web.WebApplication"%>
+<%@ page import="de.jose.WebApplication"%>
+<%@ page import="de.jose.db.DBAdapter" %>
 
 <% WebApplication.open(application,response); %>
 
@@ -22,10 +23,23 @@ Working directory is: <%=WebApplication.theApplication.theWorkingDirectory%> <br
 Web directory is: <%=application.getRealPath("")%><br>
 Request path is: <%=request.getRealPath("")%><br>
 
+<!--
+Property("jose.workdir")=< %=Version.getSystemProperty("jose.workdir")%> <br>
+Property("jose_workdir")=< %=Version.getSystemProperty("jose_workdir")%> <br>
+-->
+
 <hr>
-Database is: <%=WebApplication.theApplication.theDatabaseId%>
+Database is: <%=WebApplication.theApplication.theDatabaseId%><br>
+<%
+	JoConnection conn = JoConnection.get();
+	Connection jconn = conn.getJdbcConnection();
+	DBAdapter adapt = JoConnection.getAdapter();
+%>
+<%=adapt.getDatabaseProductName(jconn)%> <%=adapt.getDatabaseProductVersion(jconn)%><br>
+<% 	conn.release(); %>
 <br>
-on <%=WebApplication.theApplication.theDatabaseDirectory%>
+local data dir: <%=WebApplication.theApplication.theDatabaseDirectory%> <br>
+jdbc-url: <%=JoConnection.getAdapter().getURL()%> <br>
 
 <hr>
 
@@ -36,7 +50,6 @@ on <%=WebApplication.theApplication.theDatabaseDirectory%>
 		<th># of Games</th>
 	</tr>
 <%
-	JoConnection conn = null;
 	try {
 		conn = JoConnection.get();
 		JoPreparedStatement stm = conn.getPreparedStatement(
