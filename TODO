@@ -66,11 +66,25 @@ java.util.EmptyStackException
 [ ] Cut / Paste ?
     [ ] Drag & Drop text snippets
 
-[x] mysql external
-    [ ] in Lan
+[ ] bug: game moved in DB; opened game needs to know
+[ ] save F4 details to DB
+[ ] About / DB info
+    [ ] get MySQL server version
+    [ ] layout
 
-
-[x] fix: offer draw, resign
+[ ] web servlet
+    [ ] bundle with resin running (not well supported anymore :(
+    [x] get Tomcat running
+    [x] build a WAR file and deploy
+    [x] get servlets running
+    [ ] branch refactor/webapp
+    [ ] containerize: jdk, tomcat, jose complete (incl. mysqld, not incl. jre?)
+    [ ] deploy to aws (do we need a container with Tomcat?)
+    [ ] upload page (upload .zip, then import)
+    [x] download
+    [ ] jose_workdir bash variable
+    [ ] jose_db_port bash variable
+    [ ] kill mysqld !! (@WebListener)
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling
