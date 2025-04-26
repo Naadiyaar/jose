@@ -2,10 +2,8 @@
 <%@ page import="de.jose.Version"%>
 <%@ page import="java.sql.Connection"%>
 <%@ page import="de.jose.db.JoConnection"%>
-<%@ page import="de.jose.pgn.Collection"%>
 <%@ page import="de.jose.db.JoPreparedStatement"%>
-<%@ page import="java.sql.ResultSet"%>
-<%@ page import="de.jose.WebApplication"%>
+<%@ page import="de.jose.web.WebApplication"%>
 <%@ page import="de.jose.db.DBAdapter" %>
 
 <% WebApplication.open(application,response); %>
