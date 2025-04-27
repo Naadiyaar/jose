@@ -73,18 +73,20 @@ java.util.EmptyStackException
     [ ] layout
 
 [ ] web servlet
-    [ ] bundle with resin running (not well supported anymore :(
+    [-] bundle with resin running (not well supported anymore :(
     [x] get Tomcat running
     [x] build a WAR file and deploy
+    [ ] deploy "exploded"
     [x] get servlets running
-    [ ] branch refactor/webapp
+    [x] branch refactor/webapp
     [ ] containerize: jdk, tomcat, jose complete (incl. mysqld, not incl. jre?)
     [ ] deploy to aws (do we need a container with Tomcat?)
     [ ] upload page (upload .zip, then import)
     [x] download
-    [ ] jose_workdir bash variable
-    [ ] jose_db_port bash variable
+    [x] jose_workdir bash variable
+    [x] jose_db_port bash variable
     [ ] kill mysqld !! (@WebListener)
+    [ ] i18n
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling
@@ -198,6 +200,8 @@ Alternative JREs:
 * double buffering still needed ? (probably)
 
 ==== Interesting New Features
+
+* FOP printing: subtitles for Event and Round
 
 * RTF export? currently possible via copy/paste.
   - fop 0.20 does not support it

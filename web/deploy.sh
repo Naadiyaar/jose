@@ -5,7 +5,7 @@ appdir=$2
 # we do it the simple way, by just linking into the jose installation directory
 # (which we need, anyway)
 
-export jose_workdir=S1
+export jose_workdir=$1
 export jose_db_port=3306
 export jose_splash=off
 
