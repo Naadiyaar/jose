@@ -201,7 +201,9 @@ Alternative JREs:
 
 ==== Interesting New Features
 
-* FOP printing: subtitles for Event and Round
+* FOP printing: subtitles for Events and Rounds
+    Q: sort by Collection, or by Event name (needs to be curated accurately) ?
+    - drop info from Game header
 
 * RTF export? currently possible via copy/paste.
   - fop 0.20 does not support it
