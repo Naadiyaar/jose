@@ -69,14 +69,14 @@ java.util.EmptyStackException
 [ ] bug: game moved in DB; opened game needs to know
 [ ] save F4 details to DB
 [ ] About / DB info
-    [ ] get MySQL server version
+    [x] get MySQL server version
     [ ] layout
 
 [ ] web servlet
     [-] bundle with resin running (not well supported anymore :(
     [x] get Tomcat running
     [x] build a WAR file and deploy
-    [ ] deploy "exploded"
+    [ ] deploy "exploded" WAR (with, w/out ln -s ?)
     [x] get servlets running
     [x] branch refactor/webapp
     [ ] containerize: jdk, tomcat, jose complete (incl. mysqld, not incl. jre?)
@@ -124,20 +124,6 @@ java.util.EmptyStackException
 
 
 ==== Project
-[ ] 1.5.6
-
-[x] move git repo to github
-[x] copy wiki to github
-[x] create releases on github
-[x] copy static web page to github
-[x] set up ci pipeline
-[x] link landing page to peteschaefer.github.io/jose
-    [x] forward from sourceforge (ftp?)
-[x] link issues to https://github.com/peteschaefer/jose/issues
-[x] link downloads to https://github.com/peteschaefer/jose/releases
-
-[-] move repo to gitlab
-
 
 [x] Java 3D
     1.5 last version from Oracle. Works well for Windows and Linux. Not for Mac
@@ -204,6 +190,8 @@ Alternative JREs:
 * FOP printing: subtitles for Events and Rounds
     Q: sort by Collection, or by Event name (needs to be curated accurately) ?
     - drop info from Game header
+* Autocompletion for database fields (Event, Player, ...)
+
 
 * RTF export? currently possible via copy/paste.
   - fop 0.20 does not support it
@@ -221,8 +209,6 @@ Alternative JREs:
 * Figurines in Opening names (like from Eco)
   - heuristic to detect moves
   - for any language
-
-* Autocompletion for database fields (Event, Player, ...)
 
 * LiChess Opening Explorer
     [ ] MoreGame.ExternalKey (:=Lichess GameId)
