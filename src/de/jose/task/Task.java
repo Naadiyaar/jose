@@ -399,6 +399,7 @@ abstract public class Task
 
 	protected synchronized void createProgressDialog(int pollTime)
 	{
+		//	TODO uncouple from background threads; dispatch a command instead
 		if (dialog!=null) return;
 
 		dialog = new ProgressDialog(progressTitle, this);

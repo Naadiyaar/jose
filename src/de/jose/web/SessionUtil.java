@@ -86,7 +86,7 @@ public class SessionUtil
 
 	public void set(String key, int value)
 	{
-		set(key, new Integer(value));
+		set(key, Integer.valueOf(value));
 	}
 
 	public void set(String key, boolean value)

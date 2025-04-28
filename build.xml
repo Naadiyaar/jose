@@ -32,7 +32,7 @@
 		</condition>
 	</target>
 
-	<property name="java.common.path" value="lib/jsdk23.jar lib/jaxp.jar lib/xerces.jar lib/xalan.jar lib/jcommon.jar lib/jfreechart.jar"/>
+	<property name="java.common.path" value="lib/javaee-web-api-8.0.1.jar lib/jaxp.jar lib/xerces.jar lib/xalan.jar lib/jcommon.jar lib/jfreechart.jar"/>
 	<property name="java.jdbc.path" value="lib/jdbc/antlr.jar lib/jdbc/qed.jar lib/jdbc/caucho.jar lib/nativeskin.jar"/>
 	<property name="java.plaf.path" value="lib/plaf/flatlaf.jar lib/plaf/3DLF.jar lib/plaf/gtkswing.jar lib/plaf/kunststoff.jar lib/plaf/metouia.jar lib/plaf/nextlf.jar lib/plaf/oalnf.jar lib/plaf/skinlf.jar lib/plaf/teknolust.jar lib/plaf/quaqua.jar"/>
 
@@ -58,7 +58,7 @@
 <!--		<pathelement location="lib/jcommon.jar"/>-->
 <!--		<pathelement location="lib/jfreechart.jar"/>-->
 <!--		<pathelement location="lib/portfolio.jar"/>-->
-        <pathelement location="lib/jsdk23.jar"/>
+        <pathelement location="lib/javaee-web-api-8.0.1.jar"/>
 <!--        <pathelement location="lib/jaxp.jar"/>-->
         <pathelement location="lib/jh.jar"/>
 <!--		<pathelement location="lib/httpunit.jar"/>-->
@@ -183,6 +183,26 @@
 				<attribute name="Class-Path" value="${java.runtime.path}"/>
 			</manifest>
 		</jar>
+	</target>
+
+	<target name="war" depends="classes">
+		<description> build release war file </description>
+		<delete file="jose.war"/>
+
+		<tstamp/>
+
+		<zip zipfile="jose.war">
+			<zipfileset dir="web" prefix=""/>
+			<zipfileset dir="web/META-INF" prefix="META-INF" filemode="775"/>
+			<!-- jose classes -->
+			<zipfileset dir="classes" prefix="WEB-INF/classes"/>
+			<!-- fop library (needed to print html, pdf) -->
+			<zipfileset dir="lib" prefix="WEB-INF/lib">
+				<include name="fop-plus.jar"/>
+			</zipfileset>
+			<!-- navigation images -->
+			<zipfileset dir="images/nav" prefix="nav"/>
+		</zip>
 	</target>
 
 

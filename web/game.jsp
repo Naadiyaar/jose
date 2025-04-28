@@ -1,5 +1,5 @@
 <%@ page language="java" pageEncoding="UTF-8" %><%@
-		page import="de.jose.SessionUtil"%><%@
+		page import="de.jose.web.SessionUtil"%><%@
 		page import="de.jose.Application"%><%@
 		page import="de.jose.export.ExportConfig,de.jose.export.ExportContext"%><%@
 		page import="de.jose.task.GameSource"%><%@
@@ -9,7 +9,7 @@
 		page import="de.jose.task.io.XSLFOExport"%><%@
 		page import="de.jose.task.io.PGNExport"%><%@
 		page import="java.io.File"%><%@
-		page import="de.jose.WebApplication"%><%@
+		page import="de.jose.web.WebApplication"%><%@
 		page import="de.jose.task.io.XMLExport" %><%@
         page import="de.jose.pgn.SearchRecord" %><%@
 		page import="java.sql.ResultSet"%><%@

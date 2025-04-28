@@ -280,6 +280,11 @@ public class Version
     {
         try {
             String value = System.getProperty(key);
+			if (value==null)
+				value = System.getenv(key);
+			if (value==null)
+				value = System.getenv(key.replace('.','_'));
+
             if (value!=null) return parseBoolean(value);
 
             value = System.getProperty("no."+key);

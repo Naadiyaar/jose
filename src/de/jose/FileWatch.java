@@ -12,6 +12,7 @@
 
 package de.jose;
 
+import de.jose.comm.Command;
 import de.jose.window.JoFrame;
 
 import javax.swing.*;
@@ -91,10 +92,8 @@ public class FileWatch implements ActionListener
 
 	protected void showError()
 	{
-		JOptionPane opane = new JOptionPane(Language.get(errorMessage), JOptionPane.ERROR_MESSAGE);
-		JDialog dlg = opane.createDialog(JoFrame.theActiveFrame, Language.get("dialog.error.title"));
-        SplashScreen.close();
-		dlg.setVisible(true);
+		Command cmd = new Command(errorMessage);
+		Application.theCommandDispatcher.forward(cmd,Application.theApplication);
 	}
 
 }

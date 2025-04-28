@@ -76,16 +76,24 @@ java.util.EmptyStackException
     [-] bundle with resin running (not well supported anymore :(
     [x] get Tomcat running
     [x] build a WAR file and deploy
-    [ ] deploy "exploded" WAR (with, w/out ln -s ?)
+    [-] deploy "exploded" WAR (with, w/out ln -s ?)
     [x] get servlets running
     [x] branch refactor/webapp
     [ ] containerize: jdk, tomcat, jose complete (incl. mysqld, not incl. jre?)
     [ ] deploy to aws (do we need a container with Tomcat?)
-    [ ] upload page (upload .zip, then import)
+    [x] upload page (upload .zip, then import)
     [x] download
     [x] jose_workdir bash variable
     [x] jose_db_port bash variable
     [ ] kill mysqld !! (@WebListener)
+    [x] FileWatcher find multiple mysqld instance. should work head-less, somehow.
+    [ ] Web fonts; use for html (local and Web App)
+        @font-face {
+          font-family: Lato;
+          src: url('path-to-lato.woff2') format('woff2'),
+               url('path-to-lato.woff') format('woff');
+        }
+        https://css-tricks.com/the-best-font-loading-strategies-and-how-to-execute-them/#loading-fonts-with-self-hosted-fonts
     [ ] i18n
 
 [ ] Annotation: layout in small panels
@@ -190,6 +198,7 @@ Alternative JREs:
 * FOP printing: subtitles for Events and Rounds
     Q: sort by Collection, or by Event name (needs to be curated accurately) ?
     - drop info from Game header
+* Buld edit with F4
 * Autocompletion for database fields (Event, Player, ...)
 
 

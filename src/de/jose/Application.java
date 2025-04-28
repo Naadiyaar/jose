@@ -80,6 +80,7 @@ import java.util.concurrent.Executors;
 
 import static de.jose.book.OpeningLibrary.SELECT_GAME_COUNT;
 import static de.jose.chess.Board.XFEN;
+import static de.jose.comm.CommandAction.INVOKE_LATER;
 import static de.jose.db.DBAdapter.*;
 import static de.jose.plugin.Plugin.*;
 
@@ -2455,6 +2456,16 @@ public class Application
 		};
 		map.put("eboard.disconnect",action);
 		map.put("eboard.connect",action);
+
+		action = new CommandAction(INVOKE_LATER) {
+			public void Do(Command cmd) throws Exception {
+				JOptionPane opane = new JOptionPane(Language.get(cmd.code), JOptionPane.ERROR_MESSAGE);
+				JDialog dlg = opane.createDialog(JoFrame.theActiveFrame, Language.get("dialog.error.title"));
+				SplashScreen.close();
+				dlg.setVisible(true);
+			}
+		};
+		map.put("error.duplicate.database.access",action);
 	}
 
 	public void updateBook(boolean onEngineMove, boolean switchAnalysis)

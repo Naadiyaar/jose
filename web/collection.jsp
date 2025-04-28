@@ -1,7 +1,6 @@
 <%@ page language="java" %>
-<%@ page import="de.jose.Application"%>
 <%@ page import="de.jose.pgn.Collection"%>
-<%@ page import="de.jose.SessionUtil"%>
+<%@ page import="de.jose.web.SessionUtil"%>
 <%@ page import="de.jose.db.JoConnection"%>
 <%@ page import="de.jose.db.JoPreparedStatement"%>
 <%@ page import="java.sql.ResultSet"%>
@@ -9,15 +8,13 @@
 <%@ page import="de.jose.pgn.PgnDate"%>
 <%@ page import="java.util.Date"%>
 <%@ page import="de.jose.db.JoStatement"%>
-<%@ page import="de.jose.WebApplication"%>
+<%@ page import="de.jose.web.WebApplication"%>
 <%@ page import="de.jose.pgn.SearchRecord"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="de.jose.db.ParamStatement"%>
 <%@ page import="de.jose.view.ListPanel"%>
 <%@ page import="de.jose.util.map.IntHashSet"%>
 <%@ page import="de.jose.Language"%>
-<%@ page import="de.jose.Util"%>
-<%@ page import="de.jose.util.StringUtil"%>
 
 <%!
 	protected boolean setStringField(SessionUtil su, SearchRecord search, String fieldName)

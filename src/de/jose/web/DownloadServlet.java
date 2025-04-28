@@ -3,10 +3,8 @@ package de.jose.web;
 import java.io.*;
 import java.nio.file.Files;
 import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.annotation.WebServlet;
 
-import de.jose.SessionUtil;
-import de.jose.WebApplication;
 import de.jose.pgn.Collection;
 import de.jose.task.GameSource;
 import de.jose.task.GameTask;

@@ -12,21 +12,25 @@
 
 package de.jose.web;
 
-import de.jose.Version;
-import de.jose.Config;
-import de.jose.Application;
-import de.jose.Language;
+import de.jose.*;
+import de.jose.comm.Command;
+import de.jose.comm.CommandAction;
 import de.jose.comm.CommandDispatcher;
 import de.jose.db.JoConnection;
 import de.jose.db.DBAdapter;
+import de.jose.window.JoFrame;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.ServletResponse;
 import javax.servlet.ServletContext;
 import javax.servlet.annotation.WebListener;
+import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+
+import static de.jose.comm.CommandAction.INVOKE_LATER;
 
 /**
  * @author Peter Sch�fer
@@ -40,26 +44,30 @@ public class WebApplication extends Application implements ServletContextListene
 	{
 		super();
 
-		theConfig = new Config(new File(theWorkingDirectory,"config"));
 		//  setup connection pool !
 		JoConnection.init();
 		DBAdapter adapter = JoConnection.getAdapter();
 		if (adapter.getServerMode()==DBAdapter.MODE_STANDALONE) {
 			Thread launcher = adapter.launchProcess();
-			launcher.join();
+			for(;;) try {
+				launcher.join();
+				break;
+			} catch (InterruptedException e) {
+				continue;
+			}
 		}
 		//  read profile data for html export, etc.
 		readProfile();
 		//  always create a separate css file
 		theUserProfile.set("xsl.css.standalone",true);
-		theUserProfile.set("xsl.pdf.embed",true);
+		theUserProfile.set("xsl.pdf.embed",true);	// always embed fonts into psf
 		theUserProfile.set("xsl.pdf.bookmarks",false);
 		theUserProfile.getStyleContext().setFigurineFont(true);
-		theUserProfile.set("xsl.html.figs","img");
+		theUserProfile.set("xsl.html.figs","img");	// use image figurine in html
 		Language.setLanguage(theLanguageDirectory, theUserProfile.getString("user.language"));
 
 		theCommandDispatcher = new CommandDispatcher();
-		theCommandDispatcher.addCommandListener(this);
+		//theCommandDispatcher.addCommandListener(this);
 	}
 
 	public static Application open(ServletContext context, ServletResponse response)
@@ -117,6 +125,20 @@ public class WebApplication extends Application implements ServletContextListene
                 }
             }
 		}
+	}
+
+	@Override
+	public void setupActionMap(Map<String, CommandAction> map) {
+		super.setupActionMap(map);
+
+		CommandAction action = new CommandAction() {
+			public void Do(Command cmd) throws Exception {
+				String errorMessage = Language.get(cmd.code);
+				throw new IllegalStateException(errorMessage);
+			}
+		};
+		map.put("error.duplicate.database.access",action);
+
 	}
 
 	@Override

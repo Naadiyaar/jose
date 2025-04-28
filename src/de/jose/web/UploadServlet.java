@@ -1,7 +1,5 @@
 package de.jose.web;
 
-import de.jose.SessionUtil;
-import de.jose.WebApplication;
 import de.jose.task.io.ArchiveImport;
 import de.jose.task.io.PGNImport;
 import de.jose.util.file.FileUtil;
@@ -63,7 +61,7 @@ public class UploadServlet extends HttpServlet
         }
         else
         {
-            PGNImport imprt = PGNImport.openFile(file,0,Long.MAX_VALUE);
+            PGNImport imprt = PGNImport.openFile(file,0,Long.MAX_VALUE/2);
             imprt.join();
         }
     }

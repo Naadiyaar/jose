@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8" %>
-<%@ page import="de.jose.WebApplication"%>
-<%@ page import="de.jose.SessionUtil"%>
+<%@ page import="de.jose.web.WebApplication"%>
+<%@ page import="de.jose.web.SessionUtil"%>
 <%
 	WebApplication.open(application,response);
 	SessionUtil su = new SessionUtil(request,session);
@@ -10,7 +10,6 @@
 	<style>
 		A { color:black; text-decoration: none; border-color: #e5e5e5; }
 		body { background-color: #e5e5e5; }
-		img { behavior: url(pngHack.htc ); }
 		img.on { background-color: #c5c5c5; border: groove; background: ButtonHighlight; border-color: #e5e5e5; }
 		img.off { background-color: #e5e5e5; border: ButtonShadow; border-color: #e5e5e5; }
 		img.button, span.button { background-color: #e5e5e5; border: ridge; padding: 4px; }

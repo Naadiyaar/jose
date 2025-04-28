@@ -23,6 +23,7 @@ import de.jose.util.KillProcess;
 import de.jose.util.StringUtil;
 import de.jose.util.file.FileUtil;
 import de.jose.window.JoDialog;
+import de.jose.window.JoFrame;
 
 import javax.swing.*;
 import java.io.*;
