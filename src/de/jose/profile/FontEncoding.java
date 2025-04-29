@@ -447,23 +447,23 @@ public class FontEncoding
 	protected void config(Element elm)
 	{
 		NodeList fonts = elm.getElementsByTagName("FONT");
-		for (int i=0; i<fonts.getLength(); i++)
+		for (int i=0; fonts!=null && i<fonts.getLength(); i++)
 			configFont((Element)fonts.item(i));
 
 		NodeList chars = elm.getElementsByTagName("CHARS");
-		for (int i=0; i<chars.getLength(); i++)
+		for (int i=0; chars!=null && i<chars.getLength(); i++)
 			configChars((Element)chars.item(i));
 
         NodeList extraChars = elm.getElementsByTagName("CHAR");
-        for (int i=0; i<extraChars.getLength(); i++)
+        for (int i=0; extraChars!=null && i<extraChars.getLength(); i++)
             configExtraChars((Element)extraChars.item(i));
 
         NodeList frames = elm.getElementsByTagName("FRAME");
-        for (int i=0; i<frames.getLength(); i++)
+        for (int i=0; frames!=null && i<frames.getLength(); i++)
             configFrame((Element)frames.item(i));
 
         NodeList syms = elm.getElementsByTagName("SYM");
-        for (int i=0; i<syms.getLength(); i++)
+        for (int i=0; syms!=null && i<syms.getLength(); i++)
             configSymbol((Element)syms.item(i));
 	}
 	

@@ -64,8 +64,7 @@
 	<!-- Main Template     -->
 	<!-- - - - - - - - - - - - - - -->
 	<xsl:template match="jose-export">
-	<xsl:param name="imgfig" select="/*//option[key='xsl.html.figs']/value='img'"/>
-
+	
 	<html>
 		<head>
 			<title>jose Games</title>
@@ -95,10 +94,7 @@
                 <xsl:if test="string-length($imgurl)&gt;0">
                     <xsl:value-of select="$imgurl"/><xsl:text>/</xsl:text>
                 </xsl:if>
-				<xsl:choose>
-					<xsl:when test="$imgfig"><xsl:text>display-img.js</xsl:text></xsl:when>
-					<xsl:otherwise><xsl:text>display-tt.js</xsl:text></xsl:otherwise>
-				</xsl:choose>
+                <xsl:text>display-img.js</xsl:text>
             </xsl:attribute>
 		</script>
 		<script language="JavaScript">
@@ -141,14 +137,6 @@
 </xsl:for-each>
 
 			g.end = j;
-
-			dia = [
-				"<xsl:value-of select="/*//figurines/dia/border"/>",
-				"<xsl:value-of select="/*//figurines/dia/white-on-light"/>",
-				"<xsl:value-of select="/*//figurines/dia/white-on-dark"/>",
-				"<xsl:value-of select="/*//figurines/dia/black-on-light"/>",
-				"<xsl:value-of select="/*//figurines/dia/black-on-dark"/>"
-			];
 		</script>
 
 		<table id="toptable">
@@ -299,27 +287,12 @@
 		<xsl:param name="gidx"/>
 		<xsl:param name="row"/>
 		<xsl:param name="col"/>
-		<xsl:param name="imgfig" select="/*//option[key='xsl.html.figs']/value='img'"/>
-
-		<td>
-		<xsl:choose>
-			<xsl:when test="$imgfig">
-				<img>
-					<xsl:attribute name="name">i-<xsl:value-of select="$gidx"/>-<xsl:value-of select="8*$row+$col"/></xsl:attribute>
-					<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-					<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-				</img>
-			</xsl:when>
-			<xsl:otherwise>
-				<span>
-					<xsl:attribute name="id">i-<xsl:value-of select="$gidx"/>-<xsl:value-of select="8*$row+$col"/></xsl:attribute>
-					<xsl:attribute name="class">html_large</xsl:attribute>
-					<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-					<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-				</span>
-			</xsl:otherwise>
-		</xsl:choose>
-		</td>
+		
+		<td><img>
+			<xsl:attribute name="name">i-<xsl:value-of select="$gidx"/>-<xsl:value-of select="8*$row+$col"/></xsl:attribute>
+			<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
+			<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
+		</img></td>
 	</xsl:template>
 	
 </xsl:stylesheet>

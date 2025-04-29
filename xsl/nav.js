@@ -1,6 +1,7 @@
 var games = new Array();
 var pos = new Array();
 var dep = new Array();
+var INITIAL = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 0";
 
 function go(i) {
     dogo(getGame(i),i);

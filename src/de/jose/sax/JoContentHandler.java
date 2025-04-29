@@ -128,7 +128,7 @@ public class JoContentHandler implements ContentHandler {
      * @throws SAXException Any SAX exception, possibly wrapping another exception.
      */
     public void characters(String s) throws SAXException {
-        target.characters(s.toCharArray(), 0, s.length());
+        if (s!=null) target.characters(s.toCharArray(), 0, s.length());
     }
 
 

@@ -98,9 +98,12 @@ java.util.EmptyStackException
     [x] copy fonts/* to jose.war
     [x] figurines
     [x] diagram in text
-    [ ] JS diagram
+    [x] JS diagram
+    [ ] JS animation
     [ ] deprecate image figurine options
+    [-] edit styles in Swing GUI
     [ ] awesome icons
+    [ ] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling

@@ -206,6 +206,8 @@ public class CSSXMLReader extends AbstractObjectReader
 			handler.keyValue("option", "xsl.css.standalone", cssStandalone ? "true":"false");
 			handler.keyValue("option", "xsl.html.img.dir", collpath);
 			handler.keyValue("option", "xsl.html.font.dir", fontsPath);
+			//	figurine chars for diagrams
+
 			break;
 		}
 

@@ -319,8 +319,9 @@ public class GameXMLReader extends CSSXMLReader implements GameHandler
 
 		//  image files for inline diagrams (pieces + border)
 		Style inlineStyle = styles.getStyle("body.inline");
+		String inlineFigFont = JoFontConstants.getFontFamily(inlineStyle);
 		handler.startElement("inline");
-			handler.element("font", JoFontConstants.getFontFamily(inlineStyle));
+		handler.element("font", inlineFigFont);
 			handler.element("pt-size", JoFontConstants.getFontSize(inlineStyle));
 			handler.element("px-size", styles.getPixelSize(inlineStyle));
 		handler.endElement("inline");
@@ -328,9 +329,18 @@ public class GameXMLReader extends CSSXMLReader implements GameHandler
 		//  images files for large dias (as used by DHTML)
 		int diaSize = context.profile.getInt("xsl.dhtml.diasize",20);
 		handler.startElement("dia");
-			handler.element("font", JoFontConstants.getFontFamily(inlineStyle));
+			handler.element("font", inlineFigFont);
 			handler.element("pt-size", diaSize);
 			handler.element("px-size", styles.getPixelSize(diaSize));
+			//	characters for building a diagram
+			FontEncoding enc = FontEncoding.getEncoding(inlineFigFont);
+			handler.startElement("border");
+			for(int i=0; i < FontEncoding.MAX_BORDER; i++) handler.characters(enc.getBorder(false,i));
+			handler.endElement("border");
+			saxFigurines("white-on-light",handler, enc, Constants.WHITE, FontEncoding.LIGHT_SQUARE);
+			saxFigurines("white-on-dark", handler, enc, Constants.WHITE, FontEncoding.DARK_SQUARE);
+			saxFigurines("black-on-light",handler, enc, Constants.BLACK, FontEncoding.LIGHT_SQUARE);
+			saxFigurines("black-on-dark", handler, enc, Constants.BLACK, FontEncoding.DARK_SQUARE);
 		handler.endElement("dia");
 
 		//  plain text figurines for current language
@@ -348,6 +358,14 @@ public class GameXMLReader extends CSSXMLReader implements GameHandler
 		handler.endElement("text");
 
 		handler.endElement("figurines");
+	}
+
+	private void saxFigurines(String label, JoContentHandler handler, FontEncoding enc, int color, int background) throws SAXException
+	{
+		handler.startElement(label);
+		for(int p=0; p <= Constants.KING; ++p)
+			handler.characters(enc.get(p|color,background));
+		handler.endElement(label);
 	}
 
 	public void saxFigurine(File baseDir, String fontFamily, int fontSize, int nestLevel, JoContentHandler handler) throws SAXException
