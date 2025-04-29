@@ -94,7 +94,7 @@
 		function setoutput(output_type)
 		{
 			output = output_type;
-			top.GameView.location.href = 'game.jsp?out='+output_type;
+			top.GameView.location.href = 'game-servlet?out='+output_type;
 
 			document.images['html'].className ='off';
 			document.images['pdf'].className='off';
@@ -124,7 +124,7 @@
 
 			if (new_row==current_row) return;
 
-			top.GameView.location.href = ('game.jsp?row='+new_row);
+			top.GameView.location.href = ('game-servlet?row='+new_row);
 
 			current_row = new_row;
 		}

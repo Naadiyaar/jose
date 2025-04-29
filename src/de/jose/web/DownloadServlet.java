@@ -12,7 +12,7 @@ import de.jose.task.io.ArchiveExport;
 import de.jose.task.io.PGNExport;
 import org.apache.fop.tools.IOUtil;
 
-@WebServlet(name = "downloadServlet", value = "/download-servlet")
+@WebServlet(name = "DownloadServlet", value = "/download-servlet")
 public class DownloadServlet extends HttpServlet {
 
 

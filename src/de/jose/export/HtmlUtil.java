@@ -37,6 +37,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.awt.*;
@@ -126,10 +127,11 @@ public class HtmlUtil
 		ImgUtil.writePng(img1,targetFile);
 	}
 
-	public static void createCSS(ExportContext context, File xslFile, File targetFile) throws Exception
+	public static Set<String> createCSS(ExportContext context, File xslFile, File targetFile) throws Exception
 	{
 		GameSource dummy = GameSource.gameArray(new int[0]);
-		Source source = new SAXSource(new CSSXMLReader(context), dummy);
+		CSSXMLReader cssxmlReader = new CSSXMLReader(context);
+		Source source = new SAXSource(cssxmlReader, dummy);
 		StreamResult result = new StreamResult(new FileOutputStream(targetFile));
 
 		TransformerFactory tfFactory = TransformerFactory.newInstance();
@@ -137,6 +139,7 @@ public class HtmlUtil
 		Transformer tf = tfFactory.newTransformer(new StreamSource(xslFile));
 
 		tf.transform(source,result);
+		return cssxmlReader.fontFamilies;
 	}
 
 	protected static void createFigurineImages(JoStyleContext styleContext,
@@ -324,6 +327,7 @@ public class HtmlUtil
 		File homeDir = homeFile.getParentFile();
 
 		if (needsImages || needsCSS) {
+			File appCollateral = context.collateral;
 			if (context.collateral==null && context.target instanceof File)
 				context.collateral = ((File)context.target).getParentFile();
 			context.collateral.mkdirs();
@@ -333,8 +337,13 @@ public class HtmlUtil
 				String cssCreator = ExportConfig.getParam(context.config, "css-xsl");
 				String cssTarget = ExportConfig.getParam(context.config, "css-file");
 				File targetFile = new File(context.collateral,cssTarget);
-				if (!targetFile.exists())
-					createCSS(context, new File(homeDir,cssCreator), targetFile);
+				if (!targetFile.exists()) {
+					Set<String> fontFamilies = createCSS(context, new File(homeDir, cssCreator), targetFile);
+					if (appCollateral!=null) {
+						//	e.g. Web Context. Copy fonts to server directory
+						tryCopyFonts(fontFamilies, appCollateral+"/fonts");
+					}
+				}
 			}
 
 			//  copy JavaScript
@@ -365,6 +374,25 @@ public class HtmlUtil
 		}
 
 		return context.collateral;
+	}
+
+	private static void tryCopyFonts(Set<String> fontFamilies, String toDirectory)
+	{
+		File dir = new File(toDirectory);
+		if (!dir.exists() && !dir.mkdirs())
+			return;
+
+		for(String family : fontFamilies) {
+			File from = FontUtil.getTrueTypeFile(family,false,false,true);
+			File to = new File(dir,from.getName());
+			if (from.equals(to) || to.exists())
+				continue;
+            try {
+                FileUtil.copyFile(from,to);
+            } catch (IOException e) {
+                continue;
+            }
+        }
 	}
 
 }

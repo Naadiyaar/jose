@@ -203,9 +203,9 @@
 			<!-- navigation images (@deprecated)-->
 			<zipfileset dir="images/nav" prefix="nav"/>
 			<zipfileset dir="fonts" prefix="fonts">
-				<include name="Berlin.ttf"/>
-				<include name="FontAwesome.ttf"/>
-				<include name="FIG-*.ttf"/>
+				<!--include name="Berlin.ttf"/-->
+				<include name="FontAwesome.otf"/>
+				<include name="FIG-*.TTF"/>
 			</zipfileset>
 		</zip>
 	</target>

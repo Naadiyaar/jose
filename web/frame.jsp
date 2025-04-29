@@ -17,7 +17,7 @@
 </head>
 <frameset cols="80px, *">
 <frame name="ToolBar" src="tool.jsp" frameborder=0 noresize scrolling=no>
-<frame name="GameView" src="game.jsp" frameborder=0 scrolling=auto>
+<frame name="GameView" src="game-servlet" frameborder=0 scrolling=auto>
 </frameset>
 
 </html>

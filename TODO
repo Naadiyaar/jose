@@ -93,9 +93,9 @@ java.util.EmptyStackException
 [ ] Web fonts; use for html (local and Web App)
     [x] in embedded <style> sheet
     [x] in generated games.css (both use css.xsl)
-    [ ] path heuristics: fonts/ for web-app,
+    [x] path heuristics: fonts/ for web-app,
     [x] $jose.workdir/fonts for locally saved file
-    [ ] copy fonts/* to jose.war
+    [x] copy fonts/* to jose.war
     [x] figurines
     [x] diagram in text
     [ ] JS diagram

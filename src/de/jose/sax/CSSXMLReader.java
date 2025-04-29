@@ -54,6 +54,8 @@ public class CSSXMLReader extends AbstractObjectReader
 		INHERITED.addAttribute(null,"inherited","inherited","CDATA",null);
 	};
 
+	public Set<String> fontFamilies = new TreeSet<>();
+
 	public CSSXMLReader(ExportContext context)
 	{
 		this.context = context;
@@ -80,18 +82,18 @@ public class CSSXMLReader extends AbstractObjectReader
 		handler.endDocument();
 	}
 
-	public static void toSAX(JoStyleContext styles, JoContentHandler handler) throws SAXException
+	public void toSAX(JoStyleContext styles, JoContentHandler handler) throws SAXException
 	{
 		handler.startElement("styles");
 		StyleContext.NamedStyle base = (StyleContext.NamedStyle) styles.getStyle("base");
-		Set<String> families = toSAX(base,handler);
-		toSAX(families,handler);
+		fontFamilies.clear();
+		toSAX(base,handler);
+		toSAX(fontFamilies,handler);
 		handler.endElement("styles");
 	}
 
-	private static Set<String> toSAX(StyleContext.NamedStyle style, JoContentHandler handler) throws SAXException
+	private void toSAX(StyleContext.NamedStyle style, JoContentHandler handler) throws SAXException
 	{
-		Set<String> fontFamilies = new TreeSet<>();
 		handler.startElement("style");
 			handler.element("name", style.getName());
 			//  dump attributes
@@ -140,11 +142,10 @@ public class CSSXMLReader extends AbstractObjectReader
 			if (children != null)
 				for (int i=0; i < children.size(); i++) {
 					StyleContext.NamedStyle child = (StyleContext.NamedStyle)children.get(i);
-					fontFamilies.addAll(toSAX(child,handler));
+					toSAX(child,handler);
 				}
 
 		handler.endElement("style");
-		return fontFamilies;
 	}
 
 

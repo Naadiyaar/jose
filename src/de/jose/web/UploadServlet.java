@@ -15,7 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-@WebServlet(name = "uploadServlet", value = "/upload-servlet")
+@WebServlet(name = "UploadServlet", value = "/upload-servlet")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024 * 1024,
         maxFileSize = 1024 * 1024 * 1024,
         maxRequestSize = 1024 * 1024 * 1024 * 5)

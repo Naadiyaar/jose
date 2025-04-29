@@ -97,7 +97,10 @@
 		<xsl:when test="$css_standalone">
 				<!-- link to CSS -->
 				<link rel="StyleSheet" type="text/css">
-				<xsl:attribute name="href"><xsl:value-of select="$cssurl"/>/games.css</xsl:attribute>
+				<xsl:attribute name="href">
+					<xsl:if test="string-length($cssurl) > 0"><xsl:value-of select="$cssurl"/>/</xsl:if>
+					<xsl:text>games.css</xsl:text>
+				</xsl:attribute>
 				</link>
 		</xsl:when>
 		<xsl:otherwise>
