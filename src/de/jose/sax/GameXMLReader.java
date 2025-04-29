@@ -327,13 +327,15 @@ public class GameXMLReader extends CSSXMLReader implements GameHandler
 		handler.endElement("inline");
 
 		//  images files for large dias (as used by DHTML)
-		int diaSize = context.profile.getInt("xsl.dhtml.diasize",20);
+		//int diaSize = context.profile.getInt("xsl.dhtml.diasize",20);
+		Style diaStyle = styles.getStyle("html.large");
+		String diaFigFont = JoFontConstants.getFontFamily(diaStyle);
 		handler.startElement("dia");
-			handler.element("font", inlineFigFont);
-			handler.element("pt-size", diaSize);
-			handler.element("px-size", styles.getPixelSize(diaSize));
+			handler.element("font", diaFigFont);
+			handler.element("pt-size", JoFontConstants.getFontSize(diaStyle));
+			handler.element("px-size", styles.getPixelSize(diaStyle));
 			//	characters for building a diagram
-			FontEncoding enc = FontEncoding.getEncoding(inlineFigFont);
+			FontEncoding enc = FontEncoding.getEncoding(diaFigFont);
 			handler.startElement("border");
 			for(int i=0; i < FontEncoding.MAX_BORDER; i++) handler.characters(enc.getBorder(false,i));
 			handler.endElement("border");

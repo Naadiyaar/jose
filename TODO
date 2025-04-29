@@ -87,7 +87,6 @@ java.util.EmptyStackException
     [x] jose_db_port bash variable
     [x] kill mysqld !! (@WebListener)
     [x] FileWatcher find multiple mysqld instance. should work head-less, somehow.
-    [ ] fix TrueType figurines in html output, then:
     [ ] i18n
 
 [ ] Web fonts; use for html (local and Web App)
@@ -102,6 +101,9 @@ java.util.EmptyStackException
     [ ] JS animation
     [ ] deprecate image figurine options
     [-] edit styles in Swing GUI
+    [ ] update strategy for:
+        [ ] GUI: games.css (always), nav.js (always), display-tt.js (always), fonts (as needed), ...
+        [ ] Web: games.css (on first call), nav.js (on first call), display-tt.js (on first call), fonts (as needed), ...
     [ ] awesome icons
     [ ] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
 
