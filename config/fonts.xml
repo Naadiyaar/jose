@@ -19,7 +19,8 @@
 		<CHARS color="black">   ojntwl </CHARS>
 		<CHARS color="white" bg="dark">  +PHBRQK </CHARS>
 		<CHARS color="black" bg="dark">   OJNTWL </CHARS>
-		<CHARS color="white" bg="fig"> \u0087\u0086\u0085\u0084\u0083\u0082 </CHARS>
+		<CHARS color="white" bg="fig"> \u00da\u00d9\u00d8\u00d7\u00d6\u00d5 </CHARS>
+		<!--CHARS color="black" bg="fig"> \u00e0\u00df\u00de\u00dd\u00dc\u00db </CHARS-->
 		<CHAR name="knight" color="white">  \u00D1\u00D2 </CHAR>
 		<CHAR name="knight" color="black">  \u00D3\u00D4 </CHAR>
 		<CHARS color="white" orientation="right"> \u00C9\u00BD\u00B1\u00A5\u0096 </CHARS>
