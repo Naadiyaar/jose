@@ -122,6 +122,12 @@ public class FileUtil
         for (File dir = root; dir!=null; dir = dir.getParentFile())
             rootHierarchy.add(dir);
 
+		if (rootHierarchy.size() <= 2) {
+			//	we are already on /top. There's not much use in climbing higher.
+			//
+ 			return target.getAbsolutePath();
+		}
+
         StringBuffer buf = new StringBuffer();
         for ( ; target!=null; target = target.getParentFile())
         {

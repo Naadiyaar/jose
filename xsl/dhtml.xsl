@@ -44,10 +44,18 @@
 			<jose:key>css-xsl</jose:key>
 			<jose:value>gencss.xsl</jose:value>
 		</jose:param>
-		<!-- name of linke JavaScript file (possible many) -->
+		<!-- name of linked JavaScript file (possibly many) -->
 		<jose:param>
 			<jose:key>js-file</jose:key>
-			<jose:value>games.js</jose:value>
+			<jose:value>nav.js</jose:value>
+		</jose:param>
+		<jose:param>
+			<jose:key>js-file</jose:key>
+			<jose:value>display-img.js</jose:value>
+		</jose:param>
+		<jose:param>
+			<jose:key>js-file</jose:key>
+			<jose:value>display-tt.js</jose:value>
 		</jose:param>
 	</jose:export>
 	
@@ -86,8 +94,16 @@
                 <xsl:if test="string-length($imgurl)&gt;0">
                     <xsl:value-of select="$imgurl"/><xsl:text>/</xsl:text>
                 </xsl:if>
-                <xsl:text>games.js</xsl:text>
+                <xsl:text>display-img.js</xsl:text>
             </xsl:attribute>
+		</script>
+		<script language="JavaScript">
+			<xsl:attribute name="src">
+				<xsl:if test="string-length($imgurl)&gt;0">
+					<xsl:value-of select="$imgurl"/><xsl:text>/</xsl:text>
+				</xsl:if>
+				<xsl:text>nav.js</xsl:text>
+			</xsl:attribute>
 		</script>
 
 		<xsl:apply-templates select="game"/>

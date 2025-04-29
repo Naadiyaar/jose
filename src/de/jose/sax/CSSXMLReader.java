@@ -194,16 +194,18 @@ public class CSSXMLReader extends AbstractObjectReader
 			//  standalone css ?
 			boolean cssStandalone = context.profile.getBoolean("xsl.css.standalone");
 			//  collateral dir (contains images & css)
-			String collpath = (context.collateral!=null && context.target instanceof File) ?
-			        FileUtil.getRelativePath(((File)context.target).getParentFile(),context.collateral,"/"):"";
+			String collpath = "";
+			if (context.collateral!=null && context.target instanceof File) {
+				File targetFile = (File)context.target;
+				File targetDir = targetFile.getParentFile();
+				collpath = FileUtil.getRelativePath(targetDir,context.collateral,"/");
+			}
 			String fontsPath = (Application.relFontsDirectory!=null) ? Application.relFontsDirectory : (Application.theWorkingDirectory+"/fonts");
-			//	/home/xyz/jose/fonts in a local context. fonts/ in a web server context.
-
+			//	todo  fontsPath = keepFontsClose ? collateral/fonts : jose.workdir/fonts
 			handler.keyValue("option", "xsl.html.figs",figs);
 			handler.keyValue("option", "xsl.css.standalone", cssStandalone ? "true":"false");
 			handler.keyValue("option", "xsl.html.img.dir", collpath);
 			handler.keyValue("option", "xsl.html.font.dir", fontsPath);
-			//  TODO use URL ?
 			break;
 		}
 
