@@ -27,7 +27,7 @@
 		<!-- xsl sheet for generating CSS -->
 		<jose:param>
 			<jose:key>css-xsl</jose:key>
-			<jose:value>css.xsl</jose:value>
+			<jose:value>gencss.xsl</jose:value>
 		</jose:param>
 	</jose:export>
 	

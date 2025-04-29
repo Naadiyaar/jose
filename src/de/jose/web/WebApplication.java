@@ -60,10 +60,11 @@ public class WebApplication extends Application implements ServletContextListene
 		readProfile();
 		//  always create a separate css file
 		theUserProfile.set("xsl.css.standalone",true);
-		theUserProfile.set("xsl.pdf.embed",true);	// always embed fonts into psf
+		theUserProfile.set("xsl.pdf.embed",true);	// always embed fonts into pdf
 		theUserProfile.set("xsl.pdf.bookmarks",false);
 		theUserProfile.getStyleContext().setFigurineFont(true);
-		theUserProfile.set("xsl.html.figs","img");	// use image figurine in html
+		theUserProfile.set("xsl.html.figs","tt");	// use TrueType figurine in html
+		relFontsDirectory = "fonts";	//	use relative font path (required for web server)
 		Language.setLanguage(theLanguageDirectory, theUserProfile.getString("user.language"));
 
 		theCommandDispatcher = new CommandDispatcher();

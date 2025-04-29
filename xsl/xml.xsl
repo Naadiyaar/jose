@@ -14,16 +14,6 @@
 			<key>move-fen</key>
 			<value>true</value>
 		</jose:param>
-		<!-- name of linked CSS -->
-		<jose:param>
-			<jose:key>css-file</jose:key>
-			<jose:value>games.css</jose:value>
-		</jose:param>
-		<!-- xsl sheet for generating CSS -->
-		<jose:param>
-			<jose:key>css-xsl</jose:key>
-			<jose:value>css.xsl</jose:value>
-		</jose:param>
 
 		<!-- experimental -->
 		<jose:param>

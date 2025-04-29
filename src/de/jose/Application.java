@@ -161,6 +161,8 @@ public class Application
 	 */
 	public static File			theDatabaseDirectory;
 
+	public static String		relFontsDirectory = null;
+
     /** game history    */
     public static History       theHistory;
 

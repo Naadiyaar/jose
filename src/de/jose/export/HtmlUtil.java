@@ -36,6 +36,7 @@ import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.*;
 import java.util.List;
 import java.awt.*;
@@ -129,7 +130,7 @@ public class HtmlUtil
 	{
 		GameSource dummy = GameSource.gameArray(new int[0]);
 		Source source = new SAXSource(new CSSXMLReader(context), dummy);
-		StreamResult result = new StreamResult(targetFile);
+		StreamResult result = new StreamResult(new FileOutputStream(targetFile));
 
 		TransformerFactory tfFactory = TransformerFactory.newInstance();
 

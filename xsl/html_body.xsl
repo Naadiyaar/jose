@@ -133,9 +133,19 @@
 	<xsl:template match="diagram">	
 		<a>
 		<xsl:attribute name="href">javascript:go(<xsl:value-of select="count(preceding::m)-1"/>)</xsl:attribute>
-		<table cellspacing="0" cellpadding="0" border="0" class="body_inline">
-			<xsl:apply-templates select="table"/>
-		</table>
+		<xsl:attribute name="style">text-decoration:none;</xsl:attribute>
+			<xsl:choose>
+				<xsl:when test="$imgfig">
+					<table cellspacing="0" cellpadding="0" border="0" class="body_inline">
+						<xsl:apply-templates select="table"/>
+					</table>
+				</xsl:when>
+				<xsl:otherwise>
+					<span class="body_inline" style="white-space: pre-line;">
+						<xsl:value-of select="text"/>
+					</span>
+				</xsl:otherwise>
+			</xsl:choose>
 		</a>
 	</xsl:template>
 	

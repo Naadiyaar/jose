@@ -12,15 +12,24 @@
 
 package de.jose.sax;
 
+import de.jose.export.ExportConfig;
+import de.jose.util.FontUtil;
+import de.jose.util.file.FileUtil;
+import de.jose.util.xml.XMLUtil;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+import java.io.File;
 import java.io.IOException;
 import java.awt.print.PageFormat;
 import java.awt.*;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.Set;
+import java.util.TreeSet;
 
 import de.jose.Application;
 import de.jose.Util;
@@ -64,6 +73,7 @@ public class CSSXMLReader extends AbstractObjectReader
 
 		//  style info
 		toSAX(context.styles,handler);
+		saxOptions(context.config,handler);
 
 //End the document
 		handler.endElement("jose-export");
@@ -73,12 +83,15 @@ public class CSSXMLReader extends AbstractObjectReader
 	public static void toSAX(JoStyleContext styles, JoContentHandler handler) throws SAXException
 	{
 		handler.startElement("styles");
-			toSAX((StyleContext.NamedStyle)styles.getStyle("base"),handler);
+		StyleContext.NamedStyle base = (StyleContext.NamedStyle) styles.getStyle("base");
+		Set<String> families = toSAX(base,handler);
+		toSAX(families,handler);
 		handler.endElement("styles");
 	}
 
-	private static void toSAX(StyleContext.NamedStyle style, JoContentHandler handler) throws SAXException
+	private static Set<String> toSAX(StyleContext.NamedStyle style, JoContentHandler handler) throws SAXException
 	{
+		Set<String> fontFamilies = new TreeSet<>();
 		handler.startElement("style");
 			handler.element("name", style.getName());
 			//  dump attributes
@@ -96,14 +109,15 @@ public class CSSXMLReader extends AbstractObjectReader
 					handler.keyValue("a",key.toString(), toString((Color)value));
 				else
 					handler.keyValue("a",key.toString(), value.toString());
+
+				if (key.toString().equals(StyleConstants.FontConstants.Family.toString()))	//	not that FontConstants does not implement equals()
+					fontFamilies.add(value.toString());
 			}
 
 			//  dump /some/ inherited attributes
 			//  Font Family, Size, Style, Weight, Color
 			if (!style.isDefined(StyleConstants.FontConstants.Family))
-				handler.keyValue("a",INHERITED,
-						StyleConstants.FontConstants.Family.toString(),
-						JoFontConstants.getFontFamily(style));
+				handler.keyValue("a", INHERITED, StyleConstants.FontConstants.Family.toString(), JoFontConstants.getFontFamily(style));
 			if (!style.isDefined(StyleConstants.FontConstants.Size))
 				handler.keyValue("a",INHERITED,
 						StyleConstants.FontConstants.Size.toString(),
@@ -126,11 +140,29 @@ public class CSSXMLReader extends AbstractObjectReader
 			if (children != null)
 				for (int i=0; i < children.size(); i++) {
 					StyleContext.NamedStyle child = (StyleContext.NamedStyle)children.get(i);
-					toSAX(child,handler);
+					fontFamilies.addAll(toSAX(child,handler));
 				}
 
 		handler.endElement("style");
+		return fontFamilies;
 	}
+
+
+	private static void toSAX(Set<String> families, JoContentHandler handler) throws SAXException {
+		for (String family : families)
+		{
+			//	get local font file
+			File file = FontUtil.getTrueTypeFile(family,false,false,true);
+			if (file!=null) {
+				handler.startElement("font-face");
+					handler.element("family", family);
+					handler.element("path", file.getPath());
+					handler.element("file", file.getName());
+				handler.endElement("font-face");
+			}
+		}
+	}
+
 
 	private static String toString(Color color)
 	{
@@ -146,5 +178,47 @@ public class CSSXMLReader extends AbstractObjectReader
 		buf.append(Integer.toHexString(blue/16));
 		buf.append(Integer.toHexString(blue%16));
 		return buf.toString();
+	}
+
+	public void saxOptions(Element cfg, JoContentHandler handler) throws SAXException
+	{
+		handler.startElement("options");
+
+		switch (ExportConfig.getOutput(cfg)) {
+		case ExportConfig.OUTPUT_HTML:
+		case ExportConfig.OUTPUT_XML:
+			//  standard HTML options
+			//  figurine format ("tt" for TrueType, "img" for Image)
+			String figs = context.profile.getString("xsl.html.figs","tt");
+			//  standalone css ?
+			boolean cssStandalone = context.profile.getBoolean("xsl.css.standalone");
+			//  collateral dir (contains images & css)
+			String collpath = (context.collateral!=null && context.target instanceof File) ?
+			        FileUtil.getRelativePath(((File)context.target).getParentFile(),context.collateral,"/"):"";
+			String fontsPath = (Application.relFontsDirectory!=null) ? Application.relFontsDirectory : (Application.theWorkingDirectory+"/fonts");
+			//	/home/xyz/jose/fonts in a local context. fonts/ in a web server context.
+
+			handler.keyValue("option", "xsl.html.figs",figs);
+			handler.keyValue("option", "xsl.css.standalone", cssStandalone ? "true":"false");
+			handler.keyValue("option", "xsl.html.img.dir", collpath);
+			handler.keyValue("option", "xsl.html.font.dir", fontsPath);
+			//  TODO use URL ?
+			break;
+		}
+
+		//  custom options defined in style sheet:
+		NodeList options = cfg.getElementsByTagName("jose:option");
+		for (int i=0; i < options.getLength(); i++)
+		{
+			Element option = (Element)options.item(i);
+			String key = XMLUtil.getChildValue(option,"jose:key");
+			Object value = context.profile.get(key);
+			if (value==null)
+				value = XMLUtil.getChildValue(option,"jose:default");
+
+			if (value != null)
+				handler.keyValue("option",key,value.toString());
+		}
+		handler.endElement("options");
 	}
 }

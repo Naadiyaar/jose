@@ -4,6 +4,15 @@
 
 <xsl:template match="styles">
 	<xsl:apply-templates select="//style"/>
+	<xsl:apply-templates select="//font-face"/>
+</xsl:template>
+
+<xsl:template name="family-name">
+	<xsl:param name="family"/>
+	<xsl:choose>
+		<xsl:when test="contains($family,' ')">"<xsl:value-of select="$family"/>"</xsl:when>
+		<xsl:otherwise><xsl:value-of select="$family"/></xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="style">
@@ -23,10 +32,7 @@
 	<xsl:text> {
 	</xsl:text>
 	
-	<xsl:if test="boolean($family)">	font-family: <xsl:choose>
-		<xsl:when test="contains($family,' ')">"<xsl:value-of select="$family"/>"</xsl:when>
-		<xsl:otherwise><xsl:value-of select="$family"/></xsl:otherwise>
-	</xsl:choose>;
+	<xsl:if test="boolean($family)">	font-family: <xsl:call-template name="family-name"><xsl:with-param name="family" select="$family"/></xsl:call-template>;
 	</xsl:if>
 	
 	<xsl:if test="boolean($size)">	font-size: <xsl:value-of select="$size"/>pt;
@@ -69,33 +75,50 @@
 </xsl:if>
 
 </xsl:template>
-	
-<xsl:template name="include_css">
-			<!-- directory that contains figurine images -->
-			<xsl:param name="cssurl" select="//option[key='xsl.html.img.dir']/value"/>
-			<!-- location of CSS -->
-			<xsl:param name="css_standalone" select="//option[key='xsl.css.standalone']/value='true'"/>
 
-			<xsl:choose>
-				<xsl:when test="$css_standalone">
-						<!-- link to CSS -->
-						<link rel="StyleSheet" type="text/css">
-						<xsl:attribute name="href"><xsl:value-of select="$cssurl"/>games.css</xsl:attribute>
-						</link>
-				</xsl:when>
-				<xsl:otherwise>
-						<!-- create CSS -->
-						<style>
-							<xsl:apply-templates select="styles"/>
+<xsl:template match="font-face">
+	<xsl:param name="font-dir" select="/*//option[key='xsl.html.font.dir']/value"/>
 
-							p {
-								margin-top: 6pt;
-								margin-bottom: 6pt;
-							}
-							
-						</style>
-				</xsl:otherwise>
-			</xsl:choose>
+	@font-face {
+	font-family: <xsl:call-template name="family-name"><xsl:with-param name="family" select="family"/></xsl:call-template>;
+	src: local(<xsl:call-template name="family-name"><xsl:with-param name="family" select="family"/></xsl:call-template>),
+	     url(<xsl:value-of select="$font-dir"/>/<xsl:value-of select="file"/>);
+	}
 </xsl:template>
+
+<!-- called from html.xsl to insert a link to a css sheet, or embed an css sheet -->
+<xsl:template name="include_css">
+	<!-- directory that contains figurine images -->
+	<xsl:param name="cssurl" select="//option[key='xsl.html.img.dir']/value"/>
+	<!-- location of CSS -->
+	<xsl:param name="css_standalone" select="//option[key='xsl.css.standalone']/value='true'"/>
+
+	<xsl:choose>
+		<xsl:when test="$css_standalone">
+				<!-- link to CSS -->
+				<link rel="StyleSheet" type="text/css">
+				<xsl:attribute name="href"><xsl:value-of select="$cssurl"/>/games.css</xsl:attribute>
+				</link>
+		</xsl:when>
+		<xsl:otherwise>
+				<!-- create CSS -->
+				<style>
+					<xsl:apply-templates select="styles"/>
+
+					p {
+						margin-top: 6pt;
+						margin-bottom: 6pt;
+					}
+
+				</style>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<!-- called from css generator -->
+<xsl:template name="generate_css">
+	<xsl:apply-templates select="styles"/>
+</xsl:template>
+
 
 </xsl:stylesheet>

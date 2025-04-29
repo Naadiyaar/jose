@@ -85,16 +85,22 @@ java.util.EmptyStackException
     [x] download
     [x] jose_workdir bash variable
     [x] jose_db_port bash variable
-    [ ] kill mysqld !! (@WebListener)
+    [x] kill mysqld !! (@WebListener)
     [x] FileWatcher find multiple mysqld instance. should work head-less, somehow.
-    [ ] Web fonts; use for html (local and Web App)
-        @font-face {
-          font-family: Lato;
-          src: url('path-to-lato.woff2') format('woff2'),
-               url('path-to-lato.woff') format('woff');
-        }
-        https://css-tricks.com/the-best-font-loading-strategies-and-how-to-execute-them/#loading-fonts-with-self-hosted-fonts
+    [ ] fix TrueType figurines in html output, then:
     [ ] i18n
+
+[ ] Web fonts; use for html (local and Web App)
+    [x] in embedded <style> sheet
+    [x] in generated games.css (both use css.xsl)
+    [ ] path heuristics: fonts/ for web-app,
+    [x] $jose.workdir/fonts for locally saved file
+    [ ] copy fonts/* to jose.war
+    [x] figurines
+    [x] diagram in text
+    [ ] JS diagram
+    [ ] deprecate image figurine options
+    [ ] awesome icons
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling
@@ -166,6 +172,8 @@ Alternative JREs:
     -> which is a bit dumb but effective
 
 ==== Old New Features
+
+* tournament pairing and crosstable
 
 * arrows + text label
   - if possible, redraw only modified arrows

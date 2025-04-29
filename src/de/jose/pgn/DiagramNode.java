@@ -126,7 +126,7 @@ public class DiagramNode
 			buf.append("\n");
 		}
 
-		buf.append("\n");
+		//buf.append("\n");
 		return buf.toString();
 	}
 

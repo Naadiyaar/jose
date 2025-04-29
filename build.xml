@@ -200,8 +200,13 @@
 			<zipfileset dir="lib" prefix="WEB-INF/lib">
 				<include name="fop-plus.jar"/>
 			</zipfileset>
-			<!-- navigation images -->
+			<!-- navigation images (@deprecated)-->
 			<zipfileset dir="images/nav" prefix="nav"/>
+			<zipfileset dir="fonts" prefix="fonts">
+				<include name="Berlin.ttf"/>
+				<include name="FontAwesome.ttf"/>
+				<include name="FIG-*.ttf"/>
+			</zipfileset>
 		</zip>
 	</target>
 

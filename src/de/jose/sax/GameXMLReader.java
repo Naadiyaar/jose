@@ -2,14 +2,10 @@
 
 package de.jose.sax;
 
-import de.jose.sax.AbstractObjectReader;
 import de.jose.pgn.Game;
 import de.jose.pgn.PgnConstants;
 import de.jose.task.*;
-import de.jose.task.io.XMLExport;
 import de.jose.util.ListUtil;
-import de.jose.util.xml.XMLUtil;
-import de.jose.util.file.FileUtil;
 import de.jose.util.print.PrintableDocument;
 import de.jose.view.style.JoStyleContext;
 import de.jose.view.style.JoFontConstants;
@@ -21,19 +17,14 @@ import de.jose.chess.EngUtil;
 import de.jose.Application;
 import de.jose.Language;
 import de.jose.image.ImgUtil;
-import de.jose.export.HtmlUtil;
 import de.jose.export.ExportConfig;
 import de.jose.export.ExportContext;
-import de.jose.profile.UserProfile;
 import de.jose.profile.FontEncoding;
 import de.jose.db.JoConnection;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-import javax.swing.text.StyleContext;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.Style;
 import java.io.IOException;
 import java.io.File;
@@ -388,45 +379,6 @@ public class GameXMLReader extends CSSXMLReader implements GameHandler
 			}
 
 		handler.endElement("fig");
-	}
-
-	public void saxOptions(Element cfg, JoContentHandler handler) throws SAXException
-	{
-		handler.startElement("options");
-
-		switch (ExportConfig.getOutput(cfg)) {
-		case ExportConfig.OUTPUT_HTML:
-		case ExportConfig.OUTPUT_XML:
-			//  standard HTML options
-			//  figurine format ("tt" for TrueType, "img" for Image)
-			String figs = context.profile.getString("xsl.html.figs","tt");
-			//  standalone css ?
-			boolean cssStandalone = context.profile.getBoolean("xsl.css.standalone");
-			//  collateral dir (contains images & css)
-			String collpath = (context.collateral!=null && context.target instanceof File) ?
-			        FileUtil.getRelativePath(((File)context.target).getParentFile(),context.collateral,"/"):"";
-
-			handler.keyValue("option", "xsl.html.figs",figs);
-			handler.keyValue("option", "xsl.css.standalone", cssStandalone ? "true":"false");
-			handler.keyValue("option", "xsl.html.img.dir", collpath);
-			//  TODO use URL ?
-			break;
-		}
-
-		//  custom options defined in style sheet:
-		NodeList options = cfg.getElementsByTagName("jose:option");
-		for (int i=0; i < options.getLength(); i++)
-		{
-			Element option = (Element)options.item(i);
-			String key = XMLUtil.getChildValue(option,"jose:key");
-			Object value = context.profile.get(key);
-			if (value==null)
-				value = XMLUtil.getChildValue(option,"jose:default");
-
-			if (value != null)
-				handler.keyValue("option",key,value.toString());
-		}
-		handler.endElement("options");
 	}
 
 	public static void toSAX(PageFormat page, JoContentHandler handler) throws SAXException

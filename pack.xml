@@ -282,6 +282,7 @@
 			</zipfileset>
 			<zipfileset dir="fonts" prefix="fonts">
 				<include name="FIG-??-2.TTF"/>
+				<include name="Berlin.ttf"/>
 				<include name="FontAwesome.otf"/>
 			</zipfileset>
 			<zipfileset dir="lib/plaf" prefix="lib/plaf">
@@ -299,10 +300,6 @@
 				<include name="FIG-??-2.XML"/>
 			</zipfileset>
 			<zipfileset dir="xsl" prefix="xsl">
-				<include name="dhtml.xsl"/>
-				<include name="html.xsl"/>
-				<include name="html_body.xsl"/>
-				<include name="pdf.xsl"/>
 			</zipfileset>
 			<zipfileset dir="config" prefix="config">
 				<include name="fonts.xml"/>
