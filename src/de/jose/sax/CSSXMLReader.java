@@ -88,6 +88,8 @@ public class CSSXMLReader extends AbstractObjectReader
 		StyleContext.NamedStyle base = (StyleContext.NamedStyle) styles.getStyle("base");
 		fontFamilies.clear();
 		toSAX(base,handler);
+		//	always provide FontAwesome
+		fontFamilies.add(FontUtil.awesomeName());
 		toSAX(fontFamilies,handler);
 		handler.endElement("styles");
 	}

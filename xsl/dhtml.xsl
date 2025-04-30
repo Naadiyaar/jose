@@ -74,6 +74,18 @@
 			A { text-decoration: none}
 			img { border: 0; behavior: url(pngHack.htc); }
 			div.scroll-body { width: 100%; overflow:auto; border: thin; }
+			span.button {
+				font-family: "Font Awesome 6 Free Solid";
+				font-size: 28pt;
+				color: #006600;
+				background: #EEEEED;
+				border-radius: 16px;
+				cursor: grab;
+				padding-left: 16px;
+				padding-right: 16px;
+				user-select: none;
+				justify-content: center;
+			}
 			</style>
 		</head>
 		
@@ -89,7 +101,8 @@
             <xsl:value-of select="//figurines/dia/px-size"/><xsl:text>";
             </xsl:text>
 		</script>
-
+		<xsl:text>
+		</xsl:text>
 		<script language="JavaScript">
 			<xsl:attribute name="src">
                 <xsl:if test="string-length($jsurl)&gt;0">
@@ -101,6 +114,8 @@
 				</xsl:choose>
             </xsl:attribute>
 		</script>
+		<xsl:text>
+		</xsl:text>
 		<script language="JavaScript">
 			<xsl:attribute name="src">
 				<xsl:if test="string-length($jsurl)&gt;0">
@@ -109,6 +124,8 @@
 				<xsl:text>nav.js</xsl:text>
 			</xsl:attribute>
 		</script>
+		<xsl:text>
+		</xsl:text>
 		<!--	todo put nav.js and display-tt.js into one file -->
 
 		<xsl:apply-templates select="game"/>
@@ -175,55 +192,67 @@
 					<form>
 						<xsl:attribute name="name">game-<xsl:value-of select="$gidx"/></xsl:attribute>
 
-						<image width="36" height="32" src="backward-stop.png">
-							<xsl:attribute name="name">button-<xsl:value-of select="$gidx"/>-1</xsl:attribute>
+						<span>
+							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-1</xsl:attribute>
+							<xsl:attribute name="class">button</xsl:attribute>
 							<xsl:attribute name="onclick">first(<xsl:value-of select="$gidx"/>)</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,1,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,1,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,1,3)</xsl:attribute>
 							<xsl:attribute name="onmouseup">hover(<xsl:value-of select="$gidx"/>,1,4)</xsl:attribute>
-						</image>
-						<image width="36" height="32" src="left.png">
-							<xsl:attribute name="name">button-<xsl:value-of select="$gidx"/>-2</xsl:attribute>
+							<xsl:text>&#xf048;</xsl:text>
+						</span>
+						<span>
+							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-2</xsl:attribute>
+							<xsl:attribute name="class">button</xsl:attribute>
 							<xsl:attribute name="onclick">previous(<xsl:value-of select="$gidx"/>)</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,2,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,2,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,2,3)</xsl:attribute>
 							<xsl:attribute name="onmouseup">hover(<xsl:value-of select="$gidx"/>,2,4)</xsl:attribute>
-						</image>
-						<image width="36" height="32" src="right.png">
-							<xsl:attribute name="name">button-<xsl:value-of select="$gidx"/>-3</xsl:attribute>
+							<xsl:text>&#xf04f;</xsl:text>
+						</span>
+						<span>
+							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-3</xsl:attribute>
+							<xsl:attribute name="class">button</xsl:attribute>
 							<xsl:attribute name="onclick">next(<xsl:value-of select="$gidx"/>)</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,3,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,3,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,3,3)</xsl:attribute>
 							<xsl:attribute name="onmouseup">hover(<xsl:value-of select="$gidx"/>,3,4)</xsl:attribute>
-						</image>
-						<image width="36" height="32" src="forward-stop.png">
-							<xsl:attribute name="name">button-<xsl:value-of select="$gidx"/>-4</xsl:attribute>
+							<xsl:text>&#xf04b;</xsl:text>
+						</span>
+						<span>
+							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-4</xsl:attribute>
+							<xsl:attribute name="class">button</xsl:attribute>
 							<xsl:attribute name="onclick">last(<xsl:value-of select="$gidx"/>)</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,4,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,4,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,4,3)</xsl:attribute>
 							<xsl:attribute name="onmouseup">hover(<xsl:value-of select="$gidx"/>,4,4)</xsl:attribute>
-						</image>
+							<xsl:text>&#xf051;</xsl:text>
+						</span>
 
-						<image width="36" height="32" src="fast-forward.png">
-							<xsl:attribute name="name">button-<xsl:value-of select="$gidx"/>-5</xsl:attribute>
+						<span>
+							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-5</xsl:attribute>
+							<xsl:attribute name="class">button</xsl:attribute>
 							<xsl:attribute name="onclick">animate(<xsl:value-of select="$gidx"/>, 0.5, +1)</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,5,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,5,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,5,3)</xsl:attribute>
 							<xsl:attribute name="onmouseup">hover(<xsl:value-of select="$gidx"/>,5,4)</xsl:attribute>
-						</image>
-						<image width="36" height="32" src="stop.png">
-							<xsl:attribute name="name">button-<xsl:value-of select="$gidx"/>-6</xsl:attribute>
+							<xsl:text>&#xf04e;</xsl:text>
+						</span>
+						<span>
+							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-6</xsl:attribute>
+							<xsl:attribute name="class">button</xsl:attribute>
 							<xsl:attribute name="onclick">stop_animation()</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,6,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,6,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,6,3)</xsl:attribute>
 							<xsl:attribute name="onmouseup">hover(<xsl:value-of select="$gidx"/>,6,4)</xsl:attribute>
-						</image>
+							<xsl:text>&#xf04c;</xsl:text>
+						</span>
 					</form>
 				</td>
 			</tr>

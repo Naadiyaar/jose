@@ -107,13 +107,13 @@ function getGame(i) {
 
 function adjust_buttons(j)
 {
-    document.images['button-'+j+'-1'].isEnabled =                                          //  first
-        document.images['button-'+j+'-2'].isEnabled = (games[j].current >= games[j].start);    //  previous
-    document.images['button-'+j+'-3'].isEnabled =                                          //  next
-        document.images['button-'+j+'-4'].isEnabled = (games[j].current < (games[j].end-1));    //  last
+    document.getElementById('button-'+j+'-1').isEnabled = (games[j].current >= games[j].start);                                          //  first
+    document.getElementById('button-'+j+'-2').isEnabled = (games[j].current >= games[j].start);    //  previous
+    document.getElementById('button-'+j+'-3').isEnabled = (games[j].current < (games[j].end-1));                                         //  next
+    document.getElementById('button-'+j+'-4').isEnabled = (games[j].current < (games[j].end-1));    //  last
 
-    document.images['button-'+j+'-5'].isEnabled = (anim_game!=j) && (games[j].current < (games[j].end-1));    //  animate
-    document.images['button-'+j+'-6'].isEnabled = (anim_game==j);    //  stop
+    document.getElementById('button-'+j+'-5').isEnabled = (anim_game!=j) && (games[j].current < (games[j].end-1));    //  animate
+    document.getElementById('button-'+j+'-6').isEnabled = (anim_game==j);    //  stop
 
     for (var button=1; button<=6; button++)
         hover(j,button,0);
@@ -121,38 +121,26 @@ function adjust_buttons(j)
 
 function hover(j,button,state)
 {
-    var image = document.images['button-'+j+'-'+button];
+    var span = document.getElementById('button-'+j+'-'+button);
     if (state==0)
-        state = image.hoverState;
+        state = span.hoverState;
     else
-        image.hoverState = state;
+        span.hoverState = state;
 
-    var image_file;
-    switch (button) {
-        case 1: image_file = 'move.first'; break;
-        case 2: image_file = 'move.backward'; break;
-        case 3: image_file = 'move.forward'; break;
-        case 4: image_file = 'move.last'; break;
-        case 5: image_file = 'move.animate'; break;
-        case 6: image_file = 'engine.stop'; break;
-    }
-
-    if (!image.isEnabled) {
-        image.src = "nav/"+image_file+".off.png";
+    span.style.background = "#EEEEED";
+    if (!span.isEnabled) {
+        span.style.color = "#888888";
     }
     else switch (state) {
-        case 1: image.src = "nav/"+image_file+".hot.png";
-            break;     //  mouse over
+        case 1: span.style.color = "#009900"; break;     //  mouse over
         default:
         case 2: //  mouse out
         case 5: //  mouse up
-            image.src = "nav/"+image_file+".cold.png";
-            break;
-        case 3: image.src = "nav/"+image_file+".pressed.png";
-            break; //  mouse down
+                span.style.color = "#006600"; break;
+        case 3: span.style.background = "#808080"; break; //  mouse down
     }
 
-    image.hoverState = state;
+    span.hoverState = state;
 }
 
 function hilite(i,on)
