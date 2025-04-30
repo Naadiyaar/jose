@@ -104,11 +104,11 @@ java.util.EmptyStackException
     [x] JS animation
     [x] deprecate image figurine options
     [x] only one option in Export Dialog: [ ] complete page -> creates an aux folder
-    [ ] update strategy see: doc/Html Collateral.odt
-    [ ] edit styles in Swing GUI, picked up on server restart
+    [x] update strategy see: doc/Html Collateral.odt
+    [x] edit styles in Swing GUI, picked up on server restart
     [x] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
 
-[ ] Q: WHY is font antialiasing broken in text editor? style dialog?
+[ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling
