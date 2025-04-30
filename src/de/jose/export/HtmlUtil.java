@@ -390,6 +390,8 @@ public class HtmlUtil
 
 		for(String family : fontFamilies) {
 			File from = FontUtil.getTrueTypeFile(family,false,false,true);
+			if (from==null) continue;
+
 			File to = new File(dir,from.getName());
 			if (from.equals(to) || to.exists())
 				continue;

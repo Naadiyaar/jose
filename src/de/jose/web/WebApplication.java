@@ -18,7 +18,8 @@ import de.jose.comm.CommandAction;
 import de.jose.comm.CommandDispatcher;
 import de.jose.db.JoConnection;
 import de.jose.db.DBAdapter;
-import de.jose.window.JoFrame;
+import de.jose.util.FontUtil;
+import de.jose.util.file.FileUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -36,10 +37,10 @@ import static de.jose.comm.CommandAction.INVOKE_LATER;
  * @author Peter Sch�fer
  */
 
-@WebListener
-public class WebApplication extends Application implements ServletContextListener
+
+public class WebApplication extends Application
 {
-	public WebApplication()
+	public WebApplication(ServletContext context)
 			throws Exception
 	{
 		super();
@@ -69,6 +70,16 @@ public class WebApplication extends Application implements ServletContextListene
 
 		theCommandDispatcher = new CommandDispatcher();
 		//theCommandDispatcher.addCommandListener(this);
+		//	delete *.css, *.js from collateral dir
+		//	but keep fonts
+		File collateralDir = getCollateralDir(context);
+		FileUtil.deleteAllFiles(collateralDir,"js");
+		FileUtil.deleteAllFiles(collateralDir,"css");
+	}
+
+	public static File getCollateralDir(ServletContext ctx)
+	{
+		return new File(ctx.getRealPath(""));
 	}
 
 	public static Application open(ServletContext context, ServletResponse response)
@@ -80,10 +91,8 @@ public class WebApplication extends Application implements ServletContextListene
 					if (Application.theApplication==null) {
 						//  first call, load application config and database stuff
 						Version.setSystemProperty("jose.splash","off");
-						//File jspDir = new File(context.getRealPath(""));
-						//Version.setSystemProperty("jose.workdir", jspDir.getParentFile().getParent());
-						//  web directory is web/resource. Working directory is two levels above.
-						new WebApplication();
+
+						new WebApplication(context);
 					}
 				} catch (Throwable ex) {
                     try {
@@ -142,13 +151,17 @@ public class WebApplication extends Application implements ServletContextListene
 
 	}
 
-	@Override
-	public void contextInitialized(ServletContextEvent sce) {
-        open(sce.getServletContext(),null);
-    }
+	@WebListener
+	public static class AppListener implements ServletContextListener
+	{
+		@Override
+		public void contextInitialized(ServletContextEvent sce) {
+			open(sce.getServletContext(),null);
+		}
 
-	@Override
-	public void contextDestroyed(ServletContextEvent sce) {
-        close(sce.getServletContext(),null);
-    }
+		@Override
+		public void contextDestroyed(ServletContextEvent sce) {
+			close(sce.getServletContext(),null);
+		}
+	}
 }

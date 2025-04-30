@@ -199,13 +199,13 @@ public class CSSXMLReader extends AbstractObjectReader
 			String collpath = "";
             if (context.collateral != null) {
                 if (context.target instanceof File) {
-                    //	relative collateral path
+                    //	relative collateral path (from html to auxiliary dir)
                     File targetFile = (File) context.target;
                     File targetDir = targetFile.getParentFile();
                     collpath = FileUtil.getRelativePath(targetDir, context.collateral, "/");
                 } else {
-                    //	absolute collateral path
-                    collpath = context.collateral.getAbsolutePath();
+                    //	server mode
+                    collpath = ".";//context.collateral.getAbsolutePath();
                 }
             }
 

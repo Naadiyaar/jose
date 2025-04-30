@@ -20,7 +20,6 @@ import de.jose.util.ListUtil;
 import java.io.*;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
@@ -59,6 +58,13 @@ public class FileUtil
 				deleteDirectory(files[i],true);
 			files[i].delete();
 		}
+	}
+
+	public static void deleteAllFiles(File dir, String extension)
+	{
+		File[] files = dir.listFiles((dir1, name) -> extension.equalsIgnoreCase(getExtension(name)));
+		for(File file : files)
+			file.delete();
 	}
 
 	/**

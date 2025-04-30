@@ -201,9 +201,13 @@ public class FontUtil
 
 
 	public static Font fontAwesome() {
+		return fontAwesome("fonts");
+	}
+
+	public static Font fontAwesome(String fontsDir) {
 		try {
 			if (fontAwesome==null)
-				fontAwesome = FontUtil.loadCustomFont(new File("fonts/FontAwesome.otf"));
+				fontAwesome = FontUtil.loadCustomFont(new File(fontsDir,"FontAwesome.otf"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

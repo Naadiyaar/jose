@@ -205,7 +205,7 @@
 			<zipfileset dir="fonts" prefix="fonts">
 				<!--include name="Berlin.ttf"/-->
 				<include name="FontAwesome.otf"/>
-				<include name="FIG-*.TTF"/>
+				<!--include name="FIG-*.TTF"/-->
 			</zipfileset>
 		</zip>
 	</target>

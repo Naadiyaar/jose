@@ -32,7 +32,7 @@
 		<!-- copy navigation icons -->
 		<jose:param>
 			<jose:key>nav-icons</jose:key>
-			<jose:value>true</jose:value>
+			<jose:value>false</jose:value>
 		</jose:param>
 		<!-- name of linked CSS -->
 		<jose:param>

@@ -22,6 +22,7 @@ import de.jose.export.ExportContext;
 import de.jose.task.io.PGNExport;
 import de.jose.task.io.XMLExport;
 import de.jose.task.io.XSLFOExport;
+import de.jose.util.FontUtil;
 import de.jose.view.style.JoStyleContext;
 import de.jose.task.GameSource;
 
@@ -68,7 +69,7 @@ public class GameServlet extends HttpServlet
 
         ExportContext expContext = new ExportContext(); //  TODO create only one instance per session
         expContext.styles = (JoStyleContext)expContext.profile.getStyleContext();
-        expContext.collateral = new File(getServletContext().getRealPath(""));
+        expContext.collateral = WebApplication.getCollateralDir(getServletContext());
 
         expContext.source = GameSource.singleGame(gid);
         //  TODO we could print multiple games, too !
@@ -100,7 +101,7 @@ public class GameServlet extends HttpServlet
         }
     }
 
-    private static void printHtml(HttpServletResponse response, ExportContext expContext) throws Exception
+    private void printHtml(HttpServletResponse response, ExportContext expContext) throws Exception
     {
         response.setContentType("text/html");
         response.setCharacterEncoding("UTF-8");
@@ -109,8 +110,15 @@ public class GameServlet extends HttpServlet
 
         //  todo only after restart; no need to create it for every request
         File css = new File(expContext.collateral+"/games.css");
-        if (!css.exists())
-            HtmlUtil.createCollateral(expContext,false);
+        if (!css.exists()) {
+            synchronized (this) {
+                //	load fonts/FontsAwesome.otf
+                if (!css.exists()) {
+                    FontUtil.fontAwesome(expContext.collateral + "/fonts");
+                    HtmlUtil.createCollateral(expContext, false);
+                }
+            }
+        }
         //  setup XML exporter with appropriate style sheet
         XMLExport xmltask = new XMLExport(expContext);
         xmltask.setSilentTime(Integer.MAX_VALUE);
