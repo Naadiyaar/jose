@@ -192,21 +192,36 @@ public class CSSXMLReader extends AbstractObjectReader
 			//  figurine format ("tt" for TrueType, "img" for Image)
 			String figs = context.profile.getString("xsl.html.figs","tt");
 			//  standalone css ?
-			boolean cssStandalone = context.profile.getBoolean("xsl.css.standalone");
+			//boolean cssStandalone = context.profile.getBoolean("xsl.css.standalone");
 			//  collateral dir (contains images & css)
 			String collpath = "";
-			if (context.collateral!=null && context.target instanceof File) {
-				File targetFile = (File)context.target;
-				File targetDir = targetFile.getParentFile();
-				collpath = FileUtil.getRelativePath(targetDir,context.collateral,"/");
+            if (context.collateral != null) {
+                if (context.target instanceof File) {
+                    //	relative collateral path
+                    File targetFile = (File) context.target;
+                    File targetDir = targetFile.getParentFile();
+                    collpath = FileUtil.getRelativePath(targetDir, context.collateral, "/");
+                } else {
+                    //	absolute collateral path
+                    collpath = context.collateral.getAbsolutePath();
+                }
+            }
+
+			if (!collpath.isEmpty()) {
+				handler.keyValue("option", "xsl.html.img.dir",collpath+"/nav");
+				handler.keyValue("option", "xsl.css.standalone", "true");	//@deprecated
+				handler.keyValue("option", "xsl.html.font.dir", collpath+"/fonts");
+				handler.keyValue("option", "xsl.html.css.dir", collpath);
+				handler.keyValue("option", "xsl.html.js.dir", collpath);
+			} else {
+				//	default paths into working dir
+				collpath = Application.theWorkingDirectory.getAbsolutePath();
+				handler.keyValue("option", "xsl.html.img.dir",collpath+"/images/nav");
+				handler.keyValue("option", "xsl.css.standalone", "true");	//@deprecated
+				handler.keyValue("option", "xsl.html.font.dir", collpath+"/fonts");
+				handler.keyValue("option", "xsl.html.css.dir", collpath);
+				handler.keyValue("option", "xsl.html.js.dir", collpath+"/xsl");
 			}
-			String fontsPath = (Application.relFontsDirectory!=null) ? Application.relFontsDirectory : (Application.theWorkingDirectory+"/fonts");
-			//	todo  fontsPath = keepFontsClose ? collateral/fonts : jose.workdir/fonts
-			handler.keyValue("option", "xsl.html.figs",figs);
-			handler.keyValue("option", "xsl.css.standalone", cssStandalone ? "true":"false");
-			handler.keyValue("option", "xsl.html.img.dir", collpath);
-			handler.keyValue("option", "xsl.html.font.dir", fontsPath);
-			//	figurine chars for diagrams
 
 			break;
 		}

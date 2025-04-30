@@ -10,6 +10,12 @@
 	<xsl:import href="html_body.xsl"/>
 	<xsl:output method="html" version="4.0" encoding="UTF-8" indent="yes"/>
 
+<!--
+        Html page with JavaScript and figurine images;
+        deprecated in favor of TrueType figurines
+        but kept b/c all the machinery is still available
+ -->
+
 	<!-- the following info is evalulated by the jose application (not the XSLT processor) -->
 	<jose:export xmlns:jose="http://jose-chess.sourceforge.net/xsl-info">
 		<jose:title>xsl.dhtml</jose:title>

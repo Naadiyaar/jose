@@ -12,6 +12,7 @@
 
 package de.jose.export;
 
+import de.jose.Language;
 import de.jose.profile.FontEncoding;
 import de.jose.util.FontUtil;
 import de.jose.util.file.FileUtil;
@@ -286,7 +287,7 @@ public class HtmlUtil
 		switch (context.getOutput()) {
 		case ExportConfig.OUTPUT_HTML:
 			context.target = File.createTempFile("jose",".html");
-            createCollateral(context);
+            createCollateral(context,false);
 			break;
 		case ExportConfig.OUTPUT_XML:
 			context.target = File.createTempFile("jose",".xml");
@@ -311,51 +312,56 @@ public class HtmlUtil
 			task.run();     //  wait for task to complete
 	}
 
-	public static File createCollateral(ExportContext context)
+	public static File createCollateral(ExportContext context, boolean createNextToTarget)
 	        throws Exception
 	{
-		boolean needsImages =
-		        (context.styles.useFigurineFont() && "img".equals(context.profile.getString("xsl.html.figs")))
-		        || ExportConfig.getBooleanParam(context.config,"large-icons",false);
-		boolean needsCSS = context.profile.getBoolean("xsl.css.standalone");
+		//	figurine images are @deprecated
+		//	we only need some button images
+		//boolean needsImages =
+		//        (context.styles.useFigurineFont() && "img".equals(context.profile.getString("xsl.html.figs")))
+		//        || ExportConfig.getBooleanParam(context.config,"large-icons",false);
+		//	emebedded stylesheets are @deprecated. we always place them in games.css
+		//boolean needsCSS = context.profile.getBoolean("xsl.css.standalone");
 
 		//  create CSS and images, if necessary
-		if (context.collateral==null)
-			context.collateral = (File)context.profile.get("xsl.html.img.dir");
+		if (context.collateral==null && createNextToTarget && (context.target instanceof File)) {
+			//context.collateral = (File) context.profile.get("xsl.html.img.dir");
+			File targetFile = (File)context.target;
+			File parent = targetFile.getParentFile();
+			String folderName = FileUtil.trimExtension(targetFile.getName())+" "+ Language.get("export.collateral");
+			context.collateral = FileUtil.makeUniqueDir(parent,folderName);
+		}
 
 		File homeFile = ExportConfig.getFile(context.config);
 		File homeDir = homeFile.getParentFile();
 
-		if (needsImages || needsCSS) {
-			File appCollateral = context.collateral;
-			if (context.collateral==null && context.target instanceof File)
-				context.collateral = ((File)context.target).getParentFile();
-			context.collateral.mkdirs();
-			if (needsImages)    //  create images
-				createImages(context,context.collateral);
-			if (needsCSS) {       //  create CSS
-				String cssCreator = ExportConfig.getParam(context.config, "css-xsl");
-				String cssTarget = ExportConfig.getParam(context.config, "css-file");
-				File targetFile = new File(context.collateral,cssTarget);
-				if (!targetFile.exists()) {
-					Set<String> fontFamilies = createCSS(context, new File(homeDir, cssCreator), targetFile);
-					if (appCollateral!=null) {
-						//	e.g. Web Context. Copy fonts to server directory
-						tryCopyFonts(fontFamilies, appCollateral+"/fonts");
-					}
-				}
-			}
+		// @deprecated	createImages(context,context.collateral);
 
-			//  copy JavaScript
-			String[] jsFiles = ExportConfig.getParams(context.config, "js-file");
-			if (jsFiles != null)
-				for (int i=0; i < jsFiles.length; i++)
-				{
-					File targetFile = new File(context.collateral,jsFiles[i]);
-					if (!targetFile.exists())
-						FileUtil.copyFile(new File(homeDir, jsFiles[i]), context.collateral);
-				}
-		}
+		String cssCreator = ExportConfig.getParam(context.config, "css-xsl");
+		String cssTarget = ExportConfig.getParam(context.config, "css-file");
+		File cssFile;
+		if (context.collateral!=null)
+			cssFile = new File(context.collateral,cssTarget);
+		else
+			cssFile = new File(Application.theWorkingDirectory,cssTarget);
+
+		Set<String> fontFamilies = createCSS(context, new File(homeDir,cssCreator), cssFile);
+		if (context.collateral==null)
+			return null;	//	our work is done
+
+		//	if there is a collateral directory, copy some necessary stuff, too:
+		//	e.g. Web Context. Copy fonts to server directory
+		tryCopyFonts(fontFamilies, context.collateral+"/fonts");
+
+		//  copy JavaScript
+		String[] jsFiles = ExportConfig.getParams(context.config, "js-file");
+		if (jsFiles != null)
+			for (int i=0; i < jsFiles.length; i++)
+			{
+				File targetFile = new File(context.collateral,jsFiles[i]);
+				if (!targetFile.exists())
+					FileUtil.copyFile(new File(homeDir, jsFiles[i]), context.collateral);
+			}
 
 		//  copy navigation images
 		if (ExportConfig.getBooleanParam(context.config,"nav-icons",false)) {

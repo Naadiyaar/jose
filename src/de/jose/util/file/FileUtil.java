@@ -565,6 +565,22 @@ public class FileUtil
     }
 
 
+	public static File makeUniqueDir(File parent, String name) throws IOException {
+		File file = new File(parent,name);
+		if (!file.exists()) {
+			file.mkdirs();
+			return file;
+		}
+		for (int ext=2; ext < 1000; ++ext) {
+			file = new File(parent,name+" ("+ext+")");
+			if (!file.exists()) {
+				file.mkdirs();
+				return file;
+			}
+		}
+		throw new IOException("can not create folder");
+	}
+
 
 
 	/**

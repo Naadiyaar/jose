@@ -98,14 +98,18 @@ java.util.EmptyStackException
     [x] figurines
     [x] diagram in text
     [x] JS diagram
+        [ ] use a single span instead of a table
+    [ ] awesome icons
     [ ] JS animation
     [ ] deprecate image figurine options
-    [-] edit styles in Swing GUI
-    [ ] update strategy for:
-        [ ] GUI: games.css (always), nav.js (always), display-tt.js (always), fonts (as needed), ...
-        [ ] Web: games.css (on first call), nav.js (on first call), display-tt.js (on first call), fonts (as needed), ...
-    [ ] awesome icons
+    [ ] only one option in Export Dialog: [ ] complete page -> creates an aux folder
+    [ ] update strategy see: doc/Html Collateral.odt
+    [ ] edit styles in Swing GUI, picked up on server restart
     [ ] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
+
+[ ] Q: is font antialiasing broken in text editor? style dialog?
+    (check with production package, not in IDE)
+
 
 [ ] Annotation: layout in small panels
     [x] ScrollPane without bars; use mouse wheel scrolling

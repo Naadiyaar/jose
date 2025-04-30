@@ -12,11 +12,7 @@
 
 package de.jose.task;
 
-import de.jose.chess.Position;
-import de.jose.sax.AbstractObjectReader;
 import de.jose.sax.GameXMLReader;
-import de.jose.pgn.Game;
-import de.jose.profile.UserProfile;
 import de.jose.export.ExportContext;
 
 import javax.xml.transform.Source;

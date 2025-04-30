@@ -107,7 +107,10 @@ public class GameServlet extends HttpServlet
 //		response.setHeader("Content-disposition", "inline");
         expContext.target = response.getWriter();
 
-        HtmlUtil.createCollateral(expContext);
+        //  todo only after restart; no need to create it for every request
+        File css = new File(expContext.collateral+"/games.css");
+        if (!css.exists())
+            HtmlUtil.createCollateral(expContext,false);
         //  setup XML exporter with appropriate style sheet
         XMLExport xmltask = new XMLExport(expContext);
         xmltask.setSilentTime(Integer.MAX_VALUE);

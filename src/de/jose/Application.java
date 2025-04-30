@@ -161,7 +161,13 @@ public class Application
 	 */
 	public static File			theDatabaseDirectory;
 
-	public static String		relFontsDirectory = null;
+	/**
+	 * Application is running in a server context, e.g. WebApplication
+	 * - no gui
+	 * - export.collateral refers to a server-side directory
+	 * - html url paths must be relative to the above
+	 */
+	public static boolean		serverMode = false;
 
     /** game history    */
     public static History       theHistory;
@@ -1845,7 +1851,7 @@ public class Application
 				switch (context.getOutput())
 				{
 				case ExportConfig.OUTPUT_HTML:
-					HtmlUtil.createCollateral(context);
+					HtmlUtil.createCollateral(context, context.profile.getBoolean("xsl.html.complete"));
 					HtmlUtil.exportFile(context,true);
 					break;
 

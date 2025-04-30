@@ -78,7 +78,7 @@
 		</head>
 		
 		<body>		
-		
+		<!-- @deprecated -->
 		<script language="JavaScript">
 			<xsl:text>
             imgurl = "</xsl:text>
@@ -89,11 +89,11 @@
             <xsl:value-of select="//figurines/dia/px-size"/><xsl:text>";
             </xsl:text>
 		</script>
-		
+
 		<script language="JavaScript">
 			<xsl:attribute name="src">
-                <xsl:if test="string-length($imgurl)&gt;0">
-                    <xsl:value-of select="$imgurl"/><xsl:text>/</xsl:text>
+                <xsl:if test="string-length($jsurl)&gt;0">
+                    <xsl:value-of select="$jsurl"/><xsl:text>/</xsl:text>
                 </xsl:if>
 				<xsl:choose>
 					<xsl:when test="$imgfig"><xsl:text>display-img.js</xsl:text></xsl:when>
@@ -103,12 +103,13 @@
 		</script>
 		<script language="JavaScript">
 			<xsl:attribute name="src">
-				<xsl:if test="string-length($imgurl)&gt;0">
-					<xsl:value-of select="$imgurl"/><xsl:text>/</xsl:text>
+				<xsl:if test="string-length($jsurl)&gt;0">
+					<xsl:value-of select="$jsurl"/><xsl:text>/</xsl:text>
 				</xsl:if>
 				<xsl:text>nav.js</xsl:text>
 			</xsl:attribute>
 		</script>
+		<!--	todo put nav.js and display-tt.js into one file -->
 
 		<xsl:apply-templates select="game"/>
 

@@ -40,6 +40,7 @@ import java.net.URL;
  * Please note that rendering HTML in Swing produces poor results.
  * It is MUCH better to use an external browser for previewing.
  *
+ * @deprecated
  * @author Peter Sch�fer
  */
 
@@ -146,7 +147,7 @@ public class HTMLPrintableDocument
 				//  create collateral files (CSS, images) in temp dir / or used configed dir
 				//  not really used; but needed for determining temp dir
 				context.target = File.createTempFile("jose","html");
-				File collateralDir = HtmlUtil.createCollateral(context);
+				File collateralDir = HtmlUtil.createCollateral(context,false);
 				URL collateralURL = null;
 				if (collateralDir!=null)
 					collateralURL = new URL("file", null, collateralDir.getAbsolutePath() + "/dummy.html");

@@ -103,6 +103,7 @@ public class ExportContext implements Cloneable
 
 		case ExportConfig.OUTPUT_HTML:
 		case ExportConfig.OUTPUT_TEXT:
+			//@deprecated use Browser Preview instead
 			return new HTMLPrintableDocument(this);
 
 		case ExportConfig.OUTPUT_XSL_FO:

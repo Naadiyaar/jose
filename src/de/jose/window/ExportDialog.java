@@ -691,6 +691,15 @@ public class ExportDialog
 
 	protected void createHtmlPanel(int output)
 	{
+/*	@deprecated
+	- image figurines are deprecated in favor of TrueType. @font-face makes it possible
+	- embedded style sheets are deprecated. we need collateral files, anyway
+
+	so, there is only one option left, that most people already know from their browser:
+	* export html page only
+	* export html page plus collateral data in an auxiliary
+ */
+/*
 		add(exportOptions, newRadioButton("xsl.html.figs.tt"), gridConstraint(ELEMENT_TWO_SMALL,1,1,3));   //  use TrueType fonts for figurines
 		add(exportOptions, newRadioButton("xsl.html.figs.img"), gridConstraint(ELEMENT_TWO_SMALL,1,2,3));  //  use Images for figurines
 		newButtonGroup("xsl.html.figs");
@@ -715,8 +724,9 @@ public class ExportDialog
 		add(exportOptions,dirInput, gridConstraint(ELEMENT_TWO,1,5,3));    		//  image & css directory (optional)
 		 //  create images & css NOW
 		add(exportOptions, newButton("xsl.create.images"), gridConstraint(ELEMENT_TWO_SMALL,1,6,3));
-
-		add(exportOptions,newLabel(" "),ELEMENT_REMAINDER);
+*/
+		add(exportOptions, newCheckBox("xsl.html.complete"), ELEMENT_TWO_SMALL);
+		add(exportOptions, newLabel(" "),ELEMENT_REMAINDER);
 	}
 
 	protected void createFOPanel()

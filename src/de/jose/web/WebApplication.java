@@ -64,7 +64,7 @@ public class WebApplication extends Application implements ServletContextListene
 		theUserProfile.set("xsl.pdf.bookmarks",false);
 		theUserProfile.getStyleContext().setFigurineFont(true);
 		theUserProfile.set("xsl.html.figs","tt");	// use TrueType figurine in html
-		relFontsDirectory = "fonts";	//	use relative font path (required for web server)
+		serverMode = true;	//	use relative font path (required for web server)
 		Language.setLanguage(theLanguageDirectory, theUserProfile.getString("user.language"));
 
 		theCommandDispatcher = new CommandDispatcher();

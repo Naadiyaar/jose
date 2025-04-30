@@ -6,6 +6,7 @@
 	<xsl:param name="imgfig" select="//option[key='xsl.html.figs']/value='img'"/>
 	<!-- directory that contains figurine images -->
 	<xsl:param name="imgurl" select="//option[key='xsl.html.img.dir']/value"/>
+	<xsl:param name="jsurl" select="//option[key='xsl.html.js.dir']/value"/>
 
 	<xsl:param name="inlineurl">
         <xsl:if test="string-length($imgurl)&gt;0">

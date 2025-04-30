@@ -532,9 +532,6 @@ dialog.export.games.? = Sie haben eine <b>unbekannte</b> Zahl von Partien zum Dr
 dialog.export.confirm = Sind sie sicher ?
 dialog.export.yes = Alle Drucken
 
-dialog.export.iso8859=ISO (PGN-Standard)
-dialog.export.utf8=Unicode (utf-8)
-
 # xsl stylesheet options
 
 export.pgn = PGN Datei
@@ -542,6 +539,7 @@ export.pgn.tip = Exportiert Partien im PGN-Dateiformat.
 
 export.archive = Jose-Archiv
 export.archive.tip = Exportiert Partien in eine Archiv-Datei.
+export.collateral = Dateien
 
 print.awt = Drucker
 print.awt.tip = Druckt Partien.<br> \
@@ -580,6 +578,7 @@ xsl.css.standalone = CSS Stylesheet in eigener Datei
 
 xsl.html.img.dir = Pfad
 xsl.create.images = Bilder erzuegen
+xsl.html.complete = Vollst‰ndige Seite
 
 xsl.pdf.embed = TrueType Fonts einbetten
 xsl.pdf.font.dir = Zus√§tzliche Fonts:

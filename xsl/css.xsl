@@ -89,7 +89,7 @@
 <!-- called from html.xsl to insert a link to a css sheet, or embed an css sheet -->
 <xsl:template name="include_css">
 	<!-- directory that contains figurine images -->
-	<xsl:param name="cssurl" select="//option[key='xsl.html.img.dir']/value"/>
+	<xsl:param name="cssurl" select="//option[key='xsl.html.css.dir']/value"/>
 	<!-- location of CSS -->
 	<xsl:param name="css_standalone" select="//option[key='xsl.css.standalone']/value='true'"/>
 
