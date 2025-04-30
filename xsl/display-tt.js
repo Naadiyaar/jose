@@ -7,55 +7,57 @@ function display(j, fen) {
 
     var i = 0;
     var k = 0;
+    var pos = "";
     while (k < 64 && i < fen.length) {
         var c = fen.charAt(i++);
 
         switch (c) {
-            case 'p':	k = set(j,k,3, 1); break;
-            case 'n':	k = set(j,k,3, 2); break;
-            case 'b':	k = set(j,k,3, 3); break;
-            case 'r':	k = set(j,k,3, 4); break;
-            case 'q':	k = set(j,k,3, 5); break;
-            case 'k':	k = set(j,k,3, 6); break;
+            case 'p':   pos += pchar(k,3, 1); k++; break;
+            case 'n':	pos += pchar(k,3, 2); k++; break;
+            case 'b':	pos += pchar(k,3, 3); k++; break;
+            case 'r':	pos += pchar(k,3, 4); k++; break;
+            case 'q':	pos += pchar(k,3, 5); k++; break;
+            case 'k':	pos += pchar(k,3, 6); k++; break;
 
-            case 'P':	k = set(j,k,1, 1); break;
-            case 'N':	k = set(j,k,1, 2); break;
-            case 'B':	k = set(j,k,1, 3); break;
-            case 'R':	k = set(j,k,1, 4); break;
-            case 'Q':	k = set(j,k,1, 5); break;
-            case 'K':	k = set(j,k,1, 6); break;
+            case 'P':	pos += pchar(k,1, 1); k++; break;
+            case 'N':	pos += pchar(k,1, 2); k++; break;
+            case 'B':	pos += pchar(k,1, 3); k++; break;
+            case 'R':	pos += pchar(k,1, 4); k++; break;
+            case 'Q':	pos += pchar(k,1, 5); k++; break;
+            case 'K':	pos += pchar(k,1, 6); k++; break;
 
-            case '1':	k = empty(j,k,1);	break;
-            case '2':	k = empty(j,k,2);	break;
-            case '3':	k = empty(j,k,3);	break;
-            case '4':	k = empty(j,k,4);	break;
-            case '5':	k = empty(j,k,5);	break;
-            case '6':	k = empty(j,k,6);	break;
-            case '7':	k = empty(j,k,7);	break;
-            case '8':	k = empty(j,k,8);	break;
+            case '1':	pos += empty(k,1); k+=1;	break;
+            case '2':	pos += empty(k,2); k+=2;	break;
+            case '3':	pos += empty(k,3); k+=3;	break;
+            case '4':	pos += empty(k,4); k+=4;	break;
+            case '5':	pos += empty(k,5); k+=5;	break;
+            case '6':	pos += empty(k,6); k+=6;	break;
+            case '7':	pos += empty(k,7); k+=7;	break;
+            case '8':	pos += empty(k,8); k+=8;	break;
 
-//		case '/':	k = empty(j,k,7-k%8); break;
+    		case '/':	pos += '\n'; break;
         }
     }
 
     if (k < 64)
-        empty(j,k,64-k);
+        pos += empty(k,64-k);
+
+    document.getElementById("board-"+j).textContent = pos;
 }
 
-function set(j,k, r,c)
+function pchar(k,r,c)
 {
-    var iname = "i-"+j+"-"+k;
     var file = k%8;
     var row = Math.floor(k/8);
     var dark = (file+row)%2;
 
-    document.getElementById(iname).textContent = dia[r+dark][c];
-    return k+1;
+    return dia[r+dark][c];
 }
 
-function empty(j,k,count)
+function empty(k,count)
 {
+    var s="";
     while (count-- > 0)
-        k = set(j,k,1, 0);
-    return k;
+        s += pchar(k++,1, 0);
+    return s;
 }

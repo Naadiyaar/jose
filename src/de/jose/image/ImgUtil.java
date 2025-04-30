@@ -270,6 +270,12 @@ public class ImgUtil
 		        on ? RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 	}
 
+	public static void setAntialiasing(Graphics2D g, boolean on)
+	{
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				on ? RenderingHints.VALUE_ANTIALIAS_ON : RenderingHints.VALUE_ANTIALIAS_OFF);
+	}
+
 
 	public static BufferedImage readJpeg(File f)
 		throws Exception

@@ -266,61 +266,15 @@
 		<xsl:param name="gidx"/>
 		
 		<table border="1" cellpadding="0" cellspacing="0"><tr><td>
-		<table cellpadding="0" cellspacing="0">
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="0"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="1"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="2"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="3"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="4"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="5"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="6"/></xsl:call-template>
-			<xsl:call-template name="create-diagram-row"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="7"/></xsl:call-template>
-		</table>
+			<span>
+				<xsl:attribute name="id">board-<xsl:value-of select="$gidx"/></xsl:attribute>
+				<xsl:attribute name="class">html_large</xsl:attribute>
+				<xsl:attribute name="style">white-space: pre-line;</xsl:attribute>
+<!--
+				<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
+				<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
+-->
+			</span>
 		</td></tr></table>
 	</xsl:template>
-	
-	<xsl:template name="create-diagram-row">
-		<xsl:param name="gidx"/>
-		<xsl:param name="row"/>
-		
-		<tr>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="0"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="1"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="2"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="3"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="4"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="5"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="6"/></xsl:call-template>
-		<xsl:call-template name="create-diagram-cell"><xsl:with-param name="gidx" select="$gidx"/><xsl:with-param name="row" select="$row"/><xsl:with-param name="col" select="7"/></xsl:call-template>
-		<!--<br clear="all"/>-->
-		</tr>
-	</xsl:template>
-	
-	<xsl:template name="create-diagram-cell">
-		<xsl:param name="gidx"/>
-		<xsl:param name="row"/>
-		<xsl:param name="col"/>
-		<xsl:param name="imgfig" select="/*//option[key='xsl.html.figs']/value='img'"/>
-
-		<td>
-		<xsl:choose>
-			<xsl:when test="$imgfig">
-				<img>
-					<xsl:attribute name="name">i-<xsl:value-of select="$gidx"/>-<xsl:value-of select="8*$row+$col"/></xsl:attribute>
-					<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-					<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-				</img>
-			</xsl:when>
-			<xsl:otherwise>
-				<span>
-					<xsl:attribute name="id">i-<xsl:value-of select="$gidx"/>-<xsl:value-of select="8*$row+$col"/></xsl:attribute>
-					<xsl:attribute name="class">html_large</xsl:attribute>
-					<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-					<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
-				</span>
-			</xsl:otherwise>
-		</xsl:choose>
-		</td>
-	</xsl:template>
-	
 </xsl:stylesheet>

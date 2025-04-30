@@ -355,7 +355,8 @@ public class DocumentEditor
 	public void paintComponent(Graphics g)
 	{
 		//  enable antialiasing & other useful stuff
-		ImgUtil.setTextAntialiasing((Graphics2D)g, antialias);
+		ImgUtil.setAntialiasing((Graphics2D)g, true);
+		ImgUtil.setTextAntialiasing((Graphics2D)g, true);
 		super.paintComponent(g);
 	}
 

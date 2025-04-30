@@ -210,16 +210,16 @@ public class CSSXMLReader extends AbstractObjectReader
 			if (!collpath.isEmpty()) {
 				handler.keyValue("option", "xsl.html.img.dir",collpath+"/nav");
 				handler.keyValue("option", "xsl.css.standalone", "true");	//@deprecated
-				handler.keyValue("option", "xsl.html.font.dir", collpath+"/fonts");
 				handler.keyValue("option", "xsl.html.css.dir", collpath);
+				handler.keyValue("option", "xsl.html.font.dir", "fonts");	//	always relative to *.css, right?
 				handler.keyValue("option", "xsl.html.js.dir", collpath);
 			} else {
 				//	default paths into working dir
 				collpath = Application.theWorkingDirectory.getAbsolutePath();
 				handler.keyValue("option", "xsl.html.img.dir",collpath+"/images/nav");
 				handler.keyValue("option", "xsl.css.standalone", "true");	//@deprecated
-				handler.keyValue("option", "xsl.html.font.dir", collpath+"/fonts");
 				handler.keyValue("option", "xsl.html.css.dir", collpath);
+				handler.keyValue("option", "xsl.html.font.dir", "fonts");	//	always relative to *.css, right?
 				handler.keyValue("option", "xsl.html.js.dir", collpath+"/xsl");
 			}
 
