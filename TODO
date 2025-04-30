@@ -101,7 +101,7 @@ java.util.EmptyStackException
         [x] use a single span instead of a table
     [x] awesome icons
         [ ] in Web App
-    [ ] JS animation
+    [x] JS animation
     [x] deprecate image figurine options
     [x] only one option in Export Dialog: [ ] complete page -> creates an aux folder
     [ ] update strategy see: doc/Html Collateral.odt

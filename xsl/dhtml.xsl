@@ -236,7 +236,7 @@
 						<span>
 							<xsl:attribute name="id">button-<xsl:value-of select="$gidx"/>-5</xsl:attribute>
 							<xsl:attribute name="class">button</xsl:attribute>
-							<xsl:attribute name="onclick">animate(<xsl:value-of select="$gidx"/>, 0.5, +1)</xsl:attribute>
+							<xsl:attribute name="onclick">animate_game(<xsl:value-of select="$gidx"/>, 0.5, +1)</xsl:attribute>
 							<xsl:attribute name="onmouseover">hover(<xsl:value-of select="$gidx"/>,5,1)</xsl:attribute>
 							<xsl:attribute name="onmouseout">hover(<xsl:value-of select="$gidx"/>,5,2)</xsl:attribute>
 							<xsl:attribute name="onmousedown">hover(<xsl:value-of select="$gidx"/>,5,3)</xsl:attribute>

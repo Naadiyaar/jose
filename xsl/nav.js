@@ -165,7 +165,7 @@ function moveit() {
         stop_animation();
 }
 
-function animate(j, delay, direction) {
+function animate_game(j, delay, direction) {
     if (anim_game>=0) clearTimeout(timer_id);
 
     anim_delay = delay;
