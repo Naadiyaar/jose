@@ -90,7 +90,7 @@
 		</head>
 		
 		<body>		
-		<!-- @deprecated -->
+		<!-- @deprecated
 		<script language="JavaScript">
 			<xsl:text>
             imgurl = "</xsl:text>
@@ -100,7 +100,7 @@
             <xsl:value-of select="//figurines/dia/font"/><xsl:text>/</xsl:text>
             <xsl:value-of select="//figurines/dia/px-size"/><xsl:text>";
             </xsl:text>
-		</script>
+		</script>-->
 		<xsl:text>
 		</xsl:text>
 		<script language="JavaScript">
@@ -298,7 +298,7 @@
 			<span>
 				<xsl:attribute name="id">board-<xsl:value-of select="$gidx"/></xsl:attribute>
 				<xsl:attribute name="class">html_large</xsl:attribute>
-				<xsl:attribute name="style">white-space: pre-line;</xsl:attribute>
+				<xsl:attribute name="style">white-space: pre-wrap;</xsl:attribute>
 <!--
 				<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
 				<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
