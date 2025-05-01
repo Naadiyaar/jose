@@ -35,18 +35,26 @@
 		return ! oldValue.equals(newValue);
 	}
 %>
+<%
+	WebApplication.open(application,response);
+	SessionUtil su = new SessionUtil(request,session);
+	WebApplication.createCollateral(su);
+%>
 
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="StyleSheet" type="text/css" href="games.css">
+
 	<title>jose Web Interface</title>
 	<style>
 		td,th,input { font-family: Arial,Helvetica,Sans-Serif; font-size: 14px; }
 		TR.odd {  background-color: #e2e2ff;}
 		TR.even {  background-color: #eeeeff; }
-		TD { padding:2 4 2 4; white-space: nowrap; }
+		TD { padding:2px 4px 2px 4px; white-space: nowrap; }
 		TD.center { text-align: center; }
 		TD.right { text-align: right; }
-		TR.header, TR.footer {  background-color: #e5e5e5; padding: 8 4 8 4; }
+		TR.header, TR.footer {  background-color: #e5e5e5; padding: 8px 4px 8px 4px; }
 		A { color:black; text-decoration: none; }
 		SELECT.footer { background-color: #e5e5e5 }
 
@@ -69,9 +77,6 @@
 	</style>
 </head>
 <%
-	WebApplication.open(application,response);
-	SessionUtil su = new SessionUtil(request,session);
-
 	int count_results = su.getInt("count-results",-1,true);
 
 	//  get search record
@@ -190,105 +195,105 @@
 <table cellspacing="0">
 	<tr class="header">
 		<th>
-			<a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_IDX+1)%>)"><%=Language.get("column.game.index")%>&nbsp;<%
+			<a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_IDX+1)%>)"><%=Language.get("column.game.index")%><%
 				if (search.sortOrder==+(ListPanel.COL_IDX+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_IDX+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th>
 			<a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_WNAME+1)%>)"><%=Language.get("column.game.white.name")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_WNAME+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_WNAME+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th>
 			<a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_WELO+1)%>)">ELO&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_WELO+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_WELO+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th>
 			<a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_BNAME+1)%>)"><%=Language.get("column.game.black.name")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_BNAME+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_BNAME+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_BELO+1)%>)">ELO&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_BELO+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_BELO+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_RESULT+1)%>)"><%=Language.get("column.game.result")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_RESULT+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_RESULT+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_EVENT+1)%>)"><%=Language.get("column.game.event")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_EVENT+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_EVENT+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_SITE+1)%>)"><%=Language.get("column.game.site")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_SITE+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_SITE+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_ROUND+1)%>)"><%=Language.get("column.game.round")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_ROUND+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_ROUND+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_DATE+1)%>)"><%=Language.get("column.game.date")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_DATE+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_DATE+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 		</th>
 		<th><a href="javascript:submit('sort',<%=search.toggleSortOrder(ListPanel.COL_OPENING+1)%>)"><%=Language.get("column.game.opening")%>&nbsp;<%
 				if (search.sortOrder==+(ListPanel.COL_OPENING+1)) {
-					%><img src="down8.gif" title="aufsteigend sortiert" width=8 height=8 border=0><%
+					%><img src="down8.gif" title="<%=Language.getTip("column.sort.asc")%>" width=8 height=8 border=0><%
 				}
 				else if (search.sortOrder==-(ListPanel.COL_OPENING+1)) {
-					%><img src="up8.gif" title="absteigend sortiert" width=8 height=8 border=0><%
+					%><img src="up8.gif" title="<%=Language.getTip("column.sort.desc")%>" width=8 height=8 border=0><%
 				}
 		%></a>
 	</th>
@@ -444,7 +449,7 @@
  } %><input type=image src="border-right.gif" alt="" name="ignore1" class="srchimgs"
 			     align="absbottom" border="0" height="18" width="9">
 		</td>
-		<td>Seite&nbsp;
+		<td><%=Language.get("web.page")%>
 <%
 	//  page navigation
 		int max_page;
@@ -512,7 +517,7 @@
 			<img src="border-left.gif" alt="" class="srchimgs" align="absbottom" border="0" height="18" width="9"
 			><input tabindex=3 name="pagesize" class="sbox-page" value="<%=pagesize%>"
 			><input type=image src="border-right.gif" alt="" class="srchimgs" align="absbottom" border="0" height="18" width="9">
-				Zeilen
+					<%=Language.get("web.rows")%>
 			</td></tr></table>
 		</td>
 	</tr>

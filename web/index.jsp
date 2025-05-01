@@ -67,9 +67,8 @@
 <script language="JavaScript">
 	var cids = new Array();
 
-	function adjust_image(CId)
-	{
-		var xicon = document.getElementById('x-'+CId);
+	function adjust_image(CId) {
+		var xicon = document.getElementById('x-' + CId);
 		if (!xicon.canExpand)
 			xicon.textContent = " ";
 		else if (xicon.isExpanded)
@@ -77,12 +76,33 @@
 		else
 			xicon.textContent = "\uf054";
 
-		var ficon = document.getElementById('f-'+CId);
-		if (xicon.canExpand && xicon.isExpanded)
+		var ficon = document.getElementById('f-' + CId);
+		switch(CId) {
+			case <%=Collection.TRASH_ID%>:
+				ficon.textContent = "\uf2ed";
+				ficon.style.color = "#aaaaaa";
+				return;
+			case <%=Collection.CLIPBOARD_ID%>:
+				ficon.textContent = "\uf328";
+				ficon.style.color = "#aaaaaa";
+				return;
+			case <%=Collection.AUTOSAVE_ID%>:
+				ficon.textContent = "\uf0c7";
+				ficon.style.color = "#aaaaaa";
+				return;
+			case <%=Collection.INTRAY_ID%>:
+				ficon.textContent = "\uf01c";
+				ficon.style.color = "#aaaaaa";
+				return;
+		}
+
+		if (xicon.canExpand && xicon.isExpanded) {
 			ficon.textContent = "\uf07c";
-		else
+			ficon.style.color = "#aeae63";
+		} else {
 			ficon.textContent = "\uf07b";
-		//	todo autosave f0c7, inbox f01c, trash f2ed clipboardd f2ed
+			ficon.style.color = "#cece63"
+		}
 	}
 
 	function add_image(CId, nest_depth, canExpand, isExpanded)
@@ -212,7 +232,7 @@
 %>
 
 	<tr>
-		<td colspan="4">
+		<td colspan="4" style="text-align: center;padding-top:20px;background: #EEEEED;">
 			<form method="post" action="upload-servlet" enctype="multipart/form-data" target="_blank">
 				<input type="file" name="upload-file" />
 				<input type="submit" value="<%=Language.get("web.upload")%>" />
@@ -221,7 +241,7 @@
 	</tr>
 
 	<tr class="footer">
-		<th colspan="4" classs="center">
+		<th colspan="4" style="text-align: center;">
 			created with
 			<a href="https://peteschaefer.github.io/jose/">jose Chess</a>
 		</th>
