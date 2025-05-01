@@ -23,8 +23,15 @@
 		return depth;
 	}
 %>
+<%
+	WebApplication.open(application,response);
+	SessionUtil su = new SessionUtil(request,session);
+	WebApplication.createCollateral(su);
+%>
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="StyleSheet" type="text/css" href="games.css">
 	<style>
 		td,th,input { font-family: Arial,Helvetica,Sans-Serif; font-size: 14px; }
 		TR.odd {  background-color: #e2e2ff;}
@@ -35,6 +42,25 @@
 		TD.right { text-align: right; }
 		TR.header, TR.footer {  background-color: #e5e5e5; padding: 8px 4px 8px 4px; }
 		A { color:black; text-decoration: none; }
+		span.label {
+			font-size: 13pt;
+			cursor: grab;
+			white-space: pre-wrap;
+		}
+		span.button, span.folder, span.expander {
+			font-family: "Font Awesome 6 Free Solid";
+			font-size: 16pt;
+			cursor: grab;
+			white-space: pre-wrap;
+			padding-left: 8px;
+			padding-right: 8px;
+		}
+		span.folder {
+			color: #aeae63;
+		}
+		span.expander {
+			color: grey;
+		}
 	</style>
 
 </head>
@@ -43,57 +69,62 @@
 
 	function adjust_image(CId)
 	{
-		var image = document.images['x-'+CId];
-		if (!image.canExpand)
-			image.src = "nav/pixel.gif";
-		else if (image.isExpanded)
-			image.src = "nav/minus.gif";
+		var xicon = document.getElementById('x-'+CId);
+		if (!xicon.canExpand)
+			xicon.textContent = " ";
+		else if (xicon.isExpanded)
+			xicon.textContent = "\uf078";
 		else
-			image.src = "nav/plus.gif";
+			xicon.textContent = "\uf054";
 
-		var folder_image = document.images['f-'+CId];
-		if (image.canExpand && image.isExpanded)
-			folder_image.src = "nav/folder_open.gif";
+		var ficon = document.getElementById('f-'+CId);
+		if (xicon.canExpand && xicon.isExpanded)
+			ficon.textContent = "\uf07c";
 		else
-			folder_image.src = "nav/folder.gif";
+			ficon.textContent = "\uf07b";
+		//	todo autosave f0c7, inbox f01c, trash f2ed clipboardd f2ed
 	}
 
 	function add_image(CId, nest_depth, canExpand, isExpanded)
 	{
 		cids[cids.length] = CId;
-		var image = document.images['x-'+CId];
-		image.nestDepth = nest_depth;
-		image.canExpand = canExpand;
-		image.isExpanded = isExpanded;
+		var xicon = document.getElementById('x-'+CId);
+		xicon.nestDepth = nest_depth;
+		xicon.canExpand = canExpand;
+		xicon.isExpanded = isExpanded;
 		adjust_image(CId);
 	}
 
-	function toggle(CId)
-	{
-		var image = document.images['x-'+CId];
-		if (!image.canExpand)
-			return;
-		image.isExpanded = ! image.isExpanded;
-		adjust_image(CId);
-		showChildren(CId, image.isExpanded);
+	function toggle(CId) {
+		var xicon = document.getElementById('x-' + CId);
+		if (xicon.canExpand) {
+			xicon.isExpanded = ! xicon.isExpanded;
+			adjust_image(CId);
+			showChildren(CId, xicon.isExpanded);
+		}  else {
+			//	goto Collection !
+			var form = document.forms[0];
+			form.elements['CId'].value = CId;
+			form.submit();
+		}
 	}
 
 	function showChildren(parentId, visible)
 	{
-		var parentImage = document.images['x-'+parentId];
+		var parentIcon = document.getElementById('x-'+parentId);
 		var i = cids.indexOf(parentId)+1;
 
 		for ( ; i < cids.length; i++)
 		{
 			var childId = cids[i];
-			var childImage = document.images['x-'+childId];
-			if (childImage.nestDepth <= parentImage.nestDepth)
+			var childIcon = document.getElementById('x-'+childId);
+			if (childIcon.nestDepth <= parentIcon.nestDepth)
 				break;
 
-			if (childImage.nestDepth == (parentImage.nestDepth+1))
+			if (childIcon.nestDepth == (parentIcon.nestDepth+1))
 			{
 				show(childId, visible);
-				if (childImage.canExpand && childImage.isExpanded)
+				if (childIcon.canExpand && childIcon.isExpanded)
 					showChildren(childId, visible);
 			}
 		}
@@ -111,16 +142,18 @@
 </script>
 
 <body>
+
+<form method="post" action="collection.jsp">
+	<input type="hidden" name="CId">
+</form>
+
 <table border=0 cellpadding=0 cellspacing=0>
 	<tr class="header">
 		<th colspan="2">&nbsp;</th>
-		<th colspan="2">&nbsp;Download </th>
+		<th colspan="2">&nbsp;<%=Language.get("web.download")%> </th>
 	</tr>
 
 <%
-	WebApplication.open(application,response);
-	SessionUtil su = new SessionUtil(request,session);
-
 	JoConnection connection = null;
 	try {
 		connection = JoConnection.get();
@@ -135,7 +168,7 @@
 
 		for (int line=1; res.next(); line++)
 		{
-			String row_style = "even";
+			String row_style ="even";
 
 			int CId = res.getInt(1);
 			String path = res.getString(2);
@@ -147,37 +180,20 @@
 			boolean hasChildren = res.getInt(5) > 0;
 
 			int depth = getDepth(path)-2;
+			if (depth > 0) row_style="odd";
 
 			%>
 			<tr class="<%=row_style%>" id="r-<%=CId%>">
 				<td>
-					<img src="nav/pixel.gif" height="16" width="<%=16*depth%>">
-					<%
-						if (gameCount > 0) {
-							%>
-					<img align=middle name="x-<%=CId%>" height="16" width="16">
-
-					<a href="collection.jsp?CId=<%=CId%>"><img border=0 align=middle  name="f-<%=CId%>" height="16" width="16"></a>
-					<a href="collection.jsp?CId=<%=CId%>"><%=name%></a>
-							<%
-						}
-						else {
-							%>
-					<img align=middle name="x-<%=CId%>" height="16" width="16"onclick="toggle(<%=CId%>)">
-
-					<img border=0 align=middle  name="f-<%=CId%>" height="16" width="16" onclick="toggle(<%=CId%>)">
-					<%=name%>
-							<%
-						}
-					%>
+					<span style="margin-left: <%=16*depth%>px;"></span>
+					<span class="expander" id="x-<%=CId%>" onclick="toggle(<%=CId%>)"></span>
+					<span class="folder" id="f-<%=CId%>" onclick="toggle(<%=CId%>)"></span>
+					<span class="label" onclick="toggle(<%=CId%>)"><%=name%></span>
 				</td>
 				<td class="right">
 					<%
-						if (gameCount==1) {
-						%><a href="collection.jsp?CId=<%=CId%>">(<%=gameCount%> Partie)</a><%
-						}
-						else if (gameCount > 0) {
-							%><a href="collection.jsp?CId=<%=CId%>">(<%=gameCount%> Partien)</a><%
+						if (gameCount > 0) {
+						%><a href="collection.jsp?CId=<%=CId%>">(<%=gameCount%> <%=Language.getPlural("web.game",gameCount>1)%>)</a><%
 						}
 					%>
 				</td>
@@ -199,7 +215,7 @@
 		<td colspan="4">
 			<form method="post" action="upload-servlet" enctype="multipart/form-data" target="_blank">
 				<input type="file" name="upload-file" />
-				<input type="submit" value="Upload" />
+				<input type="submit" value="<%=Language.get("web.upload")%>" />
 			</form>
 		</td>
 	</tr>

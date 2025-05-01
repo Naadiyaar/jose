@@ -65,15 +65,11 @@ public class GameServlet extends HttpServlet
         if (output_type==null) output_type = "xsl.dhtml";   //  resp. "xsl.html", "xsl.pdf", "xsl.text"
         su.set("out",output_type);
 
-        ExportConfig expConfig = Application.theApplication.getExportConfig();
-
-        ExportContext expContext = new ExportContext(); //  TODO create only one instance per session
-        expContext.styles = (JoStyleContext)expContext.profile.getStyleContext();
-        expContext.collateral = WebApplication.getCollateralDir(getServletContext());
-
+        ExportContext expContext = WebApplication.getExportContext(su);
         expContext.source = GameSource.singleGame(gid);
         //  TODO we could print multiple games, too !
 
+        ExportConfig expConfig = Application.theApplication.getExportConfig();
         expContext.config = expConfig.getConfig(output_type);
 
         switch (expContext.getOutput())
@@ -109,11 +105,7 @@ public class GameServlet extends HttpServlet
         expContext.target = response.getWriter();
 
         //  todo only after restart; no need to create it for every request
-        File css = new File(expContext.collateral+"/games.css");
-        if (!css.exists()) {
-            FontUtil.fontAwesome(expContext.collateral + "/fonts");
-            HtmlUtil.createCollateral(expContext, false);
-        }
+        WebApplication.createCollateral(expContext);
         //  setup XML exporter with appropriate style sheet
         XMLExport xmltask = new XMLExport(expContext);
         xmltask.setSilentTime(Integer.MAX_VALUE);

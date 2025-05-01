@@ -170,6 +170,14 @@ public class Language
             return theLanguage.get1(key,defaultValue);
 	}
 
+	public static String getPlural(String keyOne, String keyMany, boolean many) {
+		return get(many ? keyMany : keyOne);
+	}
+
+	public static String getPlural(String key, boolean many) {
+		return get(many ? key : (key+"s"));
+	}
+
     public String get1(String key, String defaultValue)
     {
         Object value = super.get(key);

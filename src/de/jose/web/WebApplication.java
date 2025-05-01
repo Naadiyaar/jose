@@ -18,8 +18,12 @@ import de.jose.comm.CommandAction;
 import de.jose.comm.CommandDispatcher;
 import de.jose.db.JoConnection;
 import de.jose.db.DBAdapter;
+import de.jose.export.ExportConfig;
+import de.jose.export.ExportContext;
+import de.jose.export.HtmlUtil;
 import de.jose.util.FontUtil;
 import de.jose.util.file.FileUtil;
+import de.jose.view.style.JoStyleContext;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -80,6 +84,37 @@ public class WebApplication extends Application
 	public static File getCollateralDir(ServletContext ctx)
 	{
 		return new File(ctx.getRealPath(""));
+	}
+
+	public static ExportContext getExportContext(SessionUtil su)
+	{
+		ExportContext expContext = (ExportContext) su.get("export.context",true);
+		if (expContext == null) {
+			expContext = new ExportContext(); //  TODO create only one instance per session
+			expContext.styles = expContext.profile.getStyleContext();
+			expContext.collateral = WebApplication.getCollateralDir(su.request.getServletContext());
+
+			ExportConfig expConfig = Application.theApplication.getExportConfig();
+			expContext.config = expConfig.getConfig("xsl.dhtml");
+
+			su.set("export.context", expContext);
+		}
+		return expContext;
+	}
+
+	public static void createCollateral(ExportContext expContext) throws Exception
+	{
+		File css = new File(expContext.collateral+"/games.css");
+		if (!css.exists()) {
+			FontUtil.fontAwesome(expContext.collateral + "/fonts");
+			HtmlUtil.createCollateral(expContext, false);
+		}
+	}
+
+	public static void createCollateral(SessionUtil su) throws Exception
+	{
+		ExportContext expContext = getExportContext(su);
+		createCollateral(expContext);
 	}
 
 	public static Application open(ServletContext context, ServletResponse response)

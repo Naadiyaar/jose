@@ -87,7 +87,6 @@ java.util.EmptyStackException
     [x] jose_db_port bash variable
     [x] kill mysqld !! (@WebListener)
     [x] FileWatcher find multiple mysqld instance. should work head-less, somehow.
-    [ ] i18n
 
 [ ] Web fonts; use for html (local and Web App)
     [x] in embedded <style> sheet
@@ -101,6 +100,7 @@ java.util.EmptyStackException
         [x] use a single span instead of a table
     [x] awesome icons
         [ ] in Web App
+    [ ] i18n
     [x] JS animation
     [x] deprecate image figurine options
     [x] only one option in Export Dialog: [ ] complete page -> creates an aux folder
@@ -109,6 +109,8 @@ java.util.EmptyStackException
     [x] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
     [x] firefox: diagram line spacing
     [x] bug: excessive size of games.css; only in Web
+    [ ] annotation with correct font (symbols, !?, ...)
+    [ ] bug: pdf printing
 
 [ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
 
