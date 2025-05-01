@@ -141,11 +141,15 @@ public class CSSXMLReader extends AbstractObjectReader
 
 			//  dump children
 			java.util.List children = JoStyleContext.getChildren(style);
-			if (children != null)
-				for (int i=0; i < children.size(); i++) {
-					StyleContext.NamedStyle child = (StyleContext.NamedStyle)children.get(i);
-					toSAX(child,handler);
+			if (children != null) {
+				if (children.size() > 20) {
+					System.err.println("WARNING: Suspicious style with "+children.size()+" children: "+style.getName());
 				}
+				for (int i = 0; i < children.size(); i++) {
+					StyleContext.NamedStyle child = (StyleContext.NamedStyle) children.get(i);
+					toSAX(child, handler);
+				}
+			}
 
 		handler.endElement("style");
 	}

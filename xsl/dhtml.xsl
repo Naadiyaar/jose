@@ -298,7 +298,7 @@
 			<span>
 				<xsl:attribute name="id">board-<xsl:value-of select="$gidx"/></xsl:attribute>
 				<xsl:attribute name="class">html_large</xsl:attribute>
-				<xsl:attribute name="style">white-space: pre-wrap;</xsl:attribute>
+				<xsl:attribute name="style">white-space: pre-wrap;line-height:1.0;</xsl:attribute>
 <!--
 				<xsl:attribute name="width"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>
 				<xsl:attribute name="height"><xsl:value-of select="/jose-export/figurines/dia/px-size"/></xsl:attribute>

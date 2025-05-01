@@ -98,7 +98,7 @@ public class AnnotationNode
 			StyleConstants.setForeground(symTextStyle, StyleConstants.getForeground(symStyle));
 			StyleConstants.setBold(symTextStyle, StyleConstants.isBold(symStyle));
 			StyleConstants.setItalic(symTextStyle, StyleConstants.isItalic(symStyle));
-
+			//	todo "body.symbol.text" should be specific to a nest level, right?
 			text = toString();
 			if (text.length() > 4) //	longish texts are replaced by a placeholder
 				text = "$";

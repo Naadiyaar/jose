@@ -111,13 +111,8 @@ public class GameServlet extends HttpServlet
         //  todo only after restart; no need to create it for every request
         File css = new File(expContext.collateral+"/games.css");
         if (!css.exists()) {
-            synchronized (this) {
-                //	load fonts/FontsAwesome.otf
-                if (!css.exists()) {
-                    FontUtil.fontAwesome(expContext.collateral + "/fonts");
-                    HtmlUtil.createCollateral(expContext, false);
-                }
-            }
+            FontUtil.fontAwesome(expContext.collateral + "/fonts");
+            HtmlUtil.createCollateral(expContext, false);
         }
         //  setup XML exporter with appropriate style sheet
         XMLExport xmltask = new XMLExport(expContext);

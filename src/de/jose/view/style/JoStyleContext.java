@@ -105,16 +105,23 @@ public class JoStyleContext
 	{
 		Style result = super.addStyle(nm,parent);
 		if (parent != null) {
-			ArrayList children;
+			ArrayList<Style> children;
 			if (parent.isDefined("children"))
-				children = (ArrayList)parent.getAttribute("children");
+				children = (ArrayList<Style>)parent.getAttribute("children");
 			else {
-				children = new ArrayList();
+				children = new ArrayList<>();
 				parent.addAttribute("children",children);
 			}
+			/*	fix old bug: duplicate names */
+			removeByName(children,nm);
 			children.add(result);
 		}
 		return result;
+	}
+
+	private void removeByName(ArrayList<Style> children, String nm)
+	{
+		children.removeIf(s -> s.getName().equals(nm));
 	}
 
 	public static Style getParent(Style style)

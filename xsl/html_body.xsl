@@ -142,7 +142,7 @@
 					</table>
 				</xsl:when>
 				<xsl:otherwise>
-					<span class="body_inline" style="white-space: pre-wrap;">
+					<span class="body_inline" style="white-space: pre-wrap;line-height:1.0;">
 						<xsl:value-of select="text"/>
 					</span>
 				</xsl:otherwise>

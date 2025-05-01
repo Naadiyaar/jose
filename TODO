@@ -107,6 +107,8 @@ java.util.EmptyStackException
     [x] update strategy see: doc/Html Collateral.odt
     [x] edit styles in Swing GUI, picked up on server restart
     [x] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
+    [x] firefox: diagram line spacing
+    [x] bug: excessive size of games.css; only in Web
 
 [ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
 
