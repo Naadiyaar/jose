@@ -58,6 +58,7 @@
 	<xsl:template match="a">
 		<xsl:choose>
 			<xsl:when test="$imgfig and count(sym)&gt;0">
+				<!--image-->
 				<img border="0">
 					<xsl:attribute name="src">
 						<xsl:value-of select="$inlineurl"/><xsl:text>/nag-</xsl:text>
@@ -70,6 +71,10 @@
 						<xsl:value-of select="alt"/>
 					</xsl:attribute>
 				</img>
+			</xsl:when>
+			<xsl:when test="count(sym)&gt;0">
+				<!--TrueType-->
+				<span class="body_symbol"><xsl:value-of select="sym"/></span>
 			</xsl:when>
 			<xsl:otherwise>
 				<!-- plain text -->

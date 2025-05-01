@@ -109,7 +109,7 @@ java.util.EmptyStackException
     [x] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
     [x] firefox: diagram line spacing
     [x] bug: excessive size of games.css; only in Web
-    [ ] annotation with correct font (symbols, !?, ...)
+    [x] annotation with correct font (symbols, !?, ...)
     [ ] bug: pdf printing; (1) font path; (2) find Berlin.ttf
 
 [ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
