@@ -132,11 +132,11 @@ function hover(j,button,state)
         span.style.color = "#888888";
     }
     else switch (state) {
-        case 1: span.style.color = "#009900"; break;     //  mouse over
+        case 1: span.style.color = "#00aa00"; break;     //  mouse over
         default:
         case 2: //  mouse out
         case 5: //  mouse up
-                span.style.color = "#006600"; break;
+                span.style.color = "#008800"; break;
         case 3: span.style.background = "#808080"; break; //  mouse down
     }
 

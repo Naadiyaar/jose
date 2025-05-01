@@ -201,7 +201,7 @@
 				<include name="fop-plus.jar"/>
 			</zipfileset>
 			<!-- navigation images (@deprecated)-->
-			<zipfileset dir="images/nav" prefix="nav"/>
+			<!--zipfileset dir="images/nav" prefix="nav"/-->
 			<zipfileset dir="fonts" prefix="fonts">
 				<!--include name="Berlin.ttf"/-->
 				<include name="FontAwesome.otf"/>

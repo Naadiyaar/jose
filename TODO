@@ -99,8 +99,8 @@ java.util.EmptyStackException
     [x] JS diagram
         [x] use a single span instead of a table
     [x] awesome icons
-        [ ] in Web App
-    [ ] i18n
+        [x] in Web App
+    [x] i18n
     [x] JS animation
     [x] deprecate image figurine options
     [x] only one option in Export Dialog: [ ] complete page -> creates an aux folder
@@ -110,7 +110,7 @@ java.util.EmptyStackException
     [x] firefox: diagram line spacing
     [x] bug: excessive size of games.css; only in Web
     [ ] annotation with correct font (symbols, !?, ...)
-    [ ] bug: pdf printing
+    [ ] bug: pdf printing; (1) font path; (2) find Berlin.ttf
 
 [ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
 

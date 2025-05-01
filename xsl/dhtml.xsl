@@ -77,7 +77,7 @@
 			span.button {
 				font-family: "Font Awesome 6 Free Solid";
 				font-size: 28pt;
-				color: #006600;
+				color: #008800;
 				background: #EEEEED;
 				border-radius: 16px;
 				cursor: grab;
