@@ -137,10 +137,10 @@
 				<include name="res/pngHack.htc"/>
 				<!-- config files for Tomcat -->
 				<include name="WEB-INF/web.xml"/>
-				<include name="META-INF/context.xml"/>
+				<!--include name="META-INF/context.xml"/-->
 				<!-- config files for Resin -->
-				<include name="resin-2.conf"/>
-				<include name="resin-3.conf"/>
+				<!--include name="resin-2.conf"/-->
+				<!--include name="resin-3.conf"/-->
 				<exclude name="**/Thumbs.db"/>
 			</zipfileset>
 
