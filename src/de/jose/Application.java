@@ -145,6 +145,8 @@ public class Application
 
 	public static Application	theApplication;
 
+	public boolean				isHeadless=false;
+
 	/**	directory where language.properties files are stored	 */
 	public File					theLanguageDirectory;
 
@@ -230,6 +232,7 @@ public class Application
 			throw new IllegalStateException("Application must not be initialized twice");
 
 		theApplication	        = this;
+		isHeadless				= Version.getSystemProperty("java.awt.headless",false);
 
         theWorkingDirectory     = getWorkingDirectory();
 //		System.out.println("working dir="+theWorkingDirectory);
@@ -280,7 +283,6 @@ public class Application
 
 		theConfig = new Config(new File(theWorkingDirectory,"config"));
 
-        Toolkit.getDefaultToolkit().setDynamicLayout(true);
 		//  improved screen repainting for JDK 1.6 (?)
 		Version.setSystemProperty("sun.awt.noerasebackground", "true");
 		//  improved text antialising for JDK 1.6
@@ -346,19 +348,23 @@ public class Application
 //			System.out.println(def);
 		}
 
-        /** register for FcousEvents   */
-        Toolkit.getDefaultToolkit().addAWTEventListener(this, AWTEvent.FOCUS_EVENT_MASK);
-
 		if (Version.getSystemProperty("jose.debug.sql",false))
 //			DriverManager.setLogWriter(new PrintWriter(new FileWriter(new File(theWorkingDirectory,"sql.log")),true));
-            DriverManager.setLogWriter(new PrintWriter(System.err,true));
+			DriverManager.setLogWriter(new PrintWriter(System.err,true));
 
-		/**	light weight menus do not mix well with Java3D
-		 *	(the menus appear behind the J3D canvas :-(
-		 */
-		JPopupMenu.setDefaultLightWeightPopupEnabled(
-				Version.getSystemProperty("jose.2d.light.popup",
-						!Version.hasJava3d(false,false)));
+		if (!isHeadless)
+		{
+			Toolkit.getDefaultToolkit().setDynamicLayout(true);
+			/** register for FcousEvents   */
+			Toolkit.getDefaultToolkit().addAWTEventListener(this, AWTEvent.FOCUS_EVENT_MASK);
+
+			/**	light weight menus do not mix well with Java3D
+			 *	(the menus appear behind the J3D canvas :-(
+			 */
+			JPopupMenu.setDefaultLightWeightPopupEnabled(
+					Version.getSystemProperty("jose.2d.light.popup",
+							!Version.hasJava3d(false,false)));
+		}
 	}
 
     public static void parseProperties(String[] args)

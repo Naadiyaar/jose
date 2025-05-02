@@ -80,6 +80,11 @@ java.util.EmptyStackException
     [x] get servlets running
     [x] branch refactor/webapp
     [ ] containerize: jdk, tomcat, jose complete (incl. mysqld, not incl. jre?)
+        [x] don't run as root
+        [x] java.awt.headless
+        [x] libsnl, libcrypt.so.1 required by msqld
+        [x] fontconfig needed by head-less Java
+        [ ] pick up collateral fonts
     [ ] deploy to aws (do we need a container with Tomcat?)
     [x] upload page (upload .zip, then import)
     [x] download
@@ -110,7 +115,7 @@ java.util.EmptyStackException
     [x] firefox: diagram line spacing
     [x] bug: excessive size of games.css; only in Web
     [x] annotation with correct font (symbols, !?, ...)
-    [ ] bug: pdf printing; (1) font path; (2) find Berlin.ttf
+    [?] bug: pdf printing; (1) font path; (2) find Berlin.ttf
 
 [ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
 
