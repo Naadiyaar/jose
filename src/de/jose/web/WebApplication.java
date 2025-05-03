@@ -111,7 +111,12 @@ public class WebApplication extends Application
 	{
 		File css = new File(expContext.collateral+"/games.css");
 		if (!css.exists()) {
-			FontUtil.fontAwesome(expContext.collateral + "/fonts");
+			File appFonts = new File(Application.theWorkingDirectory, "fonts");
+			File webFonts = new File(expContext.collateral,"fonts");
+			FontUtil.fontAwesome(webFonts.toString());
+			FontUtil.scanFontDirectory(appFonts, true);
+			FontUtil.scanFontDirectory(webFonts, true);
+
 			HtmlUtil.createCollateral(expContext, false);
 		}
 	}
