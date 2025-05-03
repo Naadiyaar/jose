@@ -45,5 +45,5 @@ jobs:
         body: built from latest sources; apply to one of the 1.5.2 packages.
         prerelease: true
         tag_name: Latest
-        files: packages/jose-latest-patch.zip, packages/jose.war
+        files: packages/jose-latest-patch.zip, jose.war
         
