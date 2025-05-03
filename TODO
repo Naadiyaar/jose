@@ -84,7 +84,7 @@ java.util.EmptyStackException
         [x] java.awt.headless
         [x] libsnl, libcrypt.so.1 required by msqld
         [x] fontconfig needed by head-less Java
-        [ ] pick up collateral fonts
+        [x] pick up collateral fonts
     [ ] deploy to aws (do we need a container with Tomcat?)
     [x] upload page (upload .zip, then import)
     [x] download

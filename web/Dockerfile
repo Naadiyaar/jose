@@ -22,6 +22,7 @@ ADD --chown=jose:jose https://github.com/peteschaefer/jose/releases/download/Lat
 #RUN pwd && ls -l
 RUN unzip jose-152-linux.zip -d .
 RUN unzip -o jose-latest-patch.zip -d jose
+RUN rm *.zip
 
 #
 # tell the WebApp where to find the important stuff:
@@ -38,15 +39,15 @@ ENV JRE_HOME=$jose_workdir/jre
 # Install Apache Tomcat into /home/jose/apache-tomcat-9.0.104
 ADD --chown=jose:jose https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.104/bin/apache-tomcat-9.0.104.zip .
 RUN unzip apache-tomcat-9.0.104.zip -d .
+RUN rm *.zip
 
 ENV CATALINA_HOME=/home/jose/apache-tomcat-9.0.104
 ENV CATALINA_BASE=/home/jose/apache-tomcat-9.0.104
 RUN chmod +x $CATALINA_HOME/bin/catalina.sh
 
 # Deploy jose Web App
-#ADD --chown=jose:jose https://github.com/peteschaefer/jose/releases/download/Latest/jose.war .
+ADD --chown=jose:jose https://github.com/peteschaefer/jose/releases/download/Latest/jose.war $CATALINA_HOME/webapps
 #COPY --chown=jose:jose /home/nightrider/src/jose/jose.war .
-#RUN cp jose.war $CATALINA_HOME/webapps
 
 # make ports visible
 # 80 for web server
