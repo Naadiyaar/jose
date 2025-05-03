@@ -55,4 +55,4 @@ EXPOSE 8080
 # 3360 for mysql database (optional)
 EXPOSE 3306
 
-#CMD $CATALINA_HOME/bin/catalina.sh run
+CMD $CATALINA_HOME/bin/catalina.sh run
