@@ -47,7 +47,7 @@ RUN chmod +x $CATALINA_HOME/bin/catalina.sh
 
 # Deploy jose Web App
 ADD --chown=jose:jose https://github.com/peteschaefer/jose/releases/download/Latest/jose.war $CATALINA_HOME/webapps
-#COPY --chown=jose:jose /home/nightrider/src/jose/jose.war .
+#COPY --chown=jose:jose /home/nightrider/src/jose/jose.war $CATALINA_HOME/webapps
 
 # make ports visible
 # 80 for web server
