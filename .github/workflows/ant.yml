@@ -27,8 +27,9 @@ jobs:
         java-version: '21'
         distribution: 'oracle'
     - name: Build jose.jar + war with Ant
-      run: ant -noinput -buildfile build.xml jar \
-           ant -noinput -buildfile build.xml war
+      run: |
+        ant -noinput -buildfile build.xml jar
+        ant -noinput -buildfile build.xml war
     - name: Build patch file
       run: ant -buildfile pack.xml patch -Dversion=latest -Ddist-dir=.
 
