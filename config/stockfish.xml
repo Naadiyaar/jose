@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><APPLICATION_SETTINGS>
 <PLUGIN ID="stockfish" type="uci">
-	<NAME> Stockfish A </NAME>
+	<NAME> Stockfish </NAME>
 	<EXEC os="Windows">
-		<COMMAND> %dir%\stockfish-windows-x86-64-avx2.exe </COMMAND>
+		<COMMAND> %dir%\stockfish-windows-x86-64-sse41-popcnt.exe </COMMAND>
 	</EXEC>
 	<EXEC os="Linux_i386">
 		<!--note: the os is designated as 'i386' which simply means that the jre
@@ -13,21 +13,24 @@
 	<EXEC os="Linux_amd64">
 		<COMMAND> %dir%/stockfish-ubuntu-x86-64-sse41-popcnt </COMMAND>
 	</EXEC>
+	<EXEC os="Linux_aarch64">
+		<COMMAND> %dir%/stockfish-android-armv8 </COMMAND>
+	</EXEC>
 	<EXEC os="Mac_intel">
 		<COMMAND> %dir%/stockfish-macos-x86-64-sse41-popcnt </COMMAND>
 	</EXEC>
 	<EXEC os="Mac_arm">
 		<COMMAND> %dir%/stockfish-macos-m1-apple-silicon </COMMAND>
 	</EXEC>
-	<DIR> %local%\engines\stockfish </DIR>
-	<LOGO> %dir%\Stockfish-large.bmp </LOGO>
+	<DIR> %local%/engines/stockfish </DIR>
+	<LOGO> %dir%/Stockfish-large.bmp </LOGO>
 	<VERSION> 17 </VERSION>
 	<AUTHOR> the Stockfish developers (see AUTHORS file) </AUTHOR>
 	<OPTIONS>
 		<OPTION name="Debug Log File"/>
 		<OPTION name="NumaPolicy"> auto </OPTION>
-		<OPTION name="Threads"> 7 </OPTION>
-		<OPTION name="Hash"> 16 </OPTION>
+		<OPTION name="Threads"> 1 </OPTION>
+		<OPTION name="Hash"> 256 </OPTION>
 		<OPTION name="Ponder"> true </OPTION>
 		<OPTION name="MultiPV"> 6 </OPTION>
 		<OPTION name="Skill Level"> 20 </OPTION>
@@ -48,10 +51,10 @@
 	<ARGS/>
 	<STARTUP/>
 	<SEARCH>
-		<TIME selected="true"> 2000 </TIME>
+		<TIME> 2000 </TIME>
 		<DEPTH> 10 </DEPTH>
 		<NODES> 1 </NODES>
-		<TIME_CONTROL/>
+		<TIME_CONTROL selected="true"/>
 	</SEARCH>
 </PLUGIN>
 </APPLICATION_SETTINGS>

@@ -13,14 +13,17 @@
 	<EXEC os="Linux_amd64">
 		<COMMAND> %dir%/lc0 </COMMAND>
 	</EXEC>
+	<EXEC os="Linux_aarch64">
+		<COMMAND> %dir%/lc0 </COMMAND>
+	</EXEC>
 	<EXEC os="Mac_intel">
 		<COMMAND> %dir%/lc0 </COMMAND>
 	</EXEC>
 	<EXEC os="Mac_arm">
 		<COMMAND> %dir%/lc0 </COMMAND>
 	</EXEC>
-	<DIR> %local%\engines\lc0 </DIR>
-	<LOGO> %dir%\Leela_Chess_Zero_logo.png </LOGO>
+	<DIR> %local%/engines/lc0 </DIR>
+	<LOGO> %dir%/Leela_Chess_Zero_logo.png </LOGO>
 	<VERSION> v0.31.2 </VERSION>
 	<AUTHOR> The LCZero Authors. </AUTHOR>
 	<OPTIONS>
@@ -84,7 +87,7 @@
 		<OPTION name="SearchSpinBackoff"> false </OPTION>
 		<OPTION name="ConfigFile"> lc0.config </OPTION>
 		<OPTION name="SyzygyPath"/>
-		<OPTION name="Ponder"> true </OPTION>
+		<OPTION name="Ponder"> false </OPTION>
 		<OPTION name="UCI_Chess960"> false </OPTION>
 		<OPTION name="UCI_ShowWDL"> true </OPTION>
 		<OPTION name="UCI_ShowMovesLeft"> true </OPTION>
@@ -95,7 +98,7 @@
 		<OPTION name="TimeManager"> legacy </OPTION>
 		<OPTION name="ValueOnly"> false </OPTION>
 		<OPTION name="LogFile"/>
-		<OPTION name="Backend"> cuda-auto </OPTION>
+		<OPTION name="Backend"> eigen </OPTION>
 	</OPTIONS>
 	<ARGS/>
 	<STARTUP/>

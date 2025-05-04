@@ -72,46 +72,6 @@ java.util.EmptyStackException
     [x] get MySQL server version
     [ ] layout
 
-[ ] web servlet
-    [-] bundle with resin running (not well supported anymore :(
-    [x] get Tomcat running
-    [x] build a WAR file and deploy
-    [-] deploy "exploded" WAR (with, w/out ln -s ?)
-    [x] get servlets running
-    [x] branch refactor/webapp
-    [ ] containerize: jdk, tomcat, jose complete (incl. mysqld, not incl. jre?)
-    [ ] deploy to aws (do we need a container with Tomcat?)
-    [x] upload page (upload .zip, then import)
-    [x] download
-    [x] jose_workdir bash variable
-    [x] jose_db_port bash variable
-    [x] kill mysqld !! (@WebListener)
-    [x] FileWatcher find multiple mysqld instance. should work head-less, somehow.
-
-[ ] Web fonts; use for html (local and Web App)
-    [x] in embedded <style> sheet
-    [x] in generated games.css (both use css.xsl)
-    [x] path heuristics: fonts/ for web-app,
-    [x] $jose.workdir/fonts for locally saved file
-    [x] copy fonts/* to jose.war
-    [x] figurines
-    [x] diagram in text
-    [x] JS diagram
-        [x] use a single span instead of a table
-    [x] awesome icons
-        [x] in Web App
-    [x] i18n
-    [x] JS animation
-    [x] deprecate image figurine options
-    [x] only one option in Export Dialog: [ ] complete page -> creates an aux folder
-    [x] update strategy see: doc/Html Collateral.odt
-    [x] edit styles in Swing GUI, picked up on server restart
-    [x] caution: dhtml-img.xsl causes duplicate icon in Export Dialog
-    [x] firefox: diagram line spacing
-    [x] bug: excessive size of games.css; only in Web
-    [x] annotation with correct font (symbols, !?, ...)
-    [ ] bug: pdf printing; (1) font path; (2) find Berlin.ttf
-
 [ ] Q: WHY is font antialiasing broken in text editor? style dialog? Linux only?
 
 [ ] Annotation: layout in small panels
@@ -150,6 +110,13 @@ java.util.EmptyStackException
 
 
 ==== Project
+
+[x] Linux ARM
+
+[ ] package stockfish network files
+    seems like stockfish can run withouth; but not arm version?
+        nn-1111cefa1111.nnue
+        nn-37f18f62d772.nnue
 
 [x] Java 3D
     1.5 last version from Oracle. Works well for Windows and Linux. Not for Mac
