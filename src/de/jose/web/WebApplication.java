@@ -33,6 +33,7 @@ import javax.servlet.annotation.WebListener;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.Map;
 
 import static de.jose.comm.CommandAction.INVOKE_LATER;
@@ -60,6 +61,9 @@ public class WebApplication extends Application
 			} catch (InterruptedException e) {
 				continue;
 			}
+			//	test database connection
+			JoConnection jconn = JoConnection.get();
+			jconn.release();
 		}
 		//  read profile data for html export, etc.
 		readProfile();
@@ -80,6 +84,7 @@ public class WebApplication extends Application
 		FileUtil.deleteAllFiles(collateralDir,"js");
 		FileUtil.deleteAllFiles(collateralDir,"css");
 	}
+
 
 	public static File getCollateralDir(ServletContext ctx)
 	{
@@ -106,7 +111,12 @@ public class WebApplication extends Application
 	{
 		File css = new File(expContext.collateral+"/games.css");
 		if (!css.exists()) {
-			FontUtil.fontAwesome(expContext.collateral + "/fonts");
+			File appFonts = new File(Application.theWorkingDirectory, "fonts");
+			File webFonts = new File(expContext.collateral,"fonts");
+			FontUtil.fontAwesome(webFonts.toString());
+			FontUtil.scanFontDirectory(appFonts, true);
+			FontUtil.scanFontDirectory(webFonts, true);
+
 			HtmlUtil.createCollateral(expContext, false);
 		}
 	}
@@ -117,24 +127,25 @@ public class WebApplication extends Application
 		createCollateral(expContext);
 	}
 
-	public static Application open(ServletContext context, ServletResponse response)
-	{
+	public static Application open(ServletContext context, ServletResponse response) {
 		if (Application.theApplication==null)
 			synchronized (context)
 			{
 				try {
 					if (Application.theApplication==null) {
 						//  first call, load application config and database stuff
+						Version.setSystemProperty("java.awt.headless","true");
 						Version.setSystemProperty("jose.splash","off");
 
 						new WebApplication(context);
 					}
 				} catch (Throwable ex) {
                     try {
-                        ex.printStackTrace(response.getWriter());
+                        ex.printStackTrace((response!=null) ? new PrintStream(response.getOutputStream()) : System.err);
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        //throw new RuntimeException(e);
                     }
+					throw new RuntimeException(ex);
                 }
 			}
 		return theApplication;

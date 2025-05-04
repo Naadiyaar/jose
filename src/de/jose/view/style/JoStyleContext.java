@@ -13,6 +13,7 @@
 
 package de.jose.view.style;
 
+import de.jose.Application;
 import de.jose.Util;
 import de.jose.util.AWTUtil;
 import de.jose.util.FontUtil;
@@ -95,8 +96,10 @@ public class JoStyleContext
 
 	public void setFontScale(float fontScale)   { this.fontScale = fontScale; }
 
+	//	@deprecated, I think
 	public void setNormFontScale()              {
-		setFontScale((float)AWTUtil.getNormalizingTransform().getScaleX());
+		if (!Application.theApplication.isHeadless)
+			setFontScale((float)AWTUtil.getNormalizingTransform().getScaleX());
 	}
 
 	public void setScreenResolution(float dpi)  { setFontScale(dpi/72.0f); }
