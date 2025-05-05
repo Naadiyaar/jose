@@ -532,6 +532,11 @@ public class MySQLAdapter
 		command.add("--myisam_sort_buffer_size=256M");
 		command.add("--myisam-recover=FORCE");  //  always check for corrupted index files, etc.
 
+		//	for server-side operation: set connection timeout as high as possible:
+		String infTimeout = Version.windows ? "2147483" : "31536000";
+		command.add("--wait-timeout=" + infTimeout);
+		command.add("--interactive-timeout=" + infTimeout);
+
 		//	MySQL 8.0.x
 //		command.add("--upgrade=NONE");	//	don't upgrad old MyISAM tables
 //		command.add("--mysqld="+execPath);	//	used for "mysqld_safe"
