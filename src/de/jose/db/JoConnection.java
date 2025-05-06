@@ -33,6 +33,8 @@ public class JoConnection
 	/**	connection name (optional)	 */
 	protected String name;
 
+	public long lastUsed = System.currentTimeMillis();
+
 	/**	JDBC connection	 */
 	protected Connection jdbcConnection;
 	protected int connectionId;

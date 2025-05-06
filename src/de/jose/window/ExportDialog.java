@@ -284,7 +284,7 @@ public class ExportDialog
 		if (count > max) {
 			//  confirm
 			String message = Language.get("dialog.export.games.n");
-			message = StringUtil.replace(message,"%n%", String.valueOf(count));
+			message = StringUtil.replace(message,"%n%", StringUtil.formattedInteger(count));
 			return doConfirm(message);
 		}
 		//  else:
@@ -604,7 +604,7 @@ public class ExportDialog
 			explain = Language.get("dialog.export.games.1");
 		else {
 			explain = Language.get("dialog.export.games.n");
-			explain = StringUtil.replace(explain,"%n%", String.valueOf(count));
+			explain = StringUtil.replace(explain,"%n%", StringUtil.formattedInteger(count));
 		}
 
 		return explain;

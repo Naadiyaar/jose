@@ -765,7 +765,8 @@ public class QueryPanel
             text = Language.get("dialog.query.1.result");
         else {
             text = Language.get("dialog.query.n.results");
-            text = StringUtil.replace(text,"%count%",Integer.toString(model.getRowCount()));
+            text = StringUtil.replace(text,"%count%",
+					StringUtil.formattedInteger(model.getRowCount()));
         }
 
 		if (rowCount!=null) {

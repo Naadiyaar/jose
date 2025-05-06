@@ -371,7 +371,7 @@ public class MySQLAdapter
 			/**	file format for quick dump	*/
 		}
 		/** do we support delayed key write ?   */
-		abs.put("delayed_key_write", Util.toBoolean(props.getProperty("delayed_key_write")));
+		abs.put("delayed_key_write", Boolean.TRUE/*Util.toBoolean(props.getProperty("delayed_key_write"))*/);
 	}
 
 	public String escapeSql(String sql)
@@ -522,20 +522,21 @@ public class MySQLAdapter
 		command.add("--collation-server=utf8_general_ci");
 		command.add("--console");	// do write to std-out
 
-		command.add("--key_buffer=16M");
-		command.add("--max_allowed_packet=1M");
-		command.add("--table_cache=64");
-		command.add("--net_buffer_length=8K");
-		command.add("--read_buffer_size=256K");
-		command.add("--read_rnd_buffer_size=512K");
-		command.add("--sort_buffer_size=256M");
-		command.add("--myisam_sort_buffer_size=256M");
+		command.add("--key-buffer=16M");
+		command.add("--max-allowed-packet=1M");
+		command.add("--table-cache=64");
+		command.add("--net-buffer-length=8K");
+		command.add("--read-buffer-size=256K");
+		command.add("--read-rnd-buffer_size=512K");
+		command.add("--sort-buffer-size=256M");
+		command.add("--myisam-sort-buffer-size=256M");
 		command.add("--myisam-recover=FORCE");  //  always check for corrupted index files, etc.
 
 		//	for server-side operation: set connection timeout as high as possible:
 		String infTimeout = Version.windows ? "2147483" : "31536000";
-		command.add("--wait-timeout=" + infTimeout);
-		command.add("--interactive-timeout=" + infTimeout);
+//		command.add("--wait-timeout=" + infTimeout);
+//		command.add("--interactive-timeout=" + infTimeout);
+		// don't rely on automatic timeout. use connection pool watchdog instead
 
 		//	MySQL 8.0.x
 //		command.add("--upgrade=NONE");	//	don't upgrad old MyISAM tables
@@ -543,8 +544,16 @@ public class MySQLAdapter
 //		command.add("--log-error=error.log");
 //		command.add("--secure-file-priv="+Application.theDatabaseDirectory);
 
+		//	default table size for tmp and memory tables is 16MB. Not enough.
+		//	huge database have around 3GB, or more.
+		command.add("--tmp-table-size=16G");
+		command.add("--max-heap-table-size=16G");
 
-		/** delayed key write is optional   */
+		props.put("--default-character-set","utf8");
+		props.put("--default-collation","utf8_general_ci");
+
+
+		/** delayed key write is optional; makes sense when importing large files   */
 		if (can("delayed_key_write"))
 		{
 			command.add("--delay-key-write=ALL");
@@ -552,7 +561,6 @@ public class MySQLAdapter
 			/** when delayed key writing is enabled,
 			 *  "myisam-recover" is especially important
 			 */
-
 		}
 
 		if (!Version.MYSQL_UDF) command.add("--skip-external-locking");

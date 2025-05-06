@@ -14,6 +14,7 @@ package de.jose.task.io;
 
 import de.jose.Application;
 import de.jose.task.TaskAbortedException;
+import de.jose.task.db.CheckDBTask;
 import de.jose.util.Metaphone;
 import de.jose.db.*;
 import de.jose.db.io.ArchiveFile;
@@ -121,6 +122,9 @@ public class ArchiveImport
 	     * if delayed key writing is off, we have to avoid huge key updates.
 	     * in that case, it might be useful to completely disable keys and
 	     * enable them afterwards.
+		 * (update: no. if the existing database is already big,
+		 * enabling keys becomes excessively expensive. Better live with incremental
+		 * updates and rely on --delay-key-write for MyISAM tables)
 	     */
 	    canDisableKeys = ! connection.getAdapter().can("delayed_key_write");
 
@@ -206,13 +210,14 @@ public class ArchiveImport
 	    DBTask.broadcastAfterUpdate(nextCId);
 
 	    //  flag tables for needing analysis
+/*
 	    Setup setup = new Setup(Application.theApplication.theConfig,"MAIN",connection);
 	    if (gameCount > PGNImport.ANALYZE_LIMIT)   //  TODO
-	        try { setup.markAllDirty(); } catch (SQLException ex) { /* ignore */ }
+	        try { setup.markAllDirty(); } catch (SQLException ex) {  }
 
 	    if (--PGNImport.gGameImporterInstance == 0)
 	        setup.analyzeTables(false);  //  actually do analyze the tables
-
+*/
 //        System.out.println("import "+(double)getElapsedTime()/1000.0);
         return super.done(state);
     }
@@ -363,52 +368,51 @@ public class ArchiveImport
 
 	    int count = 0;
 	    try {
+			/**	copy values	*/
+			String sql =
+				"INSERT INTO Game (Id,CId, Idx,Attributes,PlyCount," +
+				"      Result,WhiteId,BlackId, WhiteELO,BlackELO, EventId,SiteId," +
+				"      GameDate,EventDate,DateFlags, OpeningId,ECO, AnnotatorId) "+
+				" SELECT @NextId:=(@NextId+1) AS Id,"+
+				"        CMap.NId AS CId,"+
+				"        Idx,Attributes,PlyCount, " +
+				"        Result, "+
+				"        WMap.NId AS WhiteId,"+
+				"        BMap.NId AS BlackId,"+
+				"        WhiteELO,BlackELO, "+
+				"        EMap.NId AS EventId, "+
+				"        SMap.NId AS SiteId, "+
+				"        GameDate,EventDate,DateFlags,"+
+				"        OMap.NId AS OpeningId,"+
+				"        ECO, "+
+				"        AMap.NId AS AnnotatorId "+
+				" FROM "+tempdb+".IO_Game AS Game" +
+				"  JOIN "+tempdb+".Map_Collection AS CMap ON Game.CId=CMap.OId" +
+				"  JOIN "+tempdb+".Map_Player AS WMap ON Game.WhiteId=WMap.OId" +
+				"  JOIN "+tempdb+".Map_Player AS BMap ON Game.BlackId=BMap.OId" +
+				"  JOIN "+tempdb+".Map_Event AS EMap ON Game.eventId=EMap.OId" +
+				"  JOIN "+tempdb+".Map_Site AS SMap ON Game.SiteId=SMap.OId" +
+				"  JOIN "+tempdb+".Map_Opening AS OMap ON Game.OpeningId=OMap.OId" +
+				"  JOIN "+tempdb+".Map_Player AS AMap ON Game.AnnotatorId=AMap.OId";
 
-        /**	copy values	*/
-        String sql =
-            "INSERT INTO Game (Id,CId, Idx,Attributes,PlyCount," +
-            "      Result,WhiteId,BlackId, WhiteELO,BlackELO, EventId,SiteId," +
-            "      GameDate,EventDate,DateFlags, OpeningId,ECO, AnnotatorId) "+
-		        " SELECT @NextId:=(@NextId+1) AS Id,"+
-            "        CMap.NId AS CId,"+
-            "        Idx,Attributes,PlyCount, " +
-            "        Result, "+
-            "        WMap.NId AS WhiteId,"+
-            "        BMap.NId AS BlackId,"+
-            "        WhiteELO,BlackELO, "+
-            "        EMap.NId AS EventId, "+
-            "        SMap.NId AS SiteId, "+
-            "        GameDate,EventDate,DateFlags,"+
-            "        OMap.NId AS OpeningId,"+
-            "        ECO, "+
-            "        AMap.NId AS AnnotatorId "+
-            " FROM "+tempdb+".IO_Game AS Game" +
-		    "  JOIN "+tempdb+".Map_Collection AS CMap ON Game.CId=CMap.OId" +
-		    "  JOIN "+tempdb+".Map_Player AS WMap ON Game.WhiteId=WMap.OId" +
-		    "  JOIN "+tempdb+".Map_Player AS BMap ON Game.BlackId=BMap.OId" +
-		    "  JOIN "+tempdb+".Map_Event AS EMap ON Game.eventId=EMap.OId" +
-		    "  JOIN "+tempdb+".Map_Site AS SMap ON Game.SiteId=SMap.OId" +
-		    "  JOIN "+tempdb+".Map_Opening AS OMap ON Game.OpeningId=OMap.OId" +
-		    "  JOIN "+tempdb+".Map_Player AS AMap ON Game.AnnotatorId=AMap.OId";
+			int nextId = Game.getSequence(connection);
+			connection.executeUpdate("SET @NextId="+(nextId-1));
+			count = connection.executeUpdate(sql);
 
-		    int nextId = Game.getSequence(connection);
-	    connection.executeUpdate("SET @NextId="+(nextId-1));
-		    count = connection.executeUpdate(sql);
+			Game.getSequence(connection, count);    //  reserve sequence
 
-		    Game.getSequence(connection, count);    //  reserve sequence
+			throwAborted();
+			setProgress(0.50);
 
-		    throwAborted();
-		    setProgress(0.50);
+			sql =
+				"INSERT INTO MoreGame (GId,WhiteTitle,BlackTitle, Round,Board,FEN, Info,Bin," +
+				"     Comments,PosMain,PosVar,Eval) "+
+				" SELECT @NextId:=(@NextId+1) AS GId," +
+				"        WhiteTitle,BlackTitle, Round,Board,FEN, Info,Bin,Comments, PosMain,PosVar,Eval"+
+				" FROM "+tempdb+".IO_Game ";
 
-	    sql =
-	        "INSERT INTO MoreGame (GId,WhiteTitle,BlackTitle, Round,Board,FEN, Info,Bin," +
-			"     Comments,PosMain,PosVar,Eval) "+
-		        " SELECT @NextId:=(@NextId+1) AS GId," +
-			"        WhiteTitle,BlackTitle, Round,Board,FEN, Info,Bin,Comments, PosMain,PosVar,Eval"+
-	        " FROM "+tempdb+".IO_Game ";
-
-		    connection.executeUpdate("SET @NextId="+(nextId-1));
-	    connection.executeUpdate(sql);
+			connection.executeUpdate("SET @NextId="+(nextId-1));
+			connection.executeUpdate(sql);
 		    throwAborted();
 
 	    } catch (SQLException e)

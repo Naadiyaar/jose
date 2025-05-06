@@ -1,6 +1,9 @@
 <%@ page language="java" %>
-<%@ page import="de.jose.Version"%>
+
 <%@ page import="java.sql.Connection"%>
+<%@ page import="java.util.Date"%>
+
+<%@ page import="de.jose.Version"%>
 <%@ page import="de.jose.db.JoConnection"%>
 <%@ page import="de.jose.db.JoPreparedStatement"%>
 <%@ page import="de.jose.web.WebApplication"%>
@@ -72,6 +75,22 @@ jdbc-url: <%=JoConnection.getAdapter().getURL()%> <br>
 
 %>
 </table>
+
+<hr>
+	<h3>Connection Pool</h3>
+	<% 	Date[] frees = JoConnection.getPool().freeSince();
+		Date[] occs =  JoConnection.getPool().occupiedSince();
+	%>
+	<b><%=frees.length%> free:</b><br>
+	<% for(Date t : frees) { %>
+		<%=t%> <br>
+	<%	}	%>
+
+	<br>
+	<b><%=occs.length%> occupied:</b><br>
+	<% for(Date t : occs) { %>
+		<%=t%> <br>
+	<%	} 	%>
 
 </body>
 </html>

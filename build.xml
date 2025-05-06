@@ -41,9 +41,11 @@
 	<property name="classpath.plaf" value="lib/plaf/metouia.jar lib/plaf/flatlaf.jar"/>
 	<property name="classpath.java3d"
 			  value="lib/j3d/j3dcore.jar lib/j3d/j3dutils.jar lib/j3d/vecmath.jar lib/j3d/jogamp-fat.jar"/>
+	<property name="classpath.compress"
+			  value="lib/commons-compress-1.27.1.jar lib/commons-io-2.19.0.jar lib/xz-1.10.jar"/>
 
 	<property name="java.runtime.path"
-			  value="lib/jh.jar lib/json.jar lib/fop-plus.jar ${classpath.java3d} ${classpath.plaf}"/>
+			  value="lib/jh.jar lib/json.jar lib/fop-plus.jar ${classpath.compress} ${classpath.java3d} ${classpath.plaf}"/>
 
 	<!-- class path for compilation -->
 	<path id="java.build.path">
@@ -75,6 +77,10 @@
 <!--        <pathelement location="lib/plaf/nativeskin.jar"/>-->
 		<pathelement location="lib/jdbc/mysql.jar"/>
 		<pathelement location="lib/jdbc/mysql-je.jar"/>
+		<pathelement location="lib/commons-compress-1.27.1.jar"/>
+		<pathelement location="lib/commons-io-2.19.0.jar"/>
+		<pathelement location="lib/xz-1.10.jar"/>
+
 <!--		<pathelement location="lib/jdbc/jds.jar"/>-->
 <!--		<pathelement location="lib/lucene.jar"/>-->
 <!--		<pathelement location="lib/xpath14"/>-->

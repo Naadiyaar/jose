@@ -87,6 +87,26 @@ java.util.EmptyStackException
     [-] remove l&f selection
     [ ] from command line
 
+[ ] MySQL connection timeout
+    [ ] check tomorrow on 18.159.135.101:8081
+    [x] keep-alive process that closes pooled connections in regular intervals
+        (before the Connection time out kills them)
+    [x] pool needs to be thread-safe (easily accomplished with a Vector?)
+
+[ ] Gigabase
+    [x] import pgn.7z
+    [x] delay-key-write
+    [ ] export .jose
+    [ ] massage into a single collection (schema 'giga', use db console)
+    [ ] import .jose.7z
+
+[ ] 7z decompression
+    [x] apache commons compress
+    [x] input pgn.7z
+    [ ] input jose.7z
+    [ ] output pgn.7z
+    [ ] (output jose .7z)
+    [ ] .zstd
 
 [ ] Undo
     which operations need to be recorded; and on which level of detail ?
@@ -112,6 +132,7 @@ java.util.EmptyStackException
 ==== Project
 
 [x] Linux ARM
+    [ ] try Nice DCV image. It's free and has better RDP, supposedly.
 
 [ ] package stockfish network files
     seems like stockfish can run withouth; but not arm version?

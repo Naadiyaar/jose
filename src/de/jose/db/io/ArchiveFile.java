@@ -12,11 +12,12 @@
 
 package de.jose.db.io;
 
-import org.apache.tools.bzip2.CBZip2OutputStream;
-import org.apache.tools.bzip2.CBZip2InputStream;
-import org.apache.tools.tar.TarOutputStream;
-import org.apache.tools.tar.TarInputStream;
-import org.apache.tools.tar.TarEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZFile;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 
 import java.io.*;
 import java.util.zip.*;
@@ -53,7 +54,8 @@ public class ArchiveFile
 	public static final int COMPRESS_BZIP2          = 33;
 	/** @deprecated needs unrar.exe; yields small advantages over gzip */
 	public static final int COMPRESS_RAR                = 34;
-
+	public static final int COMPRESS_7Z                	= 35;
+	public static final int COMPRESS_ZSTD               = 36;
 
 	public static final int TABLE_DEFAULT      = TABLE_MYISAM;
 	public static final int PACK_DEFAULT         = PACK_TAR;
@@ -78,11 +80,11 @@ public class ArchiveFile
 	/** compression output stream (or equal to pout) */
     protected OutputStream compress_out;
 	protected GZIPOutputStream gzip_out;
-	protected CBZip2OutputStream bzip_out;
+	protected BZip2CompressorOutputStream bzip_out;
 	/** pack output stream (zip or tar) */
     protected OutputStream pack_out;
 	protected ZipOutputStream zip_out;
-	protected TarOutputStream tar_out;
+	protected TarArchiveOutputStream tar_out;
 
     // -------- Input Streams ------------------------
 	/** file input stream (or URL input stream!)   */
@@ -92,12 +94,12 @@ public class ArchiveFile
 	/** uncompression input stream (or equal to pin) */
     protected InputStream uncompress_in;
 	protected GZIPInputStream gzip_in;
-	protected CBZip2InputStream bzip_in;
+	protected BZip2CompressorInputStream bzip_in;
 	protected InputStream hd2_in;
 	/** pack input stream (zip or tar) */
     protected InputStream unpack_in;
 	protected ZipInputStream zip_in;
-	protected TarInputStream tar_in;
+	protected TarArchiveInputStream tar_in;
 
 
     public ArchiveFile(File file)
@@ -142,8 +144,10 @@ public class ArchiveFile
 		    compress_out = new GZIPOutputStream(file_out,4096);
 		    break;
 	    case COMPRESS_BZIP2:
-		    compress_out = new CBZip2OutputStream(file_out,4096);
+		    compress_out = new BZip2CompressorOutputStream(file_out,4096);
 		    break;
+		case COMPRESS_7Z:
+			throw new UnsupportedOperationException("not yet implemented; but should be.");
 	    }
 
 	    switch (packMethod)
@@ -162,7 +166,7 @@ public class ArchiveFile
 	    default:
 	    case PACK_TAR:
 		    //  note that TarOutputStream is already buffered so we don't need buf_out !!
-		    pack_out = tar_out = new TarOutputStream(compress_out);
+		    pack_out = tar_out = new TarArchiveOutputStream(compress_out);
 		    break;
 	    }
     }
@@ -203,8 +207,12 @@ public class ArchiveFile
 		    uncompress_in = new GZIPInputStream(hd1_in,4096);
 		    break;
 	    case COMPRESS_BZIP2:
-		    uncompress_in = new CBZip2InputStream(hd1_in);
+		    uncompress_in = new BZip2CompressorInputStream(hd1_in);
 		    break;
+		case COMPRESS_7Z:
+			SevenZFile szf = new SevenZFile(file);
+			uncompress_in = szf.getInputStream(szf.getNextEntry());
+			break;
 	    }
 
 	    if (uncompress_in.markSupported())
@@ -221,7 +229,7 @@ public class ArchiveFile
 		    break;
 	    default:
 	    case PACK_TAR:
-		    unpack_in = tar_in = new TarInputStream(hd2_in);
+		    unpack_in = tar_in = new TarArchiveInputStream(hd2_in);
 		    break;
 	    }
     }
@@ -250,12 +258,16 @@ public class ArchiveFile
 
 		//  GZIP starts with 0x1f 0x8b
 		//  BZIP2 starts with "h1" ... "h9"
+		//	Rar starts with Rar (but we can't unrar, or can we?)
+		//	7zip start with 7x\xbc
 		if ((bytes[0]==(byte)0x1f) && (bytes[1]==(byte)0x8b))
 			return COMPRESS_GZIP;
 		else if (bytes[0]=='h' && (bytes[1]>='1' && bytes[1]<='9'))
 			return COMPRESS_BZIP2;
 		else if (bytes[0]=='R' && bytes[1]=='a' && bytes[2]=='r')
 			return COMPRESS_RAR;
+		else if (bytes[0]=='7' && bytes[1] == 'z' && bytes[2]==(byte)0xbc)
+			return COMPRESS_7Z;
 		else
 			return COMPRESS_NONE;
 	}
@@ -401,9 +413,10 @@ public class ArchiveFile
 			break;
 	    default:
 	    case PACK_TAR:
-		    TarEntry tarEntry = new TarEntry(dataFile);
+		    TarArchiveEntry tarEntry = new TarArchiveEntry(dataFile);
 		    tarEntry.setName(dataFile.getName());   //  no need to store path info
-		    tar_out.putNextEntry(tarEntry);
+			tarEntry.setSize(dataFile.length());
+		    tar_out.putArchiveEntry(tarEntry);
 		    break;
 	    }
 
@@ -418,7 +431,7 @@ public class ArchiveFile
 		    break;
 	    default:
 	    case PACK_TAR:
-		    tar_out.closeEntry();
+		    tar_out.closeArchiveEntry();
 		    break;
 	    }
 	    System.err.println("]");
@@ -442,7 +455,7 @@ public class ArchiveFile
 			return result;
 		default:
 		case PACK_TAR:
-			TarEntry tarEntry = tar_in.getNextEntry();
+			TarArchiveEntry tarEntry = tar_in.getNextEntry();
 			if (tarEntry==null) return null;
 
 			result = new File(destDir, tarEntry.getName());
@@ -546,7 +559,7 @@ public class ArchiveFile
 			flush();
 			break;
 		case COMPRESS_BZIP2:
-			compress_out = bzip_out = new CBZip2OutputStream(file_out,4096);
+			compress_out = bzip_out = new BZip2CompressorOutputStream(file_out,4096);
 			FileUtil.copyFile(input,bzip_out);
 			flush();
 			break;
@@ -570,7 +583,7 @@ public class ArchiveFile
 			FileUtil.copyStream(gzip_in, Integer.MAX_VALUE, output);
 			break;
 		case COMPRESS_BZIP2:
-			bzip_in = new CBZip2InputStream(file_in);
+			bzip_in = new BZip2CompressorInputStream(file_in);
 			FileUtil.copyStream(bzip_in, Integer.MAX_VALUE, output);
 			break;
 		}

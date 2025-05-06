@@ -34,9 +34,11 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.tar.TarInputStream;
-import org.apache.tools.bzip2.CBZip2InputStream;
+import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZFile;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 
 /**
  * Task that reads PGN data from a stream
@@ -355,17 +357,41 @@ public class PGNImport
 			}
 			en.close();
 		}
+		else if (FileUtil.hasExtension(name,"7z"))
+		{
+			//  7-ZIP
+			SevenZFile szf = new SevenZFile(file);
+			for(SevenZArchiveEntry sze = szf.getNextEntry(); sze!=null; sze = szf.getNextEntry())
+			{
+				if (!sze.hasStream()) continue;
+
+				InputStream szin = szf.getInputStream(sze);
+				Reader fr = new InputStreamReader(szin);
+				reader = newImporter(ParentCId, sze.getName(),
+						"file://"+file.getCanonicalPath()+"!"+sze.getName() ,
+						fr, sze.getSize());
+				if (reader==null) continue; //  unknown file type
+
+				reader.setSilentTime(silentTime);
+				reader.start();
+			}
+// don't. keep stream open.			szf.close();
+		}
 		else if (FileUtil.hasExtension(name,"tar") ||
 		        FileUtil.hasExtension(name,"tgz") || FileUtil.hasExtension(name,"tgzip") ||
 		        FileUtil.hasExtension(name,"tbz") || FileUtil.hasExtension(name,"tbz2") ||
+				FileUtil.hasExtension(name,"zstd") || FileUtil.hasExtension(name,"zst") ||
 		        FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"gz") ||
 		        FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"gzip") ||
+				FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"zstd") ||
+				FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"zst") ||
 			FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"bz") ||
-			FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"bz2")) {
+			FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(name,"bz2"))
+		{
 		    //  tar (also tar.gz, tgz, tar.bz, tar.bz2, tbz, tbz2
 			TarEnumeration en = new TarEnumeration(file,null);
 			while (en.hasMoreElements()) {
-				TarEntry entry = en.nextTarEntry();
+				TarArchiveEntry entry = en.nextTarEntry();
 				long size = entry.getSize();
 
                 InputStream zin = en.getInputStream(file,entry.getName());
@@ -402,7 +428,7 @@ public class PGNImport
 	        long size = file.length();
 	        InputStream in = new FileInputStream(file);
 
-	        CBZip2InputStream bzin = FileUtil.createBZipInputStream(in);
+	        BZip2CompressorInputStream bzin = FileUtil.createBZipInputStream(in);
 
 	        Reader fr = new InputStreamReader(bzin);
 	        reader = newImporter(ParentCId, trimmedName,
@@ -461,9 +487,9 @@ public class PGNImport
 		{
 			//  tar.gz
 			InputStream in = conn.getInputStream();
-			TarInputStream tin = TarEnumeration.createTarInputStream(in,name);
+			TarArchiveInputStream tin = TarEnumeration.createTarInputStream(in,name);
 
-			for (TarEntry ety = tin.getNextEntry(); ety != null; ety = tin.getNextEntry())
+			for (TarArchiveEntry ety = tin.getNextEntry(); ety != null; ety = tin.getNextEntry())
 			{
 				Reader fr = new InputStreamReader(tin);
 				reader = newImporter(ParentCId, ety.getName(), url+"!"+ety.getName(), fr, ety.getSize());
@@ -487,8 +513,7 @@ public class PGNImport
         {
 			//  BZip
 			InputStream in = conn.getInputStream();
-
-			CBZip2InputStream bzin = FileUtil.createBZipInputStream(in);
+			BZip2CompressorInputStream bzin = FileUtil.createBZipInputStream(in);
 
 		    Reader fr = new InputStreamReader(bzin);
 			reader = newImporter(ParentCId, trimmedName, url.toExternalForm(), fr, -1/*deflated size ?? */);
@@ -568,6 +593,16 @@ public class PGNImport
 		if (canDisableKeys && total > DISABLE_KEY_FILE_SIZE) {
 			disableKeys(getConnection());
 			disableKeys = true;
+			/*	note: disable/enable keys makes sense if we have a small database
+					and import a big file.
+					however, if the database is already big, the re-creation of the
+					indexes becomes far too expensive.
+					don't do it.
+
+					Use --delay-key-write instead. It keeps the indexes in memory and
+					flushes them on close. It increases the risk of index corruption
+					but we counter that with --myisam-recover=FORCE.
+			 */
 		}
 		else
 			disableKeys = false;

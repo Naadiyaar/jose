@@ -34,8 +34,10 @@ import java.util.zip.GZIPOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.tools.bzip2.CBZip2OutputStream;
-import org.apache.tools.tar.TarOutputStream;
+import org.apache.commons.compress.archivers.sevenz.SevenZArchiveEntry;
+import org.apache.commons.compress.archivers.sevenz.SevenZFile;
+import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 
 /**
  *
@@ -159,9 +161,9 @@ public class PGNExport
 	/** GZip output stream (only used if writing GZIP file)   */
 	protected GZIPOutputStream gzout;
 	/** Tar output stream (only used if writing GZIP file)   */
-	protected TarOutputStream tarout;
+	protected TarArchiveOutputStream tarout;
 	/** BZip output stream (only used if writing GZIP file)   */
-	protected CBZip2OutputStream bzout;
+	protected BZip2CompressorOutputStream bzout;
 	/** output print writer   */
 	protected LinePrintWriter out;
 	/** replay Position */
@@ -235,6 +237,22 @@ public class PGNExport
                 //  BZIP
                 fout = bzout = FileUtil.createBZipOutputStream(fout);
             }
+			else if (FileUtil.hasExtension(fileName,"zst")
+					|| FileUtil.hasExtension(fileName,"zstd"))
+			{
+				throw new UnsupportedOperationException("zstd output not yet implemented. but could be.");
+			}
+			else if (FileUtil.hasExtension(fileName,"7z"))
+			{
+				//	todo 7zip
+				//fout = sevenzout =
+				SevenZFile.Builder szfb = new SevenZFile.Builder();
+				szfb.setFile(outputFile);
+				szfb.setDefaultName(trimmedName);
+				SevenZFile szf = szfb.get();
+				SevenZArchiveEntry szen = szf.getNextEntry();
+				fout = szfb.getOutputStream();
+			}
         }
 
 		pos = new Position();
@@ -297,7 +315,7 @@ public class PGNExport
 		if (tarout!=null)
 			try {
 				//  TAR entry must be closed (before closing the stream)
-				tarout.closeEntry();
+				tarout.closeArchiveEntry();
 				tarout.close();
 			} catch (IOException ioex) {
 				return ERROR;

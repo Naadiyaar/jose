@@ -15,6 +15,7 @@ package de.jose.util;
 import de.jose.Util;
 import de.jose.util.map.IntHashSet;
 
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -1167,7 +1168,17 @@ public class StringUtil
 		}
 	}
 
-	/**
+	private static DecimalFormat INTEGER_FORMAT = new DecimalFormat("###,###");
+	{
+		INTEGER_FORMAT.getDecimalFormatSymbols().setGroupingSeparator('\u2009');	//	thin space
+		INTEGER_FORMAT.setRoundingMode(RoundingMode.HALF_UP);
+	}
+
+    public static String formattedInteger(long count) {
+		return formatLargeInt(count,INTEGER_FORMAT);
+    }
+
+    /**
 	 * a String Comparator that is not case sensitive
 	 * null values are compared, too
 	 */
@@ -1357,18 +1368,19 @@ public class StringUtil
 		}
 	}
 
-	public static String formatLargeInt(long num, DecimalFormat format) {
+	public static String formatLargeInt(long num, DecimalFormat format)
+	{
 		if (Math.abs(num) < 1000)
 			return format.format(num);
 		double dnum = (double)num;
 		dnum /= 1000.0;
 		if (dnum < 1000.0)
-			return format.format(dnum)+"k";
+			return format.format(dnum)+"\u2009k";
 		dnum /= 1000.0;
 		if (dnum < 1000.0)
-			return format.format(dnum)+"M";
+			return format.format(dnum)+"\u2009M";
 		dnum /= 1000.0;
-		return format.format(dnum)+"G";
+		return format.format(dnum)+"\u2009G";
 	}
 
 

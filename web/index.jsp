@@ -5,6 +5,7 @@
 <%@ page import="de.jose.db.JoPreparedStatement"%>
 <%@ page import="java.sql.ResultSet"%>
 <%@ page import="de.jose.Language"%>
+<%@ page import="de.jose.util.StringUtil" %>
 <%@ page language="java" %>
 <!--%@ taglib prefix="jose" tagdir="." %-->
 <%!
@@ -213,7 +214,7 @@
 				<td class="right">
 					<%
 						if (gameCount > 0) {
-						%><a href="collection.jsp?CId=<%=CId%>">(<%=gameCount%> <%=Language.getPlural("web.game",gameCount>1)%>)</a><%
+						%><a href="collection.jsp?CId=<%=CId%>">(<%=StringUtil.formattedInteger(gameCount)%> <%=Language.getPlural("web.game",gameCount>1)%>)</a><%
 						}
 					%>
 				</td>

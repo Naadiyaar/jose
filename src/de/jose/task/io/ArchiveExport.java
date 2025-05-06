@@ -102,7 +102,7 @@ public class ArchiveExport
 
         archive.create(ArchiveFile.TABLE_MYISAM,
 		        ArchiveFile.PACK_TAR,
-		        ArchiveFile.COMPRESS_GZIP,
+		        ArchiveFile.COMPRESS_GZIP,	// todo or zstd (fast), or 7z (slow, but small) ?
 		        dataDir);
 
 	    getSource();

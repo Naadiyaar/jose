@@ -175,7 +175,7 @@ public class Language
 	}
 
 	public static String getPlural(String key, boolean many) {
-		return get(many ? key : (key+"s"));
+		return get(many ? (key+"s") : key);
 	}
 
     public String get1(String key, String defaultValue)

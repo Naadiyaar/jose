@@ -56,7 +56,8 @@ public class PGNFileFilter
 //		long millis = System.currentTimeMillis();
 //		System.err.print("["+fileName);
 		try {
-			if (FileUtil.hasExtension(fileName,"zip"))
+			if (FileUtil.hasExtension(fileName,"zip")
+				|| FileUtil.hasExtension(fileName,"7z"))
 			{
 				File file = new File(dir,fileName);
 				return (file.length() > ZIP_MAX_SIZE) || ZipEnumeration.contains(file, this);
@@ -86,7 +87,10 @@ public class PGNFileFilter
 			if (FileUtil.hasExtension(fileName,"bz")
 					|| FileUtil.hasExtension(fileName,"bz2")
 					|| FileUtil.hasExtension(fileName,"bzip")
-					|| FileUtil.hasExtension(fileName,"bzip2"))
+					|| FileUtil.hasExtension(fileName,"bzip2")
+					|| FileUtil.hasExtension(fileName,"7z")
+					|| FileUtil.hasExtension(fileName,"zst")
+					|| FileUtil.hasExtension(fileName,"zstd"))
 			{
 				String trimmedName = FileUtil.trimExtension(fileName);
 				//  this can become expensive !

@@ -22,9 +22,9 @@ import java.util.zip.ZipException;
 import java.util.zip.GZIPInputStream;
 import java.io.*;
 
-import org.apache.tools.tar.TarInputStream;
-import org.apache.tools.tar.TarEntry;
-import org.apache.tools.bzip2.CBZip2InputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
 
 /**
  * @author Peter Schäfer
@@ -33,8 +33,8 @@ import org.apache.tools.bzip2.CBZip2InputStream;
 public class TarEnumeration
         implements Enumeration
 {
-	protected TarInputStream tin;
-	protected TarEntry next;
+	protected TarArchiveInputStream tin;
+	protected TarArchiveEntry next;
 
 	protected FilenameFilter filter;
 
@@ -55,7 +55,7 @@ public class TarEnumeration
 		}
 	}
 
-	static public boolean matches(TarEntry ety, FilenameFilter filter)
+	static public boolean matches(TarArchiveEntry ety, FilenameFilter filter)
 	{
 		String entryName = ety.getName();
 		if (filter!=null)
@@ -65,19 +65,19 @@ public class TarEnumeration
 	}
 
 
-	public static TarInputStream createTarInputStream(File file) throws IOException
+	public static TarArchiveInputStream createTarInputStream(File file) throws IOException
 	{
 		return createTarInputStream(new FileInputStream(file), file.getName());
 	}
 
-	public static TarInputStream createTarInputStream(InputStream fin, String fileName) throws IOException
+	public static TarArchiveInputStream createTarInputStream(InputStream fin, String fileName) throws IOException
 	{
 		String trimmedName = FileUtil.trimExtension(fileName);
 
 		BufferedInputStream bin = new BufferedInputStream(fin);
 
 		if (FileUtil.hasExtension(fileName,"tar"))
-			return new TarInputStream(bin);
+			return new TarArchiveInputStream(bin);
 
 		if (FileUtil.hasExtension(fileName,"tgz") ||
 		    FileUtil.hasExtension(fileName,"tgzip") ||
@@ -85,7 +85,7 @@ public class TarEnumeration
 		        FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(fileName,"gzip"))
 		{
 			GZIPInputStream gin = new GZIPInputStream(bin);
-			return new TarInputStream(gin);
+			return new TarArchiveInputStream(gin);
 		}
 
 		if (FileUtil.hasExtension(fileName,"tbz") ||
@@ -93,12 +93,20 @@ public class TarEnumeration
 		        FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(fileName,"bz") ||
 		        FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(fileName,"bz2"))
 		{
-			CBZip2InputStream bzin = FileUtil.createBZipInputStream(bin);
-			return new TarInputStream(bzin);
+			BZip2CompressorInputStream bzin = FileUtil.createBZipInputStream(bin);
+			return new TarArchiveInputStream(bzin);
+		}
+
+		if (FileUtil.hasExtension(fileName,"zstd") ||
+				FileUtil.hasExtension(fileName,"zst") ||
+				FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(fileName,"zstd") ||
+				FileUtil.hasExtension(trimmedName,"tar") && FileUtil.hasExtension(fileName,"zst"))
+		{
+			throw new UnsupportedOperationException("zstd not yet supported. but could be.");
 		}
 
 //		throw new IllegalArgumentException(file+" is not a tar file");  //  or is it ?
-		return new TarInputStream(bin);
+		return new TarArchiveInputStream(bin);
 	}
 
 	/**
@@ -125,8 +133,8 @@ public class TarEnumeration
 		return result;
 	}
 
-	public final TarEntry nextTarEntry()	{
-		return (TarEntry)nextElement();
+	public final TarArchiveEntry nextTarEntry()	{
+		return (TarArchiveEntry) nextElement();
 	}
 
 	/**
@@ -135,8 +143,8 @@ public class TarEnumeration
 	public final static InputStream getInputStream(File f, String name)
 		throws IOException
 	{
-		TarInputStream tin = createTarInputStream(f);
-		TarEntry ety = tin.getNextEntry();
+		TarArchiveInputStream tin = createTarInputStream(f);
+		TarArchiveEntry ety = tin.getNextEntry();
 		while (ety != null) {
 			if (ety.getName().equals(name))
 				return tin;

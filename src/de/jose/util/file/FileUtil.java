@@ -28,8 +28,8 @@ import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.tools.bzip2.CBZip2OutputStream;
-import org.apache.tools.bzip2.CBZip2InputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorInputStream;
+import org.apache.commons.compress.compressors.bzip2.BZip2CompressorOutputStream;
 
 public class FileUtil
 {
@@ -748,28 +748,30 @@ public class FileUtil
 		}
 	}
 
-	public static CBZip2OutputStream createBZipOutputStream(OutputStream output) throws IOException
+	public static BZip2CompressorOutputStream createBZipOutputStream(OutputStream output) throws IOException
 	{
 		//  write magic bytes
+		//  (todo why?? this is incompatible, or is it?
+		//   if in doubt, use ArchiveFile.detectCompressMethod() instead)
 		output.write('B');
 		output.write('Z');
-		return new CBZip2OutputStream(output);
+		return new BZip2CompressorOutputStream(output);
 	}
 
-    public static CBZip2OutputStream createBZipOutputStream(OutputStream output, int level) throws IOException
+    public static BZip2CompressorOutputStream createBZipOutputStream(OutputStream output, int level) throws IOException
     {
         //  write magic bytes
         output.write('B');
         output.write('Z');
-        return new CBZip2OutputStream(output,level);
+        return new BZip2CompressorOutputStream(output,level);
     }
 
-	public static CBZip2InputStream createBZipInputStream(InputStream input) throws IOException
+	public static BZip2CompressorInputStream createBZipInputStream(InputStream input) throws IOException
 	{
 		//  read magic bytes
 		if (input.read() != 'B' || input.read() != 'Z')
 			throw new IOException("invalid bzip file");
-		return new CBZip2InputStream(input);
+		return new BZip2CompressorInputStream(input);
 	}
 
 }
