@@ -42,7 +42,7 @@
 	<property name="classpath.java3d"
 			  value="lib/j3d/j3dcore.jar lib/j3d/j3dutils.jar lib/j3d/vecmath.jar lib/j3d/jogamp-fat.jar"/>
 	<property name="classpath.compress"
-			  value="lib/commons-compress-1.27.1.jar lib/commons-io-2.19.0.jar lib/xz-1.10.jar"/>
+			  value="lib/commons-compress-1.27.1.jar lib/commons-io-2.19.0.jar lib/xz-1.10.jar lib/commons-lang3-3.17.0.jar"/>
 
 	<property name="java.runtime.path"
 			  value="lib/jh.jar lib/json.jar lib/fop-plus.jar ${classpath.compress} ${classpath.java3d} ${classpath.plaf}"/>
@@ -79,6 +79,7 @@
 		<pathelement location="lib/jdbc/mysql-je.jar"/>
 		<pathelement location="lib/commons-compress-1.27.1.jar"/>
 		<pathelement location="lib/commons-io-2.19.0.jar"/>
+		<pathelement location="lib/commons-lang3-3.17.0.jar"/>
 		<pathelement location="lib/xz-1.10.jar"/>
 
 <!--		<pathelement location="lib/jdbc/jds.jar"/>-->

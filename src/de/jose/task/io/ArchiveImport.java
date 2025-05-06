@@ -187,7 +187,15 @@ public class ArchiveImport
 
 	    setProgress(0.98);
 
-        return SUCCESS;
+		//  flag tables for needing analysis
+		Setup setup = new Setup(Application.theApplication.theConfig,"MAIN",connection);
+		if (gameCount > PGNImport.ANALYZE_LIMIT)
+			try { setup.markAllDirty(); } catch (SQLException ex) {  }
+
+		if (--PGNImport.gGameImporterInstance == 0)
+			setup.analyzeTables(false);  //  actually do analyze the tables
+
+		return SUCCESS;
     }
 
     public int done(int state)
@@ -209,15 +217,6 @@ public class ArchiveImport
 	    /*	update finished; refresh display, if necessary	*/
 	    DBTask.broadcastAfterUpdate(nextCId);
 
-	    //  flag tables for needing analysis
-/*
-	    Setup setup = new Setup(Application.theApplication.theConfig,"MAIN",connection);
-	    if (gameCount > PGNImport.ANALYZE_LIMIT)   //  TODO
-	        try { setup.markAllDirty(); } catch (SQLException ex) {  }
-
-	    if (--PGNImport.gGameImporterInstance == 0)
-	        setup.analyzeTables(false);  //  actually do analyze the tables
-*/
 //        System.out.println("import "+(double)getElapsedTime()/1000.0);
         return super.done(state);
     }

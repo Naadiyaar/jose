@@ -96,17 +96,18 @@ java.util.EmptyStackException
 [ ] Gigabase
     [x] import pgn.7z
     [x] delay-key-write
-    [ ] export .jose
-    [ ] massage into a single collection (schema 'giga', use db console)
-    [ ] import .jose.7z
+    [x] export .jose (copy Player is slooow. progress bar don't show progress)
+    [x] massage into a single collection (schema 'giga', use db console)
+    [x] import .jose.7z
 
 [ ] 7z decompression
     [x] apache commons compress
     [x] input pgn.7z
-    [ ] input jose.7z
-    [ ] output pgn.7z
-    [ ] (output jose .7z)
-    [ ] .zstd
+    [x] input jose.7z
+    [?] output pgn.7z
+    [?] (output jose .7z)
+    [ ] .zst ? yes, it's fast. but not that much better than gzip, zip.
+    [ ] bug: add commons-lang3 to class path
 
 [ ] Undo
     which operations need to be recorded; and on which level of detail ?

@@ -114,6 +114,7 @@
 				<include name="json.jar" />
 				<include name="commons-compress-1.27.1.jar"/>
 				<include name="commons-io-2.19.0.jar"/>
+				<include name="commons-lang3-3.17.0.jar"/>
 				<include name="xz-1.10.jar"/>
 			</zipfileset>
 
@@ -291,6 +292,7 @@
 			<zipfileset dir="lib" prefix="lib">
 				<include name="commons-compress-1.27.1.jar"/>
 				<include name="commons-io-2.19.0.jar"/>
+				<include name="commons-lang3-3.17.0.jar"/>
 				<include name="xz-1.10.jar"/>
 			</zipfileset>
 			<zipfileset dir="lib/plaf" prefix="lib/plaf">
