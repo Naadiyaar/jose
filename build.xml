@@ -206,6 +206,10 @@
 			<!-- fop library (needed to print html, pdf) -->
 			<zipfileset dir="lib" prefix="WEB-INF/lib">
 				<include name="fop-plus.jar"/>
+				<include name="commons-compress-1.27.1.jar"/>
+				<include name="commons-io-2.19.0.jar"/>
+				<include name="commons-lang3-3.17.0.jar"/>
+				<include name="xz-1.10.jar"/>
 			</zipfileset>
 			<!-- navigation images (@deprecated)-->
 			<!--zipfileset dir="images/nav" prefix="nav"/-->

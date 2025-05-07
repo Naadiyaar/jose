@@ -165,8 +165,13 @@ the first production release.
 * fixed: draw offers
 * external databases
 
-=== 1.5.7
+=== 1.5.7 (2025-05)
 * relaunch Web App
 * use TrueType fonts in HTML
+* new platform: Linux Arm 64
+
+=== 1.5.8 (2025-05)
+* load /huge/ database files
+* read 7zip compressed input files
 
 ==========================

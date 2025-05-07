@@ -286,7 +286,7 @@
 			</zipfileset>
 			<zipfileset dir="fonts" prefix="fonts">
 				<include name="FIG-??-2.TTF"/>
-				<include name="Berlin.ttf"/>
+				<include name="BERLIN.TTF"/>
 				<include name="FontAwesome.otf"/>
 			</zipfileset>
 			<zipfileset dir="lib" prefix="lib">

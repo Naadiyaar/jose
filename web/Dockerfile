@@ -26,9 +26,6 @@ ENV CATALINA_HOME=/opt/apache-tomcat-9.0.104
 ENV CATALINA_BASE=/opt/apache-tomcat-9.0.104
 RUN chmod +x $CATALINA_HOME/bin/catalina.sh
 
-# use port 80 for web server
-#RUN sed -i 's/port="8080"/port="80"/g' $CATALINA_HOME/conf/server.xml
-
 # Deploy jose Web App
 ADD https://github.com/peteschaefer/jose/releases/download/Latest/jose.war .
 RUN cp jose.war $CATALINA_HOME/webapps
