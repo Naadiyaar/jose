@@ -2,50 +2,6 @@
 
 * double click insert variant; trying to delete it
 
-[ ] BUG
-java.sql.SQLException: Streaming result set com.mysql.jdbc.RowDataDynamic@585e4cb0 is still active.
-    Only one streaming result set may be open and in use per-connection.
-    Ensure that you have called .close() on  any active result sets before attempting more queries.
-	at com.mysql.jdbc.MysqlIO.checkForOutstandingStreamingData(MysqlIO.java:2066)
-	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1481)
-	at com.mysql.jdbc.ServerPreparedStatement.serverExecute(ServerPreparedStatement.java:1124)
-	at com.mysql.jdbc.ServerPreparedStatement.executeInternal(ServerPreparedStatement.java:676)
-	at com.mysql.jdbc.PreparedStatement.execute(PreparedStatement.java:773)
-	at de.jose.db.JoPreparedStatement.execute(JoPreparedStatement.java:74)
-	at de.jose.db.JoPreparedStatement.execute(JoPreparedStatement.java:97)
-	at de.jose.view.list.IntervalCacheModel.readData(IntervalCacheModel.java:698)
-	at de.jose.view.list.IntervalCacheModel.readRow(IntervalCacheModel.java:642)
-	at de.jose.view.list.IntervalCacheModel.getRowAt(IntervalCacheModel.java:601)
-	at de.jose.view.list.IntervalCacheModel.getValueAt(IntervalCacheModel.java:567)
-
-[ ] db: expected data on row 
-java.sql.SQLException: data expected at row 17, Id=1018
-	at de.jose.view.list.IntervalCacheModel.readData(IntervalCacheModel.java:713)
-	at de.jose.view.list.IntervalCacheModel.readRow(IntervalCacheModel.java:642)
-	at de.jose.view.list.IntervalCacheModel.getRowAt(IntervalCacheModel.java:595)
-	at de.jose.view.list.IntervalCacheModel.getValueAt(IntervalCacheModel.java:567)
-	at de.jose.view.ListPanel$ListTableModel.getValueAt(ListPanel.java:258)
-
-[ ]
-java.util.EmptyStackException
-	at java.base/java.util.Stack.peek(Stack.java:103)
-	at java.base/java.util.Stack.pop(Stack.java:85)
-	at java.desktop/javax.swing.tree.VariableHeightLayoutCache.getNodeForPath(VariableHeightLayoutCache.java:819)
-	at java.desktop/javax.swing.tree.VariableHeightLayoutCache.getBounds(VariableHeightLayoutCache.java:214)
-	at java.desktop/javax.swing.plaf.basic.BasicTreeUI.getPathBounds(BasicTreeUI.java:679)
-	at java.desktop/javax.swing.plaf.basic.BasicTreeUI.getPathBounds(BasicTreeUI.java:672)
-	at com.formdev.flatlaf.ui.FlatTreeUI.getPathBounds(FlatTreeUI.java:390)
-	at java.desktop/javax.swing.plaf.basic.BasicTreeUI$Handler.valueChanged(BasicTreeUI.java:4265)
-	at com.formdev.flatlaf.ui.FlatTreeUI.lambda$createTreeSelectionListener$1(FlatTreeUI.java:364)
-	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.fireValueChanged(DefaultTreeSelectionModel.java:650)
-	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.notifyPathChange(DefaultTreeSelectionModel.java:1120)
-	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.setSelectionPaths(DefaultTreeSelectionModel.java:306)
-	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.setSelectionPath(DefaultTreeSelectionModel.java:200)
-	at java.desktop/javax.swing.JTree.setSelectionPath(JTree.java:1709)
-	at de.jose.view.CollectionPanel.select(CollectionPanel.java:617)
-	at de.jose.view.CollectionPanel$1.Do(CollectionPanel.java:652)
-
-
 [ ] Context Help
 
 ? Charter buggy
@@ -66,7 +22,7 @@ java.util.EmptyStackException
 [ ] Cut / Paste ?
     [ ] Drag & Drop text snippets
 
-[ ] bug: game moved in DB; opened game needs to know
+[x] bug: game moved in DB; opened game needs to know
 [ ] save F4 details to DB
 [ ] About / DB info
     [x] get MySQL server version
@@ -93,12 +49,19 @@ java.util.EmptyStackException
         (before the Connection time out kills them)
     [x] pool needs to be thread-safe (easily accomplished with a Vector?)
 
-[ ] Gigabase
+[x] Gigabase
     [x] import pgn.7z
     [x] delay-key-write
     [x] export .jose (copy Player is slooow. progress bar don't show progress)
     [x] massage into a single collection (schema 'giga', use db console)
     [x] import .jose.7z
+    [ ] SELECT Game.Id FROM Game WHERE Game.CId  = 1002 ORDER BY Game.GameDate DESC
+        [.] missing indexes
+            Game(CId,GameDate,Id), Game(CId,ECO,Id)
+            Game(CId,Result,Id)
+        [.] Game(CId,WhiteELOId), Game(CId,BlackELO,Id),
+    [x] bug: order by Annotator
+        don't order by Annotator :(
 
 [ ] 7z decompression
     [x] apache commons compress
@@ -107,7 +70,7 @@ java.util.EmptyStackException
     [?] output pgn.7z
     [?] (output jose .7z)
     [ ] .zst ? yes, it's fast. but not that much better than gzip, zip.
-    [ ] bug: add commons-lang3 to class path
+    [x] bug: add commons-lang3 to class path
 
 [ ] Undo
     which operations need to be recorded; and on which level of detail ?
@@ -133,7 +96,13 @@ java.util.EmptyStackException
 ==== Project
 
 [x] Linux ARM
-    [ ] try Nice DCV image. It's free and has better RDP, supposedly.
+    [x] build with older glibc. Currently it's 2.29 (or 2.23?)
+        [x] mysqld
+        [x] lc0
+        [?] permissions for /var/lib/mysql required? use --socket /tmp/mysql.sock instead?
+        [x] fix & upload jose-152-linux-arm.zip
+    [x] try Nice DCV image. It's free and has better RDP, supposedly.
+        [x] run tomcat
 
 [ ] package stockfish network files
     seems like stockfish can run withouth; but not arm version?
@@ -207,8 +176,23 @@ Alternative JREs:
 * FOP printing: subtitles for Events and Rounds
     Q: sort by Collection, or by Event name (needs to be curated accurately) ?
     - drop info from Game header
-* Buld edit with F4
+* Bulk edit with F4
+    - GameDetailsDialog uses GameSource. Two modes:
+        GameSource(object) refers to an opened document. ID==0 = new, or ID > 0 = existing
+        GemsSource(...) refers to a set of games. Write to DB directly.
 * Autocompletion for database fields (Event, Player, ...)
+
+* Search Pawn Structure
+    - mode on Zobrist keys
+    - Pawn Mat Signature:
+        extract from existing?
+        compute differently? (requires archive cross-over. avoid!)
+* Store MatSignature in DB
+    - speeds up Position search
+    - requires cross-over (for archive files, too)
+* Parallel Position Search
+* Search ELO >=
+* Query History
 
 
 * RTF export? currently possible via copy/paste.
@@ -282,3 +266,48 @@ java.lang.RuntimeException: Invalid insert
 	at de.jose.pgn.Game.doInsertMove(Game.java:797)
 	at de.jose.pgn.Game.insertMove(Game.java:782)
 	at de.jose.Application.handleUserMove(Application.java:2401)
+
+
+[ ] BUG
+java.sql.SQLException: Streaming result set com.mysql.jdbc.RowDataDynamic@585e4cb0 is still active.
+    Only one streaming result set may be open and in use per-connection.
+    Ensure that you have called .close() on  any active result sets before attempting more queries.
+	at com.mysql.jdbc.MysqlIO.checkForOutstandingStreamingData(MysqlIO.java:2066)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:1481)
+	at com.mysql.jdbc.ServerPreparedStatement.serverExecute(ServerPreparedStatement.java:1124)
+	at com.mysql.jdbc.ServerPreparedStatement.executeInternal(ServerPreparedStatement.java:676)
+	at com.mysql.jdbc.PreparedStatement.execute(PreparedStatement.java:773)
+	at de.jose.db.JoPreparedStatement.execute(JoPreparedStatement.java:74)
+	at de.jose.db.JoPreparedStatement.execute(JoPreparedStatement.java:97)
+	at de.jose.view.list.IntervalCacheModel.readData(IntervalCacheModel.java:698)
+	at de.jose.view.list.IntervalCacheModel.readRow(IntervalCacheModel.java:642)
+	at de.jose.view.list.IntervalCacheModel.getRowAt(IntervalCacheModel.java:601)
+	at de.jose.view.list.IntervalCacheModel.getValueAt(IntervalCacheModel.java:567)
+
+[ ] db: expected data on row
+java.sql.SQLException: data expected at row 17, Id=1018
+	at de.jose.view.list.IntervalCacheModel.readData(IntervalCacheModel.java:713)
+	at de.jose.view.list.IntervalCacheModel.readRow(IntervalCacheModel.java:642)
+	at de.jose.view.list.IntervalCacheModel.getRowAt(IntervalCacheModel.java:595)
+	at de.jose.view.list.IntervalCacheModel.getValueAt(IntervalCacheModel.java:567)
+	at de.jose.view.ListPanel$ListTableModel.getValueAt(ListPanel.java:258)
+
+[ ]
+java.util.EmptyStackException
+	at java.base/java.util.Stack.peek(Stack.java:103)
+	at java.base/java.util.Stack.pop(Stack.java:85)
+	at java.desktop/javax.swing.tree.VariableHeightLayoutCache.getNodeForPath(VariableHeightLayoutCache.java:819)
+	at java.desktop/javax.swing.tree.VariableHeightLayoutCache.getBounds(VariableHeightLayoutCache.java:214)
+	at java.desktop/javax.swing.plaf.basic.BasicTreeUI.getPathBounds(BasicTreeUI.java:679)
+	at java.desktop/javax.swing.plaf.basic.BasicTreeUI.getPathBounds(BasicTreeUI.java:672)
+	at com.formdev.flatlaf.ui.FlatTreeUI.getPathBounds(FlatTreeUI.java:390)
+	at java.desktop/javax.swing.plaf.basic.BasicTreeUI$Handler.valueChanged(BasicTreeUI.java:4265)
+	at com.formdev.flatlaf.ui.FlatTreeUI.lambda$createTreeSelectionListener$1(FlatTreeUI.java:364)
+	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.fireValueChanged(DefaultTreeSelectionModel.java:650)
+	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.notifyPathChange(DefaultTreeSelectionModel.java:1120)
+	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.setSelectionPaths(DefaultTreeSelectionModel.java:306)
+	at java.desktop/javax.swing.tree.DefaultTreeSelectionModel.setSelectionPath(DefaultTreeSelectionModel.java:200)
+	at java.desktop/javax.swing.JTree.setSelectionPath(JTree.java:1709)
+	at de.jose.view.CollectionPanel.select(CollectionPanel.java:617)
+	at de.jose.view.CollectionPanel$1.Do(CollectionPanel.java:652)
+

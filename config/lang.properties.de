@@ -578,7 +578,7 @@ xsl.css.standalone = CSS Stylesheet in eigener Datei
 
 xsl.html.img.dir = Pfad
 xsl.create.images = Bilder erzuegen
-xsl.html.complete = Vollst�ndige Seite
+xsl.html.complete = Vollst�ndige Seite
 
 xsl.pdf.embed = TrueType Fonts einbetten
 xsl.pdf.font.dir = Zusätzliche Fonts:
@@ -1180,7 +1180,8 @@ dialog.repair.4 = Index-Dateien prüfen
 dialog.repair.5 = Index-Dateien wieder herstellen (dauert etwas länger)
 dialog.repair.6 = Datenbank-Prozess neu starten
 dialog.repair.7 = Verlorene Referenzen herstellen (dauert etwas länger)
-dialog.repair.8 = Beenden
+dialog.repair.8 = Index-Statistiken Aktualisieren
+dialog.repair.9 = Beenden
 
 ##############################################################################
 #	foreign language names

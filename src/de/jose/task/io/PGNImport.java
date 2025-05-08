@@ -861,8 +861,6 @@ public class PGNImport
             if (--gGameImporterInstance == 0)
                 setup.analyzeTables(false);  //  actuall do analyze the tables
 
-
-
             return result;
 
         } finally {

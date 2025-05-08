@@ -55,6 +55,7 @@ public class MySQLAdapter
 	protected FileWatch watch;
 
 	public static final int ER_QUERY_INTERRUPTED = 1317;
+	public static final int ER_SORT_ABORTED = 1028;
 
 	/**	default ctor	*/
 	protected MySQLAdapter()
@@ -522,15 +523,22 @@ public class MySQLAdapter
 		command.add("--collation-server=utf8_general_ci");
 		command.add("--console");	// do write to std-out
 
-		command.add("--key-buffer=16M");
+		//	MyISAM parameters; bump up default values to accomodate GIGA databases
+		command.add("--key-buffer-size=64M");
 		command.add("--max-allowed-packet=1M");
 		command.add("--table-cache=64");
 		command.add("--net-buffer-length=8K");
-		command.add("--read-buffer-size=256K");
-		command.add("--read-rnd-buffer_size=512K");
-		command.add("--sort-buffer-size=256M");
+		command.add("--read-buffer-size=16M");
+		command.add("--read-rnd-buffer_size=128M");
+		command.add("--sort-buffer-size=512M");
+		command.add("--bulk-insert-buffer-size=256M");	//	for import?
 		command.add("--myisam-sort-buffer-size=256M");
-		command.add("--myisam-recover=FORCE");  //  always check for corrupted index files, etc.
+		command.add("--myisam-recover=FORCE"); //  always check for corrupted index files, etc.
+		//command.add("--myisam-use-mmap=ON");	//	since 5.1 !
+		//	default table size for tmp and memory tables is 16MB. Not enough.
+		//	huge database have around 3GB, or more.
+		command.add("--tmp-table-size=16G");
+		command.add("--max-heap-table-size=16G");
 
 		//	for server-side operation: set connection timeout as high as possible:
 		String infTimeout = Version.windows ? "2147483" : "31536000";
@@ -543,11 +551,6 @@ public class MySQLAdapter
 //		command.add("--mysqld="+execPath);	//	used for "mysqld_safe"
 //		command.add("--log-error=error.log");
 //		command.add("--secure-file-priv="+Application.theDatabaseDirectory);
-
-		//	default table size for tmp and memory tables is 16MB. Not enough.
-		//	huge database have around 3GB, or more.
-		command.add("--tmp-table-size=16G");
-		command.add("--max-heap-table-size=16G");
 
 		props.put("--default-character-set","utf8");
 		props.put("--default-collation","utf8_general_ci");

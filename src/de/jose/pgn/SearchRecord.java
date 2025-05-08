@@ -1131,7 +1131,8 @@ public class SearchRecord implements Cloneable
 			case ListPanel.COL_WELO:
 							joins |= JOIN_GAME;
 							appendOrderClause("Game.WhiteELO", sortOrder, sql, order_in_select);
-							appendOrderClause("Game.BlackELO", sortOrder, sql, order_in_select);
+							//appendOrderClause("Game.BlackELO", sortOrder, sql, order_in_select);
+							// order by WhiteElo, BlackELO is too hard for MySQL to optimize.
 							break;
 
 			case ListPanel.COL_BNAME:
@@ -1149,7 +1150,8 @@ public class SearchRecord implements Cloneable
 			case ListPanel.COL_BELO:
 							joins |= JOIN_GAME;
 							appendOrderClause("Game.BlackELO", sortOrder, sql, order_in_select);
-							appendOrderClause("Game.WhiteELO", sortOrder, sql, order_in_select);
+							//appendOrderClause("Game.WhiteELO", sortOrder, sql, order_in_select);
+							// order by WhiteElo, BlackELO is too hard for MySQL to optimize.
 							break;
 
 			case ListPanel.COL_RESULT:

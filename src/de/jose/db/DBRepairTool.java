@@ -37,7 +37,8 @@ import java.util.Map;
 public class DBRepairTool
     extends JoDialog {
     private int stage = 0;
-    private JLabel[] labels = new JLabel[9];
+    private static int lastStage = 9;
+    private JLabel[] labels = new JLabel[lastStage+1];
     private JTextArea tail;
     private PrintStream wasOut,wasErr,tailStream;
     private JButton nextButton;
@@ -82,7 +83,7 @@ public class DBRepairTool
         comp.add(explain,ELEMENT_ROW);
         comp.add(Box.createVerticalStrut(20));
 
-        for (stage=1; stage <= 8; stage++)
+        for (stage=1; stage <= lastStage; stage++)
             comp.add(newLabel(stage,"dialog.repair."+stage),ELEMENT_ROW_SMALL);
 
         tail = newTextArea(120,40);
@@ -188,7 +189,7 @@ public class DBRepairTool
         action = new CommandAction() {
             @Override
             public void Do(Command cmd) throws Exception {
-                if (++stage >= 9) {
+                if (++stage > lastStage) {
                     hide();
                     return;
                 }
@@ -209,7 +210,8 @@ public class DBRepairTool
                         case 6: done=launchDB(); break;
                         case 7: done=gameRepair(); break;
                         //case 7: done=openDBWindow(); break;
-                        case 8: done=quitApplication(); break;
+                        case 8: done=analyzeTables(); break;
+                        case 9: done=quitApplication(); break;
                     }
                 } catch (Throwable e) {
                     System.err.println(e.getMessage());
@@ -329,6 +331,26 @@ public class DBRepairTool
         return false;
     }
 
+    protected boolean analyzeTables() throws SQLException
+    {
+        //  flag tables for needing analysis
+        JoConnection connection = null;
+        try {
+            connection = JoConnection.get();
+
+            Setup setup = new Setup(Application.theApplication.theConfig,"MAIN",connection);
+            try { setup.markAllDirty(); } catch (SQLException ex) {  }
+
+            setup.analyzeTables(true);  //  actually do analyze the tables
+
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if (connection!=null) connection.release();
+        }
+        return true;
+    }
+
     /**
      *
      * @param switches
@@ -383,7 +405,7 @@ public class DBRepairTool
         }
 
         nextButton.setEnabled(!active);
-        if (st==7 && !active)
+        if (st==(lastStage-1) && !active)
             nextButton.setText(Language.get("dialog.button.close"));
     }
 

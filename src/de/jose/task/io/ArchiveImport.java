@@ -187,14 +187,6 @@ public class ArchiveImport
 
 	    setProgress(0.98);
 
-		//  flag tables for needing analysis
-		Setup setup = new Setup(Application.theApplication.theConfig,"MAIN",connection);
-		if (gameCount > PGNImport.ANALYZE_LIMIT)
-			try { setup.markAllDirty(); } catch (SQLException ex) {  }
-
-		if (--PGNImport.gGameImporterInstance == 0)
-			setup.analyzeTables(false);  //  actually do analyze the tables
-
 		return SUCCESS;
     }
 
@@ -205,7 +197,9 @@ public class ArchiveImport
 	    } catch (SQLException e) {
 	    }
 
-	    if (state==ABORTED) {
+		analyzeTables();
+
+		if (state==ABORTED) {
 		    //  just in case: res-synch the sequence generator
 		    try {
 			    Collection.resetSequence(connection);
@@ -221,7 +215,19 @@ public class ArchiveImport
         return super.done(state);
     }
 
-    protected int copyCollection() throws Exception
+	private void analyzeTables()
+	{
+		//  flag tables for needing analysis
+		Setup setup = new Setup(Application.theApplication.theConfig,"MAIN",connection);
+		if (gameCount > PGNImport.ANALYZE_LIMIT || state!=SUCCESS) {
+			try { setup.markAllDirty(); } catch (SQLException ex) { }
+		}
+
+		if (--PGNImport.gGameImporterInstance == 0)
+			setup.analyzeTables(false);  //  actually do analyze the tables
+	}
+
+	protected int copyCollection() throws Exception
     {
 //	    System.out.print("[Collection ");
 
