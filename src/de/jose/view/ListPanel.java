@@ -208,7 +208,7 @@ public class ListPanel
 			 * - to put it short: we can't optimize
 			 * - and: sorting by Annotator is of little use anyway
 			 */
-			return (columnIndex!=COL_ANNOTATOR);
+			return (columnIndex!=COL_ANNOTATOR) && (columnIndex!=COL_MOVECOUNT);
 		}
 
 		public void setSortOrder(int sortOrder)

@@ -60,6 +60,7 @@
             Game(CId,GameDate,Id), Game(CId,ECO,Id)
             Game(CId,Result,Id)
         [.] Game(CId,WhiteELOId), Game(CId,BlackELO,Id),
+            Game(PlyCount),
     [x] bug: order by Annotator
         don't order by Annotator :(
 

@@ -4,7 +4,7 @@
 		<!--	Database Definition	-->
 		<!-- - - - - - - - - - - -  -->
 		<NAME> MAIN </NAME>
-		<VERSION> 1008 </VERSION>
+		<VERSION> 1009 </VERSION>
 		<TABLE>
 			<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 			<!--	Opening Index (maps positions to opening codes and names)  -->
@@ -271,7 +271,7 @@
 		<TABLE>
 			<!-- models a single game in a pgn file -->
 			<NAME> Game </NAME>
-			<VERSION> 102 </VERSION>
+			<VERSION> 103 </VERSION>
 			<COLUMN>
 				<!-- primary key -->
 				<NAME> Id </NAME>
@@ -325,6 +325,7 @@
 				<TYPE> INTEGER </TYPE>
 				<NOT_NULL/>
 				<DEFAULT> 0 </DEFAULT>
+				<INDEX/>
 			</COLUMN>
 			<COLUMN>
 				<!-- result of game -->
@@ -431,6 +432,31 @@
             <COLUMN> Idx </COLUMN>
             <COLUMN> Id </COLUMN>
         </INDEX>
+		<INDEX>
+			<COLUMN> CId </COLUMN>
+			<COLUMN> WhiteELO </COLUMN>
+			<COLUMN> Id </COLUMN>
+		</INDEX>
+		<INDEX>
+			<COLUMN> CId </COLUMN>
+			<COLUMN> BlackELO </COLUMN>
+			<COLUMN> Id </COLUMN>
+		</INDEX>
+		<INDEX>
+			<COLUMN> CId </COLUMN>
+			<COLUMN> Result </COLUMN>
+			<COLUMN> Id </COLUMN>
+		</INDEX>
+		<INDEX>
+			<COLUMN> CId </COLUMN>
+			<COLUMN> GameDate </COLUMN>
+			<COLUMN> Id </COLUMN>
+		</INDEX>
+		<INDEX>
+			<COLUMN> CId </COLUMN>
+			<COLUMN> ECO </COLUMN>
+			<COLUMN> Id </COLUMN>
+		</INDEX>
 		</TABLE>
 		<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 		<!--	Additional Game data that is queried rarely	-->		
