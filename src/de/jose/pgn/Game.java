@@ -1331,7 +1331,7 @@ public class Game
     }
 */
     protected void setGameParameters(JoPreparedStatement stm, BinWriter writer,
-									 int whiteId, int blackId, boolean withIdx)       throws SQLException
+									 int whiteId, int blackId, boolean withCIdIdx)       throws SQLException
     {
          String annotator = (String)getTagValue(TAG_ANNOTATOR);
          String event     = (String)getTagValue(TAG_EVENT);
@@ -1358,9 +1358,10 @@ public class Game
 		 }
 
          int i = 1;
-         stm.setInt(i++,        collectionId);
-         if (withIdx)
-            stm.setInt(i++,     gameIndex);
+		 if (withCIdIdx) {
+			 stm.setInt(i++, collectionId);
+			 stm.setInt(i++, gameIndex);
+		 }
 	 	 stm.setInt(i++,        attributes);
          stm.setInt(i++,        plyCount);
          stm.setInt(i++,        getResult());
@@ -1499,11 +1500,12 @@ public class Game
 		int whiteId = GameUtil.resolvePlayer(conn,white,true);
 		int blackId = GameUtil.resolvePlayer(conn,black,true);
 
+		///	DON'T overwrite CId and Idx in DB
+		//	(DB version is the source of truth)
 		String sql1 =   "UPDATE Game "+
-					   " SET CId=?,Attributes=?,PlyCount=?,Result=?,WhiteId=?,BlackId=?, WhiteELO=?,BlackELO=?,"+
+					   " SET Attributes=?,PlyCount=?,Result=?,WhiteId=?,BlackId=?, WhiteELO=?,BlackELO=?,"+
 					   "  EventId=?,SiteId=?, GameDate=?,EventDate=?,DateFlags=?, OpeningId=?, ECO=?, AnnotatorId=?"+
 					   " WHERE Id = ?";
-        //  don't overwrite Game.Idx in DB (DB version is more relevant)
 		JoPreparedStatement stm1 = conn.getPreparedStatement(sql1);
 		setGameParameters(stm1,writer, whiteId,blackId,false);
 		stm1.execute();
