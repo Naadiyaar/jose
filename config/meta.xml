@@ -492,6 +492,11 @@
 				<INDEX/>
 			</COLUMN>
 <!--
+			TODO storing MatSignatures would improve position search.
+			We could filter in the SQL statement.
+			We could even implement the MatSignature relation server-side (with custom functions).
+			But populating the columns and cross-over existing dbs and archives is some work to do.
+
 			<COLUMN>
 				<!- - number of white pieces in final position - ->
 				<NAME> WhiteCount </NAME>
@@ -501,6 +506,18 @@
 			<COLUMN>
 				<!- - number of black pieces in final position - ->
 				<NAME> BlackCount </NAME>
+				<TYPE> TINYINT </TYPE>
+				<INTDEX/>
+			</COLUMN>
+			<COLUMN>
+				<!- - number of white pawns in final position - ->
+				<NAME> WhitePawnCount </NAME>
+				<TYPE> TINYINT </TYPE>
+				<INDEX/>
+			</COLUMN>
+			<COLUMN>
+				<!- - number of black pawns in final position - ->
+				<NAME> BlackPawnCount </NAME>
 				<TYPE> TINYINT </TYPE>
 				<INTDEX/>
 			</COLUMN>

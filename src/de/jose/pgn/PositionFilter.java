@@ -60,6 +60,7 @@ public class PositionFilter
 		pos.setOption(Position.INCREMENT_HASH,true);
 		pos.setOption(Position.INCREMENT_REVERSED_HASH,true);
 		pos.setOption(Position.INCREMENT_SIGNATURE,true);
+		//	TODO Pawn Hash
 		//  don't calculate castling & ep privileges (cause they are not known in the target position)
 		pos.setOption(Position.IGNORE_FLAGS_ON_HASH, true);
 
@@ -130,9 +131,17 @@ public class PositionFilter
 		byte[] bin = res.getBytes(3);
 		if (bin==null) return false;	//	todo why can this happen at all?
 
+/*	TODO
+	it would be great if the final MatSignatures were stored in the database.
+	we could do early cut-offs before even reading the game. Especially for endgame positions.
+	We could do filtering with server-side database functions.
+	But it is not so. Yet. Introducing new columns, populating and backporting (archive files) is quite some  work.
+	So, in the meantine, we inspect every result row.
+ */
+
 		ignoreLine = inLine = false;
 		read(bin,0, null,0, fen,true);
-		//  read will call back
+		//  read will call back to (BinReader)this
 
 		return result;
 	}
@@ -148,7 +157,7 @@ public class PositionFilter
 
 	private void checkCutOff()
 	{
-		/** check material signature for cut-off */
+		/** check material signature for early cut-off */
 		if (!searchSig.canReach(targetSig) &&
 		    (targetSigReversed==null || !searchSig.canReach(targetSig)))
 			eof = true; //  signature cut-off

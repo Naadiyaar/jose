@@ -1,7 +1,7 @@
 /*
  * This file is part of the Jose Project
  * see http://jose-chess.sourceforge.net/
- * (c) 2002-2006 Peter Schäfer
+ * (c) 2002-2006 Peter Schï¿½fer
  * 
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import java.util.List;
  * during replay:
  *  if (!mat_reachable(current-position, target-position) break;
  * 
- * @author Peter Schäfer
+ * @author Peter Schï¿½fer
  */
 
 public class MatSignature
@@ -429,6 +429,9 @@ public class MatSignature
 	 *      however, there might be symmetric pairs (a,b) such that
 	 *      is_reachable(a,b) AND is_reachable(b,a)
 	 *      as a result, this relation can not be ordered
+	 *      (and can, sadly, not be used for indexing)
+	 *
+	 *  todo check only pawns
 	 */
     public static boolean is_reachable(long from, long to)
     {
