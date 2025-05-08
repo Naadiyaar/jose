@@ -1,7 +1,7 @@
 /*
  * This file is part of the Jose Project
  * see http://jose-chess.sourceforge.net/
- * (c) 2002-2006 Peter Schäfer
+ * (c) 2002-2006 Peter Schï¿½fer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1204,7 +1204,7 @@ public class SearchRecord implements Cloneable
 							break;
 
             case ListPanel.COL_ANNOTATOR:
-                            joins |= JOIN_ANNOTATOR;
+                            joins |= JOIN_ANNOTATOR+JOIN_GAME;
 							if (driving==0) // && !has_collections)	//	be careful about straight joins if the join order is unclear
 								driving = JOIN_ANNOTATOR;
                             appendOrderClause("Annotator.Name", sortOrder, sql, order_in_select);

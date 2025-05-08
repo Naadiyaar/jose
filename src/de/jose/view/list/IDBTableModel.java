@@ -1,7 +1,7 @@
 /*
  * This file is part of the Jose Project
  * see http://jose-chess.sourceforge.net/
- * (c) 2002-2006 Peter Schäfer
+ * (c) 2002-2006 Peter Schï¿½fer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,15 +29,15 @@ public interface IDBTableModel
 
     void setDisplayComponent(Component displayComponent);
 
-    public int getDBId(int rowIndex);
-	public void invalidateRowByPK(int pk);
+    int getDBId(int rowIndex);
+	void invalidateRowByPK(int pk);
 
-    public void singleCell(String header, Object content, int type);
+    void singleCell(String header, Object content, int type);
 
-    public boolean isSingleCell();
-    public boolean isSortable(int columnIndex);
-    public boolean isWorking();
+    boolean isSingleCell();
+    boolean isSortable(int columnIndex);
+    boolean isWorking();
     
-    public void fireTableStructureChanged();
-    public void fireTableDataChanged();
+    void fireTableStructureChanged();
+    void fireTableDataChanged();
 }

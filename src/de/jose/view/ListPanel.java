@@ -196,7 +196,22 @@ public class ListPanel
 			return (num!=null) ? num.intValue():0;
 		}
 
-        public void setSortOrder(int sortOrder)
+		@Override
+		public boolean isSortable(int columnIndex) {
+			/**
+			 * why?
+			 * - sorting by annator is poorly optimized by MySQL
+			 * 		SELECT Game.Id FROM Player Annotator, Game 	WHERE  (Game.AnnotatorId = Annotator.Id)  	ORDER BY Annotator.Name ASC LIMIT 128
+			 * 	 needs abt 10 seconds, which is too long
+			 * - STRAIGHT_JOIN or something does not improve. Maybe optimizer hints with MySQL 8 ?
+			 * - strangely enough, MySQL does a **much** better job on WhitePlayer, BlackPlayer which are essentially the same queries
+			 * - to put it short: we can't optimize
+			 * - and: sorting by Annotator is of little use anyway
+			 */
+			return (columnIndex!=COL_ANNOTATOR);
+		}
+
+		public void setSortOrder(int sortOrder)
         {
             search.sortOrder = sortOrder;
             refresh(true);

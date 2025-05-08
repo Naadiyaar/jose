@@ -1,7 +1,7 @@
 /*
  * This file is part of the Jose Project
  * see http://jose-chess.sourceforge.net/
- * (c) 2002-2006 Peter Schäfer
+ * (c) 2002-2006 Peter Schï¿½fer
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,19 +24,19 @@ public interface JoTableModel
 		extends TableModel
 {
 	/**	@return an identifier for a column	 */
-	public Object getIdentifier(int columnIndex);
+    Object getIdentifier(int columnIndex);
 	/** @return the preferred width of a column	 */
-	public int getPreferredColumnWidth(int columnIndex);
+    int getPreferredColumnWidth(int columnIndex);
 	/** @return the minimum width of a column	 */
-	public int getMinColumnWidth(int columnIndex);
+    int getMinColumnWidth(int columnIndex);
 	/** @return the maximum width of a column	 */
-	public int getMaxColumnWidth(int columnIndex);
+    int getMaxColumnWidth(int columnIndex);
     /** @return true if the given column can be sorted  */
-    public boolean isSortable(int columnIndex);
+    boolean isSortable(int columnIndex);
 
     /** get the current sort column (< 0: sort descending)   */
-    public int getSortOrder();
+    int getSortOrder();
 
     /** set the current sort order  */
-    public void setSortOrder(int columnIndex1);
+    void setSortOrder(int columnIndex1);
 }
