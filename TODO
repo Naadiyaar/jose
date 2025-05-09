@@ -182,18 +182,20 @@ Alternative JREs:
         GameSource(object) refers to an opened document. ID==0 = new, or ID > 0 = existing
         GemsSource(...) refers to a set of games. Write to DB directly.
 * Autocompletion for database fields (Event, Player, ...)
-
-* Search Pawn Structure
-    - mode on Zobrist keys
-    - Pawn Mat Signature:
-        extract from existing?
-        compute differently? (requires archive cross-over. avoid!)
-* Store MatSignature in DB
-    - speeds up Position search
-    - requires cross-over (for archive files, too)
-* Parallel Position Search
 * Search ELO >=
 * Query History
+
+* Parallel Position Search
+* Search Pawn Structure
+    - mode on Zobrist keys
+    - Pawn Mat Signature: extract from existing
+
+* Store MatSignature in DB
+    - speeds up Position search
+    - for 10, 20, end position ? - allows cut-offs for opening positions
+    - requires cross-over & re-built archive files !
+    - next: custom MySQL function pos_reachable(), pawn_reachable()
+    - benchmark?
 
 
 * RTF export? currently possible via copy/paste.

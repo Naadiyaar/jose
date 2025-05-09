@@ -21,9 +21,9 @@ import java.awt.*;
 import java.sql.SQLException;
 
 /**
- * Database cross-over for Meta Version 100
+ * Database cross-over for Meta Version 1009
  *
- * * Fix bug. Games could be created without MoreGame.
+ * more indexes on Game. helpful for GIGA databases.
  *
  * @author Peter Schäfer
  */
@@ -40,14 +40,13 @@ public class Crossover1009
 
 				// ----------------------------------------------------
 				//  Create a bunch of Indexes on Game
-				//	helpful for GIGA databases
 				// ----------------------------------------------------
 
 				dlg = JoDialog.createMessageDialog("Database Update",
 						"jose will now update the database structure for \n"+
 						"improved performance.\n" +
 				        "This may take 30 minutes or more. \n"+
-						"Be patient. Don't kill this process.",
+						"Please be patient. Don't kill this process.",
 				        false);
 				dlg.setVisible(true);
 				dlg.paint(dlg.getGraphics());
@@ -71,9 +70,6 @@ public class Crossover1009
 
 	protected static void createIndex(JoConnection conn, String tableName, String indexName, String columns)
 	{
-		//  Drop index
-
-		//  Drop column
 		String create = "CREATE INDEX "+tableName+"_"+indexName+
 						" ON "+tableName+" ("+columns+")";
 		try {

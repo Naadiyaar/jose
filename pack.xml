@@ -314,6 +314,7 @@
 			<zipfileset dir="config" prefix="config">
 				<include name="fonts.xml"/>
 				<include name="datasources.xml"/>
+				<include name="meta.xml"/>
 				<include name="menu.xml"/>
 				<include name="misc.xml"/>
 				<include name="toolbars.xml"/>

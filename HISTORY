@@ -171,6 +171,7 @@ the first production release.
 * new platform: Linux Arm 64
 
 === 1.5.8 (2025-05)
+=== 1.5.9 (2025-05)
 * load /huge/ database files
 * read 7zip compressed input files
 

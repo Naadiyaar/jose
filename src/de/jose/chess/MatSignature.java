@@ -58,6 +58,8 @@ public class MatSignature
      *  1 bit   pawn advance count is exact (including promotions and missing pawns)
      *          otherwise: lower bound; upper bound is calculated from number of missing pawns
 	 *
+	 * =======
+	 * 	54 bits
 	 */
     public long wsig, bsig;
 
